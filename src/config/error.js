@@ -1,15 +1,15 @@
 'use strict';
 
 module.exports = (app) => {
-    //404 error
+    // 404 error
     app.use((req, res, next) => {
         const result = {
             status: 404,
-            message: "404 Not Found",
+            message: '404 Not Found',
             error: {},
             data: {}
         }
-        
+
         return res.status(404).json(result);
     })
 
@@ -22,11 +22,11 @@ module.exports = (app) => {
     ) => {
         const result = {
             status: 500,
-            message: "500 Server Error",
+            message: '500 Server Error',
             error: err,
             data: {}
         }
 
-        return res.status(500).json(err);
+        return res.status(500).json(result);
     });
 }

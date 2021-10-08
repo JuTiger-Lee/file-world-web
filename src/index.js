@@ -8,6 +8,7 @@ function start() {
     
     server.createServer();
     server.setting();
+    server.routing();
 }
 
 if (require.main === module) start();

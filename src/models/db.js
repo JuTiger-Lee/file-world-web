@@ -2,6 +2,7 @@
 
 const mysql = require('mysql');
 const { serverDB } = require('../config/db');
+const debug = require('../utils/debug');
 
 function connDB() {
     const conn = mysql.createConnection(serverDB);
@@ -29,7 +30,7 @@ async function query(sql, params) {
     let result = {};
     let conn = {};
 
-    const queryProcessing = () => {
+    const getQueryData = () => {
         return new Promise((res, rej) => {
             conn.query(sql, params, (err, rows) => {
                 if (err) rej(err);
@@ -43,18 +44,24 @@ async function query(sql, params) {
         try {
             await conn.beginTransaction();
             try {
-                const queryData = await queryProcessing(conn, sql, params);
+                const queryData = await getQueryData(conn, sql, params);
                 await conn.commit();
+                
                 result = settings.createResponse(222, 'success', {}, queryData);
             } catch (err) {
                 await conn.rollback();
+
+                debug.error(`status: 666 message: query Error Error: ${err}`);
                 result = settings.createResponse(666, 'query Error', err, {});
             }
         } catch (err) {
             await conn.rollback();
+
+            debug.error(`status: 666 message: query beginTransaction Error: ${err}`);
             result = settings.createResponse(666, 'beginTransaction Error', err, {});
         }
     } catch (err) {
+        debug.error(`status: 666 message: query DB Error: ${err}`);
         result = settings.createResponse(500, 'DB Error', err, {});
     }
 
@@ -63,6 +70,10 @@ async function query(sql, params) {
     return result;
 }
 
+// TODO...
+function poolQuery() {}
+
 module.exports = {
     query,
+    poolQuery,
 }
