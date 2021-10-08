@@ -22,6 +22,9 @@
     "mysql2": "^2.3.0",
     "nodemailer": "^6.6.5",
     "nodemon": "^2.0.13",
+    "passport": "^0.5.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "pm2": "^5.1.2",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6"
