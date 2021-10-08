@@ -1,6 +1,12 @@
 'use strict';
 
+const cors = require('cors');
+const path = require('path');
+const setting = require('../utils/setting');
 const error = require('./error');
+
+// router
+const indexRouter = require('../routes/index');
 
 class Server {
 
@@ -14,18 +20,25 @@ class Server {
     }
 
     createServer() {
-        this.app.listen(8080, () => console.log('8080 server start'));
+        this.app.listen(setting.port, () => console.log(`${setting.port} server start`));
     }
 
     setting() {
-        error(this.app);
-        
+        this.app.use(cors());
+        this.app.use(this.express.urlencoded({ extended: true }));
+        this.app.use(this.express.json());
+
+        // static file registration
+        this.app.use(this.express.static(path.join(__dirname, '../../public')));
+
+        // Template engine registration
         this.app.set('view engine', 'ejs');
-        this.app.use(express.urlencoded({ extended: true }));
-        this.app.use(express.json());
     }
 
-    routing() {}
+    routing() {
+        indexRouter(this.app);
+        error(this.app);
+    }
 }
 
 module.exports = Server;
