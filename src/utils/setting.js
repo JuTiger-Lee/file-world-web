@@ -1,7 +1,7 @@
 'use strict';
 
 // server port
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8081;
 
 // server ipv4 and ipv6
 const ipv4 = '0.0.0.0';
