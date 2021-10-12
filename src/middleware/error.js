@@ -8,10 +8,10 @@ module.exports = (app) => {
             message: '404 Not Found',
             error: {},
             data: {}
-        }
+        };
 
         return res.status(404).json(result);
-    })
+    });
 
     // 500 server error
     app.use((
@@ -20,12 +20,14 @@ module.exports = (app) => {
         res,
         next
     ) => {
+        console.error(err);
+        
         const result = {
             status: 500,
             message: '500 Server Error',
             error: err,
             data: {}
-        }
+        };
 
         return res.status(500).json(result);
     });

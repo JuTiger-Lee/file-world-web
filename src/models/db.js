@@ -1,11 +1,11 @@
 'use strict';
 
 const mysql = require('mysql');
-const { serverDB } = require('../config/db');
+const { development } = require('../config/db');
 const debug = require('../utils/debug');
 
 function connDB() {
-    const conn = mysql.createConnection(serverDB);
+    const conn = mysql.createConnection(development);
     conn.connect();
 
     return conn;    
