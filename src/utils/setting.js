@@ -1,5 +1,3 @@
-'use strict';
-
 // server port
 const port = process.env.PORT || 8081;
 
@@ -10,7 +8,7 @@ const ipv4 = '0.0.0.0';
 const ssl = false;
 
 module.exports = {
-    port,
-    ipv4,
-    ssl,
-}
+  port,
+  ipv4,
+  ssl,
+};
