@@ -1,11 +1,14 @@
 const path = require('path');
-const cors = require('cors');
 const methodOverride = require('method-override');
-const setting = require('../utils/setting');
 const error = require('../middleware/error');
+const { port, envFound } = require('../utils/setting');
 
 // router
-const indexRouter = require('../routes/index');
+const routes = require('../routes/routes');
+
+if (envFound.error) {
+  throw new Error("⚠️ Couldn't find .env file ⚠️");
+}
 
 class Server {
   /**
@@ -15,12 +18,6 @@ class Server {
   constructor(express) {
     this.express = express;
     this.app = this.express();
-  }
-
-  createServer() {
-    this.app.listen(setting.port, () =>
-      console.log(`${setting.port} server start`),
-    );
   }
 
   setting() {
@@ -39,29 +36,17 @@ class Server {
   }
 
   routing() {
-    // Access-Control-Allow-Origin
-    // res.header("Access-Control-Allow-Origin", "http://localhost:8081");
-
-    const whiteOriginList = [
-      'http://localhost:8081',
-      // 'https://www.zerocho.com',
-    ];
-
-    const corsOptionDic = {
-      origin: (origin, callback) => {
-        // 자기 자신 localhost는 origin 감지가 안됨
-        if (whiteOriginList.indexOf(origin) !== -1 || !origin) {
-          callback(null, true);
-        } else {
-          callback(new Error(`Not allowed by CORS Blocked origin ${origin}`));
-        }
-      },
-    };
-
-    this.app.use(cors(corsOptionDic));
-
-    indexRouter(this.app);
+    routes(this.app);
     error(this.app);
+  }
+
+  createServer() {
+    this.app
+      .listen(port, () => console.log(`${port} server start`))
+      .on('error', err => {
+        console.error(err);
+        process.exit(1);
+      });
   }
 }
 

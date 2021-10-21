@@ -9,6 +9,9 @@ module.exports = {
     database: process.env.DB_DATABASE,
     password: process.env.DB_PASSOWRD,
     port: process.env.DB_PORT,
+    dateStrings: ['DATE', 'DATETIME'],
+    timezone: '+09:00',
+    multipleStatements: true,
   },
   production: {},
 };

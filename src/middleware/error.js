@@ -13,12 +13,12 @@ module.exports = app => {
 
   // 500 server error
   app.use((err, req, res) => {
-    console.error(err);
+    console.error('error!!!!!!!!!!!!!!', err);
 
     const result = {
       status: 500,
       message: '500 Server Error',
-      error: err,
+      error: err.message,
       data: {},
     };
 

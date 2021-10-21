@@ -1,15 +1,17 @@
 {
-	"extends": [
+    "extends": [
         // 규칙 세트
-        "eslint:recommended", 
-        "airbnb-base", 
+        "eslint:recommended",
+        "airbnb-base",
         "plugin:prettier/recommended"
     ],
     // plugin add
-    "plugins": ["prettier"],
+    "plugins": [
+        "prettier"
+    ],
     "parserOptions": {
         "ecmaVersion": 8,
-		"sourceType": "script"
+        "sourceType": "script"
     },
     "env": {
         "browser": false,
@@ -23,7 +25,7 @@
         "views/",
         "public/",
         "locales",
-        ".env"    
+        ".env"
     ],
     // error and warn and off
     "rules": {
