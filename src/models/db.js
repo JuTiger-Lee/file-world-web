@@ -1,79 +1,96 @@
-'use strict';
-
 const mysql = require('mysql');
 const { development } = require('../config/db');
 const debug = require('../utils/debug');
 
 function connDB() {
-    const conn = mysql.createConnection(development);
-    conn.connect();
+  const conn = mysql.createConnection(development);
+  conn.connect();
 
-    return conn;    
+  return conn;
 }
 
 /**
- * 
- * @param {Object} conn 
+ *
+ * @param {Object} conn
  */
 function closeConnDB(conn) {
-    conn.end();
-    conn = null;
+  conn.end();
 }
 
 /**
- * 
- * @param {String} sql 
- * @param {Array} params 
+ *
+ * @param {String} sql
+ * @param {Array} params
  * @returns {Object}
  */
 async function query(sql, params) {
-    let result = {};
-    let conn = {};
+  let result = {};
+  let conn = {};
 
-    const getQueryData = () => {
-        return new Promise((res, rej) => {
-            conn.query(sql, params, (err, rows) => {
-                if (err) rej(err);
-                else res(rows)
-            });
-        });
-    }
+  const getQueryData = () => {
+    return new Promise((res, rej) => {
+      conn.query(sql, params, (err, rows) => {
+        if (err) rej(err);
+        else res(rows);
+      });
+    });
+  };
 
+  try {
+    conn = connDB();
     try {
-        conn = connDB();
-        try {
-            await conn.beginTransaction();
-            try {
-                const queryData = await getQueryData(conn, sql, params);
-                await conn.commit();
-                
-                result = settings.createResponse(222, 'success', {}, queryData);
-            } catch (err) {
-                await conn.rollback();
+      await conn.beginTransaction();
+      try {
+        const queryData = await getQueryData(conn, sql, params);
+        await conn.commit();
 
-                debug.error(`status: 666 message: query Error Error: ${err}`);
-                result = settings.createResponse(666, 'query Error', err, {});
-            }
-        } catch (err) {
-            await conn.rollback();
+        result = {
+          status: 222,
+          message: 'success',
+          error: {},
+          data: queryData,
+        };
+      } catch (err) {
+        await conn.rollback();
 
-            debug.error(`status: 666 message: query beginTransaction Error: ${err}`);
-            result = settings.createResponse(666, 'beginTransaction Error', err, {});
-        }
+        debug.error(`status: 666 message: query Error Error: ${err}`);
+        result = {
+          status: 666,
+          message: 'query Error',
+          error: err,
+          data: {},
+        };
+      }
     } catch (err) {
-        debug.error(`status: 666 message: query DB Error: ${err}`);
-        result = settings.createResponse(500, 'DB Error', err, {});
+      await conn.rollback();
+
+      debug.error(`status: 666 message: query beginTransaction Error: ${err}`);
+      result = {
+        status: 666,
+        message: 'beginTransaction Error',
+        error: err,
+        data: {},
+      };
     }
+  } catch (err) {
+    debug.error(`status: 666 message: query DB Error: ${err}`);
+    result = {
+      status: 500,
+      message: 'DB Error',
+      error: err,
+      data: {},
+    };
+  }
 
-    closeConnDB(conn);
+  closeConnDB(conn);
 
-    return result;
+  return result;
 }
 
 // TODO...
 function poolQuery() {}
 
 module.exports = {
-    query,
-    poolQuery,
-}
+  query,
+  poolQuery,
+};

@@ -1,0 +1,38 @@
+{
+    "extends": [
+        // 규칙 세트
+        "eslint:recommended",
+        "airbnb-base",
+        "plugin:prettier/recommended"
+    ],
+    // plugin add
+    "plugins": [
+        "prettier"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 8,
+        "sourceType": "script"
+    },
+    "env": {
+        "browser": false,
+        "es6": true,
+        "node": true
+    },
+    "ignorePatterns": [
+        "node_modules/",
+        ".vscode/",
+        "bin/",
+        "views/",
+        "public/",
+        "locales",
+        ".env"
+    ],
+    // error and warn and off
+    "rules": {
+        // 사용하지 않는 변수 경고
+        "no-unused-vars": "warn",
+        // console wan and error off
+        "no-console": "off",
+        "prettier/prettier": "error"
+    }
+}
