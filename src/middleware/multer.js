@@ -1,7 +1,5 @@
-'use strict';
-
 const multer = require('multer');
 
-const upload = ({});
+const upload = {};
 
 module.exports = upload;

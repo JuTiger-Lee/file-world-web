@@ -1,16 +1,18 @@
-'use strict';
+const dotenv = require('dotenv');
+
+const envFound = dotenv.config();
 
 // server port
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || process.env.DEV_PORT;
 
-// server ipv4 and ipv6
-const ipv4 = '0.0.0.0';
-
-// ssl Whether or not to use
+// Whether or not to use https
 const ssl = false;
 
+const ipv4 = '0.0.0.0';
+
 module.exports = {
-    port,
-    ipv4,
-    ssl,
-}
+  envFound,
+  port,
+  ipv4,
+  ssl,
+};

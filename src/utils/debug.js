@@ -1,5 +1,3 @@
-'use strict';
-
 // https://www.npmjs.com/package/debug
 const Debug = require('debug');
 
@@ -16,8 +14,8 @@ const log = new Debug('log: server');
 const query = new Debug('debug: query');
 
 module.exports = {
-    server,
-    error,
-    log,
-    query,
-}
+  server,
+  error,
+  log,
+  query,
+};

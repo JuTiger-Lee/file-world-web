@@ -1,10 +1,9 @@
-'use strict';
-
 const express = require('express');
+
 const router = express.Router();
 
-router.post('/login', function(req, res) {
-    res.send('hello')
+router.post('/login', (req, res) => {
+  // throw new Error('not exiteds user data');
 });
 
 router.post('/signup');
