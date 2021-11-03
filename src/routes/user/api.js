@@ -1,12 +1,10 @@
 const express = require('express');
+const userController = require('../../controller/api/user');
 
 const router = express.Router();
 
-router.post('/login', (req, res) => {
-  // throw new Error('not exiteds user data');
-});
-
-router.post('/signup');
-router.get('/logout');
+router.post('/login', userController.login);
+router.post('/signup', userController.singup);
+router.get('/logout', userController.logout);
 
 module.exports = router;

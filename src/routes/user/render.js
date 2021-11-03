@@ -2,8 +2,12 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/login', function (req, res) {});
+router.get('/login', (req, res) => {
+  res.render('../views/user/login');
+});
 
-router.get('/signup', function (req, res) {});
+router.get('/sign-up', (req, res) => {
+  res.render('../views/user/sign-up');
+});
 
 module.exports = router;

@@ -33,6 +33,12 @@
         "no-unused-vars": "warn",
         // console wan and error off
         "no-console": "off",
-        "prettier/prettier": "error"
+        "prettier/prettier": "error",
+        // 카멜 케이스 컨벤션 해제
+        "camelcase": "off",
+        // 함수 끝 return 컨벤션 해제
+        "consistent-return": "off",
+        // 빈(코드가 작성되지 않은) 함수 경고
+        "no-empty-function": "warn"
     }
 }
