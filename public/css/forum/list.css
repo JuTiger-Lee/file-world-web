@@ -1,0 +1,69 @@
+#forum-box {
+  width: 80%;
+  margin: auto;
+}
+
+.forum-post-list-box > div > .card {
+  margin-top: 5px;
+}
+
+.forum-user-profile-box {
+  text-align: center;
+}
+
+.forum-profile {
+  width: 75px;
+  height: 75px;
+  border-radius: 70%;
+  overflow: hidden;
+}
+
+.forum-top-profile {
+  width: 55px;
+  height: 55px;
+}
+
+.forum-profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.forum-profile-name {
+  font-weight: bold;
+}
+
+/* card body */
+
+.forum-info-box {
+  display: inline-flex;
+}
+
+.forum-info-box div {
+  margin-right: 10px;
+}
+
+.forum-category-box {
+  display: flex;
+  margin-top: 15px;
+}
+
+.forum-post-info-box {
+  width: 100%;
+  margin-left: 20px;
+}
+
+.forum-category-box > div {
+  background-color: #4ab2b5;
+  margin-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+  color: white;
+}
+
+.forum-date {
+  float: right;
+  font-weight: bold;
+  color: #b5b5b5;
+}
