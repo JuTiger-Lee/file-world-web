@@ -7,17 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <!-- css -->
-    <link rel="stylesheet" href="../static/css/common.css">
-    <link rel="stylesheet" href="../static/assets/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/assets/icon/all.css">
-
-    <!-- js -->
+    <!-- assets -->
 
     <!-- jquery-->
     <script src="../static/assets/jquery-3.6.0.min.js"></script>
 
+    <!-- ag-grid -->
+    <link rel="stylesheet" href="../static/assets/ag-grid/ag-grid.css" />
+    <link rel="stylesheet" href="../static/assets/ag-grid/ag-theme-alpine.css" />
+    <script src="../static/assets/ag-grid/ag-grid-community.min.noStyle.js"></script>
+
     <!-- bootstrap -->
+    <link rel="stylesheet" href="../static/assets/bootstrap/bootstrap.min.css">
     <script src="../static/assets/bootstrap/bootstrap.min.js"></script>
 
     <!-- pagination -->
@@ -26,7 +27,61 @@
     <!-- axios -->
     <script src="../static/assets/axios.min.js"></script>
 
+    <!-- icon -->
+    <link rel="stylesheet" href="../static/assets/icon/all.css">
+
+    <!-- css -->
+    <link rel="stylesheet" href="../static/css/common.css">
+
+    <!-- js -->
     <script src="../static/js/ajax.js"></script>
 </head>
 
 <body>
+    <div id="wrap">
+        <nav class="header navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid header-container">
+                <a class="header-logo navbar-brand" href="/">File
+                    <span class="header-world-logo">
+                        W<i class="fas fa-globe fa-sm"></i>rld
+                    </span>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header-navbar-menu"
+                    aria-controls="header-navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="header-menu navbar-collapse collapse" id="header-navbar-menu">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/forum/list">Forum</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/news">News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/sign-up">Sign Up</a>
+                        </li>
+                        <!-- <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                User
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="/user/profile">Profile</a>
+                                <a class="dropdown-item" href="/user/logout">Logout</a>
+                            </div>
+                        </li> -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pricing">Pricing</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
