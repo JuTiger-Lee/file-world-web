@@ -1,0 +1,47 @@
+#login-box {
+  width: 60%;
+  margin: auto;
+  padding: 100px 0px;
+}
+
+.login-form-box {
+  margin: auto;
+  padding-top: 30px;
+}
+
+.login-btn-box {
+  margin: auto;
+  text-align: center;
+}
+
+.login-btn-box div {
+  width: 100%;
+  border-radius: 2%;
+  cursor: pointer;
+  margin: auto;
+  margin-top: 10px;
+}
+
+.login-btn-box div:nth-child(2) {
+  background-color: #c1553a;
+}
+
+.login-btn-box div:nth-child(3) {
+  background-color: #3b5998;
+}
+
+.login-forgot-password {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.login-forgot-password > p {
+  font-weight: bold;
+  cursor: pointer;
+  color: #b5b5b5;
+}
+
+.login-forgot-password > p:hover {
+  border-bottom: 1px solid;
+}
