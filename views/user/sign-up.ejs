@@ -1,55 +1,87 @@
 <%- include('../common/header.ejs') %>
     <link rel="stylesheet" href="../static/css/user/signup.css">
-    <link rel="stylesheet" href="../static/css/user/login.css">
-    <div class="singup-box">
+
+    <div id="singup-box">
         <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-                <div class="login-title-logo-box" style="text-align: center;">
+            <div class="col-md-12">
+                <div class="signup-title-logo-box" style="text-align: center;">
                     <h1>File<span class="header-world-logo"> W<i class="fas fa-globe fa-sm"></i>rld</span></h1>
                 </div>
-                <div class="login-form-box">
+                <div class="signup-form-box">
                     <div class="form-group">
-                        <input class="form-control user-email" type="email" aria-describedby="emailHelp"
+                        <input type="email" class="form-control user-email" aria-describedby="emailHelp"
                             placeholder="Enter email">
                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
                             else.</small>
                     </div>
                     <div class="form-group">
-                        <input class="form-control user-id" type="id" placeholder="ID">
+                        <input type="text" class="form-control user-name" placeholder="name">
+                    </div>
+                    <div class="form-group">
+                        <input type="id" class="form-control user-id" placeholder="ID">
                     </div>
                     <div class="form-group">
                         <input class="form-control user-password" type="password" placeholder="Password">
                     </div>
 
                     <div class="signup-btn-box">
-                        <div class="signup-local btn btn-primary">
+                        <div class="signup-btn btn btn-primary">
                             <span>SIGNUP</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3"></div>
         </div>
     </div>
 
     <script>
-        const signupBtn = document.querySelector('.signup-local');
+        'use strict';
 
-        function reqSignupInfo() {
+        const signupBtn = document.querySelector('.signup-btn');
+
+        function signupValueCheck() {
             const userEmail = document.querySelector('.user-email').value;
+            const userName = document.querySelector('.user-name').value;
             const userID = document.querySelector('.user-id').value;
             const userPassword = document.querySelector('.user-password').value;
 
+            // email regular expression
+            const emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+            if (!userEmail.trim() || !userEmail) return alert('이메일을 입력해주세요.');
+            if (!userEmail.match(emailRegExp)) return alert('이메일 형식이 잘 못되었습니다.');
+            if (!userID.trim() || !userID) return alert('아이디를 입력해주세요.');
+            if (!userPassword.trim() || !userPassword) return alert('비밀번호를 입력해주세요.');
+
+            return {
+                userEmail,
+                userName,
+                userID,
+                userPassword,
+            };
+        }
+
+        async function reqSignup() {
+            const { userEmail, userName, userID, userPassword } = signupValueCheck();
+
             const bodyData = {
                 ui_email: userEmail,
+                ui_name: userName,
                 ui_id: userID,
                 ui_password: userPassword,
             }
 
-            axios.post('/api/user/signup', bodyData);
+            const reqResult = await reqAjax('/api/user/signup', 'post', bodyData);
+
+            if (reqResult.status === 261) {
+                return alert('id가 중복되었습니다.');
+            } else if (reqResult.status === 201) {
+                return window.location.href = '/user/login';
+            } else {
+                return alert('회원가입 실패')
+            }
         }
 
-        signupBtn.addEventListener('click', () => reqSignupInfo());
+        signupBtn.addEventListener('click', () => reqSignup());
     </script>
-    <%- include('../common/footer.ejs') %>
+<%- include('../common/footer.ejs') %>

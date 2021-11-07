@@ -1,5 +1,6 @@
 const cors = require('cors');
 
+const checkAuth = require('../middleware/checkAuth');
 const adminMainAPI = require('./admin/main/api');
 const adminMainRender = require('./admin/main/render');
 
@@ -21,7 +22,7 @@ module.exports = app => {
     // 'https://www.zerocho.com',
   ];
 
-  const corsOptionDic = {
+  const corsOption = {
     origin: (origin, callback) => {
       // 자기 자신 localhost는 origin 감지가 안됨
       if (whiteOriginList.indexOf(origin) !== -1 || !origin) {
@@ -32,10 +33,17 @@ module.exports = app => {
     },
   };
 
-  app.use(cors(corsOptionDic));
+  const authURI = ['/test'];
+
+  app.use(cors(corsOption));
+  app.use(authURI, checkAuth);
+
+  app.post('/test', (req, res) => {
+    res.send('success');
+  });
 
   // admin
-  app.use('/admin/api', adminMainAPI);
+  app.use('/api/admin', adminMainAPI);
   app.use('/admin', adminMainRender);
 
   // user service

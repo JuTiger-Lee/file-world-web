@@ -39,6 +39,14 @@
         // 함수 끝 return 컨벤션 해제
         "consistent-return": "off",
         // 빈(코드가 작성되지 않은) 함수 경고
-        "no-empty-function": "warn"
+        "no-empty-function": "off",
+        // method in this warn
+        "class-methods-use-this": "warn",
+        // else if 사용할수있게
+        "no-else-return": "off",
+        // 빈(코드가 작성되지 않은) constructor off
+        "no-useless-constructor": "off",
+        // 최대 class 조정
+        "max-classes-per-file": ["warn", 5]
     }
 }

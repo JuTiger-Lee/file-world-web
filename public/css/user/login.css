@@ -1,12 +1,15 @@
 #login-box {
-  width: 60%;
+  width: 40%;
+  min-width: 450px;
   margin: auto;
-  padding: 100px 0px;
+}
+
+.login-title-logo-box {
+  margin-bottom: 40px;
 }
 
 .login-form-box {
   margin: auto;
-  padding-top: 30px;
 }
 
 .login-btn-box {
@@ -24,10 +27,12 @@
 
 .login-btn-box div:nth-child(2) {
   background-color: #c1553a;
+  border: none;
 }
 
 .login-btn-box div:nth-child(3) {
   background-color: #3b5998;
+  border: none;
 }
 
 .login-forgot-password {
