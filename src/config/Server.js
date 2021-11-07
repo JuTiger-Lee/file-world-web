@@ -3,6 +3,7 @@ const passport = require('passport');
 const methodOverride = require('method-override');
 const error = require('../middleware/error');
 const { port, envFound } = require('../utils/setting');
+const passportConfig = require('./passport');
 
 // router
 const routes = require('../routes/routes');
@@ -35,8 +36,9 @@ class Server {
     // Template engine registration
     this.app.set('view engine', 'ejs');
 
-    // passport
+    // passport setting
     this.app.use(passport.initialize());
+    passportConfig();
   }
 
   routing() {

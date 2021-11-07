@@ -1,0 +1,17 @@
+#singup-box {
+  width: 40%;
+  min-width: 450px;
+  margin: auto;
+}
+
+.signup-title-logo-box {
+  margin-bottom: 40px;
+}
+
+.signup-btn-box div {
+  width: 100%;
+  border-radius: 2%;
+  cursor: pointer;
+  margin: auto;
+  margin-top: 10px;
+}
