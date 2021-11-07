@@ -7,17 +7,25 @@
  * @param {Array || Object} params
  * @returns
  */
+
 async function reqAjax(url, method, params) {
   try {
-    let getReqResults = [];
+    // token send
+    const config = {
+      headers: {
+        Authorization: `bearer ${localStorage.getItem('user')}`,
+      },
+    };
+
+    let getReqResults = {};
 
     if (method === 'post' || method === 'put') {
-      getReqResults = axios[method](url, params);
+      getReqResults = await axios[method](url, params, config);
     } else {
-      getReqResults = axios[method](url);
+      getReqResults = await axios[method](url);
     }
 
-    return getReqResults;
+    return getReqResults.data;
   } catch (err) {
     return {
       status: 444,

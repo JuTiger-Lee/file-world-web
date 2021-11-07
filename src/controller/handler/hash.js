@@ -2,6 +2,7 @@ const crypto = require('crypto');
 
 // https://www.npmjs.com/package/bcrypt
 const bcrypt = require('bcrypt');
+const { MakeErrorRespone } = require('../../utils/makeRes');
 
 /**
  *
@@ -9,23 +10,40 @@ const bcrypt = require('bcrypt');
  * @param {Number} hashNumber 암호화 강도(몇번 암호화를 할지 높을 수록 좋지만 그만큼 자원 낭비)
  * @returns
  */
-function encrypt(reqHash, hashNumber) {
-  // sha512 => 길고 안전하지만 한번더 해쉬를 하기 때문에 짧게
+function encrypt(password, hashNumber) {
+  /*
+   * sha 128 224 256 384 512
+   * 숫자가 클수록 해쉬를 하기 때문에 안전
+   */
   try {
-    const hashString = crypto
+    const hashPassword = crypto
       .createHash('sha256')
-      .update(reqHash)
+      .update(password)
       .digest('base64');
 
-    return bcrypt.hashSync(hashString, hashNumber);
+    return bcrypt.hashSync(hashPassword, hashNumber);
   } catch (err) {
-    throw new Error(err);
+    throw new MakeErrorRespone(err, [], 702, 'Hash Encrypt Error');
   }
 }
 
 function decrypt() {}
 
+function compare(password, userPassword) {
+  try {
+    const hashPassword = crypto
+      .createHash('sha256')
+      .update(password)
+      .digest('base64');
+
+    return bcrypt.compareSync(hashPassword, userPassword);
+  } catch (err) {
+    throw new MakeErrorRespone(err, [], 702, 'compare Error');
+  }
+}
+
 module.exports = {
   encrypt,
   decrypt,
+  compare,
 };

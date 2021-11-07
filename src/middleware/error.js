@@ -11,17 +11,16 @@ module.exports = app => {
     return res.status(404).json(result);
   });
 
-  // 500 server error
-  app.use((err, req, res) => {
-    console.error('error!!!!!!!!!!!!!!', err);
-
+  app.use((err, req, res, next) => {
     const result = {
-      status: 500,
-      message: '500 Server Error',
-      error: err.message,
+      status: err.status || 500,
+      message: err.message || '500 server Error',
+      error: err.status && err.message ? {} : err,
       data: {},
     };
 
-    return res.status(500).json(result);
+    res.status(err.status || 500);
+
+    return res.json(result);
   });
 };
