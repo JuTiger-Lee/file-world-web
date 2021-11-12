@@ -6,10 +6,8 @@ async function list(req, res, next) {
     const makeRespone = new MakeResponse();
     const listUser = await userModel.listUser([]);
 
-    if (listUser.status === 222) {
-      makeRespone.init(200, 200, 'success');
-      makeRespone.makeSuccessResponse(listUser);
-    }
+    makeRespone.init(200, 200, 'success');
+    res.send(makeRespone.makeSuccessResponse(listUser.data));
   } catch (err) {
     console.log('admin API: user list Error:', err);
     return next(err);
