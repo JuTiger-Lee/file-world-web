@@ -1,6 +1,6 @@
 <%- include('../common/header.ejs') %>
     <link rel="stylesheet" href="../static/css/forum/list.css">
-    <div id="forum-box">
+    <div id="forum-list-box">
         <div class="forum-post-list-box row">
             <div class="col-md-4">
                 <div class="card">
@@ -47,13 +47,16 @@
                             </div>
                             <div class="forum-info-box">
                                 <div class="forum-comment-box">
-                                    <span style="color: #12a7e4; font-weight: bold;"><i class="fas fa-comment"></i> 50 Answers</span>
+                                    <span style="color: #12a7e4; font-weight: bold;"><i class="fas fa-comment"></i> 50
+                                        Answers</span>
                                 </div>
                                 <div class="fourm-view-box">
-                                    <span style="color: #2b8d6e; font-weight: bold;"><i class="fas fa-eye"></i> 50 Views</span>
+                                    <span style="color: #2b8d6e; font-weight: bold;"><i class="fas fa-eye"></i> 50
+                                        Views</span>
                                 </div>
                                 <div class="fourm-like-box">
-                                    <span style="color: #ed635e; font-weight: bold;"><i class="far fa-heart"></i> 10 Like</span>
+                                    <span style="color: #ed635e; font-weight: bold;"><i class="far fa-heart"></i> 10
+                                        Like</span>
                                 </div>
                             </div>
                             <div class="forum-category-box">
@@ -81,13 +84,16 @@
                             </div>
                             <div class="forum-info-box">
                                 <div class="forum-comment-box">
-                                    <span style="color: #12a7e4; font-weight: bold;"><i class="fas fa-comment"></i> 50 Answers</span>
+                                    <span style="color: #12a7e4; font-weight: bold;"><i class="fas fa-comment"></i> 50
+                                        Answers</span>
                                 </div>
                                 <div class="fourm-view-box">
-                                    <span style="color: #2b8d6e; font-weight: bold;"><i class="fas fa-eye"></i> 50 Views</span>
+                                    <span style="color: #2b8d6e; font-weight: bold;"><i class="fas fa-eye"></i> 50
+                                        Views</span>
                                 </div>
                                 <div class="fourm-like-box">
-                                    <span style="color: #ed635e; font-weight: bold;"><i class="far fa-heart"></i> 10 Like</span>
+                                    <span style="color: #ed635e; font-weight: bold;"><i class="far fa-heart"></i> 10
+                                        Like</span>
                                 </div>
                             </div>
                             <div class="forum-category-box">
@@ -100,7 +106,53 @@
                         </div>
                     </div>
                 </div>
+            <div id="pagination"
+                style="
+                display: flex; 
+                justify-content: center;
+                margin-top: 10px;"
+            ></div>
             </div>
         </div>
     </div>
+    <script>
+        $('#pagination').pagination({
+            // 데이터 넣는 곳
+            dataSource: [
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+                {'idx': 1},
+            ],
+            pageSize: 10,
+            className: 'paginationjs-theme-blue',
+            callback: function (data, pagination) {
+            }
+        })
+    </script>
     <%- include('../common/footer.ejs') %>
