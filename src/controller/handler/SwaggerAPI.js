@@ -28,7 +28,7 @@ const swaggerTags = [
     description: 'forum 관련 API',
   },
   {
-    name: 'Admin',
+    name: 'Admin/User',
     description: '관리자 관련 API',
   },
 ];
