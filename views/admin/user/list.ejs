@@ -1,0 +1,44 @@
+<%- include('../../common/sidebar.ejs') %>
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div id="grid-wrapper">
+        <div id="grid-list" class="ag-theme-alpine"></div>
+      </div>
+    </div>
+  </div>
+  </main>
+  <%- include('../../common/sidebarPlugin.ejs') %>
+
+    <script>
+      const columnDefs = [
+        { field: 'ui_email' },
+        { field: 'ui_name' },
+        { field: 'ui_id' },
+        { field: 'ui_email_status' },
+        { field: 'status' },
+        { field: 'create_datetime' },
+        { field: 'update_datetime' },
+      ];
+
+      const rowData = [];
+
+      const gridOption = {
+        columnDefs,
+        rowData,
+        domLayout: 'autoHeight',
+        paginationPageSize: 10,
+        pagination: true,
+      };
+
+      function reqUserList() {
+
+      }
+
+      const gridList = document.querySelector('#grid-list');
+
+      new agGrid.Grid(gridList, gridOption);
+    </script>
+
+    </body>
+
+    </html>

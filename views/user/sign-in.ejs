@@ -1,5 +1,6 @@
 <%- include('../common/header.ejs') %>
-    <link rel="stylesheet" href="../static/css/user/login.css">
+    <link rel="stylesheet" href="../static/css/user/signin.css">
+
     <div id="login-box">
         <div class="row">
             <div class="col-md-12">
@@ -57,31 +58,30 @@
             }
         }
 
-        async function reqLogin() {
-            const { userID, userPassword } = loginValueCheck();
-
-            const bodyData = {
-                ui_id: userID,
-                ui_password: userPassword,
-            }
-
-            const reqResult = await reqAjax('/api/user/login', 'post', bodyData);
-
-            if (reqResult.status === 261) {
-                return alert('로그인 문제.');
-            } else if (reqResult.status === 200) {
+        function reqDataCheck(reqResult) {
+            if (reqResult.status === 200) {
                 // 토큰 저장
-                localStorage.setItem('user', reqResult.data.token);
-                
+                localStorage.setItem('token', reqResult.data.token);
+
                 return window.location.href = '/';
             } else {
                 return alert('로그인 실패')
             }
         }
 
-        loginLocalBtn.addEventListener('click', () => reqLogin());
-        loginGoogleBtn.addEventListener('click', async function() {
-            const reqResult = await reqAjax('/test', 'post', {});
-        })
+        async function reqSignIn() {
+            const { userID, userPassword } = loginValueCheck();
+
+            const bodyData = {
+                ui_id: userID,
+                ui_password: userPassword,
+            };
+
+            const reqResult = await reqAjax('/api/user/sign-in', 'post', bodyData);
+            
+            return reqDataCheck(reqResult);
+        }
+
+        loginLocalBtn.addEventListener('click', () => reqSignIn());
     </script>
 <%- include('../common/footer.ejs') %>

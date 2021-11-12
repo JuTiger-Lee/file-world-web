@@ -12,17 +12,13 @@
     <!-- jquery-->
     <script src="../static/assets/jquery-3.6.0.min.js"></script>
 
-    <!-- ag-grid -->
-    <link rel="stylesheet" href="../static/assets/ag-grid/ag-grid.css" />
-    <link rel="stylesheet" href="../static/assets/ag-grid/ag-theme-alpine.css" />
-    <script src="../static/assets/ag-grid/ag-grid-community.min.noStyle.js"></script>
-
     <!-- bootstrap -->
     <link rel="stylesheet" href="../static/assets/bootstrap/bootstrap.min.css">
     <script src="../static/assets/bootstrap/bootstrap.min.js"></script>
 
     <!-- pagination -->
-    <script src="../static/assets/pagination.min.js"></script>
+    <link rel="stylesheet" href="../static/assets/pagination.css">
+    <script src="../static/assets/pagination.js"></script>
 
     <!-- axios -->
     <script src="../static/assets/axios.min.js"></script>
@@ -33,12 +29,16 @@
     <!-- css -->
     <link rel="stylesheet" href="../static/css/common.css">
 
-    <!-- js -->
+    <!-- common js -->
     <script src="../static/js/ajax.js"></script>
 </head>
 
 <body>
-    <div class="screen"></div>
+    <div class="text-center screen">
+        <div class="spinner-border text-primary loading" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
     <div id="wrap">
         <nav class="header navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid header-container">
@@ -53,7 +53,19 @@
                 </button>
 
                 <div class="header-menu navbar-collapse collapse" id="header-navbar-menu">
-                    <ul class="navbar-nav ml-auto">
+                    <!-- header menu -->
+                </div>
+            </div>
+        </nav>
+
+        <script>
+            const headerNavbarMenu = document.getElementById('header-navbar-menu');
+
+            function createMenu() {
+                const ul = document.createElement('ul');
+                ul.className = 'navbar-nav ml-auto menu-list';
+
+                ul.innerHTML = `
                         <li class="nav-item active">
                             <a class="nav-link" href="/">Home</a>
                         </li>
@@ -66,28 +78,42 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/pricing">Pricing</a>
                         </li>
-                        <!-- <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    User
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="/user/profile">Profile</a>
-                                    <a class="dropdown-item" href="/user/logout">Logout</a>
-                                </div>
-                            </li> -->
+                        ${localStorage.getItem('token') ?
+                                `<li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        User
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <a class="dropdown-item" href="/user/profile">Profile</a>
+                                        <a class="dropdown-item sign-out">Logout</a>
+                                    </div>
+                                </li>`
+                            :
+                                `<li class="nav-item">
+                                    <a class="nav-link" href="/user/sign-in">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/user/sign-up">Sign Up</a>
+                                </li>`
+                    }`;
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="/user/login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/user/sign-up">Sign Up</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+                headerNavbarMenu.append(ul);
+                signOut();
+            }
 
-        <script>
+            function signOut() {
+                const signOut = document.querySelector('.sign-out');
 
+                if (signOut) {
+                    const clearToken = () => {
+                        localStorage.removeItem('user');
+                        window.location.href = '/';
+                    }
+
+                    signOut.addEventListener('click', () => clearToken());
+                }
+            }
+
+            createMenu();
         </script>
