@@ -9,18 +9,18 @@ module.exports = app => {
     // };
     // return res.status(404).json(result);
 
-    res.render('../views/common/notFound');
+    res.status(404).render('../views/common/notFound');
   });
 
   app.use((err, req, res, next) => {
-    console.log('err-name', err.name);
-
     const result = {
       code: err.code || 500,
       message: err.message || '500 server Error',
+      error: {},
     };
 
-    if (err.err || err) result.error = err.err || err || {};
+    if (err.err || err) result.error = err.err || err;
+    else result.error = {};
 
     res.status(err.httpStatus || 500);
 

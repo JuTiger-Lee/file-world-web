@@ -56,7 +56,6 @@ const signUp = {
     
           * 결과 JSON
           {
-            "err": {},
             "data": [],
             "status": 201,
             "message": "success",
@@ -71,7 +70,7 @@ const signUp = {
         },
         {
           in: 'formData',
-          name: 'ui_name',
+          name: 'ui_nickname',
           required: true,
           description: 'user nickname',
           type: 'string',
@@ -120,8 +119,7 @@ const signIn = {
 
       * 결과 JSON
       {
-        "err": {},
-        "data": { token: 'example token' },
+        "data": [{ token: 'example token' }],
         "status": 200,
         "message": "success",
       }`,

@@ -59,9 +59,9 @@
         }
 
         function reqDataCheck(reqResult) {
-            if (reqResult.status === 200) {
+            if (reqResult.code === 200) {
                 // 토큰 저장
-                localStorage.setItem('token', reqResult.data.token);
+                localStorage.setItem('token', reqResult.data[0].token);
 
                 return window.location.href = '/';
             } else {
