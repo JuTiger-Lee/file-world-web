@@ -1,10 +1,17 @@
 const passport = require('passport');
-const { MakeErrorRespone } = require('../utils/makeRes');
+const MakeResponse = require('../controller/handler/MakeResponse');
 
 module.exports = (req, res, next) => {
+  const makeResponse = new MakeResponse();
+
   passport.authenticate('jwt', { session: false }, (error, user, info) => {
     if (error) {
-      throw new MakeErrorRespone({}, [], 501, error);
+      makeResponse.init(
+        401,
+        401,
+        info.reason || info.message || 'Unauthorized Error',
+      );
+      throw makeResponse.MakeErrorRespone(error, 'passport authenticate Error');
     }
 
     if (!user) {
@@ -14,10 +21,13 @@ module.exports = (req, res, next) => {
        * invalid signature => 토큰 변조
        * {name: "JsonWebTokenError", message: "invalid signature"}
        */
-      throw new MakeErrorRespone({}, [], 401, info.reason || info.message);
+      makeResponse.init(
+        401,
+        401,
+        info.reason || info.message || 'Unauthorized Error',
+      );
+      throw makeResponse.MakeErrorRespone({}, 'passport User not found Error');
     }
-
-    req.user = user;
 
     next();
   })(req, res, next);

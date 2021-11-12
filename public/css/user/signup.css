@@ -1,11 +1,15 @@
 #singup-box {
-  width: 40%;
-  min-width: 450px;
+  width: 100%;
   margin: auto;
 }
 
 .signup-title-logo-box {
   margin-bottom: 40px;
+}
+
+.signup-form-box {
+  width: 40%;
+  margin: auto;
 }
 
 .signup-btn-box div {

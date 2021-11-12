@@ -1,71 +1,139 @@
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const { AUTH_KEY } = require('../../utils/setting');
-const { makeRespone, MakeErrorRespone } = require('../../utils/makeRes');
+const MakeResponse = require('../handler/MakeResponse');
 const userModel = require('../../models/user');
 const Email = require('../handler/Email');
 const hashHandler = require('../handler/hash');
 
-async function singup(req, res, next) {
-  const { ui_email, ui_name, ui_id, ui_password } = req.body;
+async function idDataCheck(makeResponse, ui_id) {
+  const findUserID = await userModel.userFindID([ui_id]);
 
+  // id duplicate check
+  if (findUserID.data.length && findUserID.status === 222) {
+    makeResponse.init(409, 409, 'id duplicate');
+    throw makeResponse.makeErrorResponse({}, 'signUp Error id duplicate');
+  }
+}
+
+async function nicknameDataCheck(makeResponse, ui_nickname) {
+  const findUserNickName = await userModel.userFindNickName([ui_nickname]);
+
+  if (findUserNickName.data.length && findUserNickName.status === 222) {
+    makeResponse.init(409, 409, 'nickname duplicate');
+    throw makeResponse.makeErrorResponse({}, 'user nickname Check Error');
+  }
+}
+
+async function idCheck(req, res, next) {
   try {
-    const findUser = await userModel.findUser([ui_id]);
+    const makeResponse = new MakeResponse();
+    const { ui_id } = req.body;
 
     // id duplicate check
-    if (findUser.data.length && findUser.status === 222) {
-      throw new MakeErrorRespone({}, [], 261, 'id duplicate');
-    }
+    await idDataCheck(makeResponse, ui_id);
 
-    if (!findUser.length && findUser.status === 222) {
-      // password encrypted
-      const hashPassword = hashHandler.encrypt(ui_password, 10);
+    makeResponse.init(200, 200, 'success');
 
-      // email send
-      const email = new Email(
-        [ui_email],
-        'We sincerely welcome you to join the File World.',
-      );
-
-      const sendResult = await email.send();
-
-      // email status change 0: default 1: send 2: join success
-      if (sendResult.messageId) {
-        const createUser = await userModel.createUser([
-          ui_email,
-          ui_name,
-          ui_id,
-          hashPassword,
-          1,
-        ]);
-
-        // affectedRows => add row
-        if (createUser.status === 222 && createUser.data.affectedRows > 0) {
-          return res.json(makeRespone({}, [], 201, 'success.'));
-        }
-      }
-    }
+    return res.send(makeResponse.makeSuccessResponse([]));
   } catch (err) {
-    console.log('signup Error:', err);
+    console.error(err);
     return next(err);
   }
 }
 
-function login(req, res, next) {
+async function nicknameCheck(req, res, next) {
+  try {
+    const makeResponse = new MakeResponse();
+    const { ui_nickname } = req.body;
+
+    // id duplicate check
+    await nicknameDataCheck(makeResponse, ui_nickname);
+
+    makeResponse.init(200, 200, 'success');
+
+    return res.send(makeResponse.makeSuccessResponse([]));
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+}
+
+async function singUp(req, res, next) {
+  try {
+    const makeResponse = new MakeResponse();
+    const { ui_email, ui_nickname, ui_id, ui_password } = req.body;
+
+    // id duplicate check
+    await idDataCheck(makeResponse, ui_id);
+
+    // nickname duplicate check
+    await nicknameDataCheck(makeResponse, ui_nickname);
+
+    // password encrypted
+    const hashPassword = hashHandler.encrypt(ui_password, 10);
+
+    // email send
+    const email = new Email(
+      [ui_email],
+      'We sincerely welcome you to join the File World.',
+    );
+    const sendResult = await email.send();
+
+    // email status change 0: default 1: send 2: join success
+    if (sendResult.messageId) {
+      const createUser = await userModel.userCreate([
+        ui_email,
+        ui_nickname,
+        ui_id,
+        hashPassword,
+        1,
+      ]);
+
+      // affectedRows => add row
+      if (createUser.status === 222 && createUser.data.affectedRows > 0) {
+        makeResponse.init(201, 201, 'success');
+        return res.send(makeResponse.makeSuccessResponse([]));
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+}
+
+function signIn(req, res, next) {
   passport.authenticate('local', (passportError, user, info) => {
     try {
+      const makeResponse = new MakeResponse();
+
       if (passportError) {
-        throw new MakeErrorRespone({}, [], 261, passportError);
+        makeResponse.init(500, 500, 'login error');
+        throw makeResponse.makeErrorResponse(
+          passportError,
+          'signIn passport Error',
+        );
       }
 
-      // 존재 하지 않는 사용자 및 비밀번호 불일치시
       if (info) {
-        throw new MakeErrorRespone({}, [], 262, info.reason);
+        // 존재하지 않는 사용자
+        if (info.reason === 'non existent user') {
+          makeResponse.init(400, 400, info.reason);
+          throw makeResponse.makeErrorResponse({}, 'signIn No User Error');
+        } else {
+          // 비밀번호 불일치
+          makeResponse.init(400, 400, info.reason);
+          throw makeResponse.makeErrorResponse(
+            {},
+            'signIn wrong password Error',
+          );
+        }
       }
 
       req.login(user, { session: false }, loginError => {
         if (loginError) {
-          throw new MakeErrorRespone(loginError, [], 263, loginError);
+          makeResponse.init(500, 500, 'login error');
+          throw makeResponse.makeErrorResponse(loginError, 'signIn loginError');
         }
 
         // make token
@@ -82,19 +150,23 @@ function login(req, res, next) {
           },
         );
 
-        return res.json(makeRespone({}, { token }, 200, 'success'));
+        makeResponse.init(200, 200, 'success');
+
+        return res.send(makeResponse.makeSuccessResponse([{ token }]));
       });
     } catch (err) {
-      console.log('signin Error: ', err);
+      console.log(err);
       return next(err);
     }
   })(req, res);
 }
 
-function logout(req, res, next) {}
+function signOut(req, res, next) {}
 
 module.exports = {
-  login,
-  singup,
-  logout,
+  signIn,
+  singUp,
+  signOut,
+  idCheck,
+  nicknameCheck,
 };

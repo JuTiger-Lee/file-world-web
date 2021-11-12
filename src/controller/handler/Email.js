@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
-const { MakeErrorRespone } = require('../../utils/makeRes');
+const MakeResponse = require('./MakeResponse');
 
 dotenv.config();
 
@@ -39,7 +39,10 @@ class Email {
     try {
       return await this.transporter.sendMail(this.mailOption.sendInfo);
     } catch (err) {
-      throw new MakeErrorRespone(err, [], 701, 'Email Send Error');
+      const makeResponse = new MakeResponse();
+
+      makeResponse.init(500, 500, 'Email Send Error');
+      throw makeResponse.makeErrorResponse(err, 'Email Send Error');
     }
   }
 }
