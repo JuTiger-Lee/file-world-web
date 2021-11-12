@@ -14,15 +14,26 @@ const jwtOption = {
   secretOrKey: AUTH_KEY,
   // token 만료 확인
   ignoreExpiration: false,
+  passReqToCallback: false,
 };
 
+/**
+ *
+ * error가 있을 시 : done(err, false)
+ * error는 없으나 user가 없을 때 : done(null, false)
+ * error도 없고 user를 찾았을 때 : done(null, user);
+ * @param {String} id
+ * @param {String} password
+ * @param {Function} done
+ * @returns
+ */
 async function passportVerify(id, password, done) {
   try {
-    const user = await userModel.findUser([id]);
+    const user = await userModel.userFindID([id]);
 
     // user find
     if (!user.data.length) {
-      return done(null, false, { reason: '존재하지 않는 사용자' });
+      return done(null, false, { reason: 'non existent user' });
     }
 
     // password compare
@@ -33,16 +44,21 @@ async function passportVerify(id, password, done) {
 
     // password inconsistency
     if (!compareResult) {
-      return done(null, false, { reason: '비밀번호가 틀렸어요.' });
+      return done(null, false, { reason: 'wrong password' });
     }
 
     return done(null, user);
   } catch (err) {
-    console.log('passport Error: ', err);
     return done(err);
   }
 }
 
+/**
+ *
+ * @param {Object} payload
+ * @param {Function} done
+ * @returns
+ */
 async function jwtVerify(payload, done) {
   try {
     /**
@@ -54,15 +70,14 @@ async function jwtVerify(payload, done) {
           "exp": 1636213933 => 토큰 만료시간
         }
      */
-    const user = await userModel.findUser([payload.id]);
+    const user = await userModel.userFindID([payload.id]);
 
     if (!user.data.length) {
-      return done(null, false, { reason: '유효하지 않은 토큰' });
+      return done(null, false, { reason: 'Unauthorized Error' });
     }
 
     done(null, user);
   } catch (err) {
-    console.log('token check Error: ', err);
     return done(err);
   }
 }
