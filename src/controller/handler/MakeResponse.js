@@ -23,8 +23,7 @@ class MakeResponse {
    */
   makeSuccessResponse(data = []) {
     return {
-      httpStatus: this.httpStatus,
-      status: this.status,
+      code: this.code,
       message: this.message,
       data,
     };
@@ -47,16 +46,5 @@ class MakeResponse {
     return error;
   }
 }
-
-// class MakeErrorResponse extends Error {
-//   constructor(message, name, status) {
-//     super(message);
-
-//     this.name = name;
-//     this.status = status;
-//   }
-// }
-
-// throw new MakeErrorResponse('sy error', 'error!!', 404);
 
 module.exports = MakeResponse;
