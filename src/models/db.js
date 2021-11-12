@@ -25,8 +25,9 @@ function closeConnDB(conn) {
  */
 async function query(sql, params) {
   const makeResponse = new MakeResponse();
+  const conn = connDB();
+
   let result = {};
-  let conn = {};
 
   const getQueryData = () => {
     return new Promise((res, rej) => {
@@ -38,33 +39,19 @@ async function query(sql, params) {
   };
 
   try {
-    conn = connDB();
-    try {
-      await conn.beginTransaction();
-      try {
-        const queryData = await getQueryData(conn, sql, params);
-        await conn.commit();
+    await conn.beginTransaction();
+    const queryData = await getQueryData(conn, sql, params);
+    await conn.commit();
 
-        result = {
-          status: 222,
-          message: 'success',
-          data: queryData,
-        };
-      } catch (err) {
-        await conn.rollback();
-
-        makeResponse.init(500, 603, 'query Error');
-        throw makeResponse.makeErrorResponse(err, 'DB Query Error');
-      }
-    } catch (err) {
-      await conn.rollback();
-
-      makeResponse.init(500, 602, 'beginTransaction Error');
-      throw makeResponse.makeErrorResponse(err, 'DB beginTransaction Error');
-    }
+    result = {
+      // expandability...
+      data: queryData,
+    };
   } catch (err) {
-    makeResponse.init(500, 601, 'DB connection Error');
-    throw makeResponse.makeErrorResponse(err, 'DB connection Error');
+    await conn.rollback();
+
+    makeResponse.init(500, 666, 'query Error');
+    throw makeResponse.makeErrorResponse(err, 'DB Query Error');
   }
 
   closeConnDB(conn);
