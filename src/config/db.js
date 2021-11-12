@@ -13,5 +13,14 @@ module.exports = {
     timezone: '+09:00',
     multipleStatements: true,
   },
-  production: {},
+  production: {
+    user: '',
+    host: '',
+    database: '',
+    password: '',
+    port: '',
+    dateStrings: ['DATE', 'DATETIME'],
+    timezone: '+09:00',
+    multipleStatements: true,
+  },
 };
