@@ -44,9 +44,11 @@
         "class-methods-use-this": "warn",
         // else if 사용할수있게
         "no-else-return": "off",
-        // 빈(코드가 작성되지 않은) constructor off
+        // 빈(코드가 작성되지 않은) constructor 에러 해제
         "no-useless-constructor": "off",
         // 최대 class 조정
-        "max-classes-per-file": ["warn", 5]
+        "max-classes-per-file": ["warn", 5],
+        // TODO: 검색 필요!
+        "no-restricted-syntax": "off"
     }
 }
