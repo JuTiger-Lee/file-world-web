@@ -1,9 +1,20 @@
 const cors = require('cors');
 
+const apiDocs = require('../apiDocs/index');
 const checkAuth = require('../middleware/checkAuth');
+const error = require('../middleware/error');
+
+// admin router
 const adminMainAPI = require('./admin/main/api');
 const adminMainRender = require('./admin/main/render');
 
+const adminUserAPI = require('./admin/user/api');
+const adminUserRender = require('./admin/user/render');
+
+const adminAccountAPI = require('./admin/account/api');
+const adminAccountRender = require('./admin/account/render');
+
+// user router
 const mainAPI = require('./main/api');
 const mainRender = require('./main/render');
 
@@ -14,12 +25,16 @@ const forumAPI = require('./forum/api');
 const forumRender = require('./forum/render');
 
 module.exports = app => {
+  const { swaggerUI, specs, setUpOption } = apiDocs();
+
   // Access-Control-Allow-Origin
   // res.header("Access-Control-Allow-Origin", "http://localhost:8081");
 
   const whiteOriginList = [
     'http://localhost:8081',
-    // 'https://www.zerocho.com',
+
+    // 개발 서버
+    'https://dev-file-world.loca.lt',
   ];
 
   const corsOption = {
@@ -33,20 +48,39 @@ module.exports = app => {
     },
   };
 
-  const authURI = ['/test'];
+  // const authURIList = ['*'];
+
+  /* ----- SOP ALLOW URL ----- */
 
   app.use(cors(corsOption));
-  app.use(authURI, checkAuth);
 
-  app.post('/test', (req, res) => {
-    res.send('success');
-  });
+  /* ----- TOKEN CHECK MIDDLEWARE ----- */
 
-  // admin
+  // app.use(authURIList, checkAuth);
+
+  /* ----- SWAGGER MIDDLEWARE ----- */
+
+  // api document read
+
+  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs, setUpOption));
+
+  /* ----- ADMIN ----- */
+
+  // main
   app.use('/api/admin', adminMainAPI);
   app.use('/admin', adminMainRender);
 
-  // user service
+  // service user
+  app.use('/api/admin/user', adminUserAPI);
+  app.use('/admin/user', adminUserRender);
+
+  // admin account
+  app.use('/api/admin/account', adminAccountAPI);
+  app.use('/admin/account', adminAccountRender);
+
+  /* ----- USER ----- */
+
+  // main
   app.use('/api', mainAPI);
   app.use('/', mainRender);
 
@@ -57,4 +91,8 @@ module.exports = app => {
   // forum
   app.use('/api/forum', forumAPI);
   app.use('/forum', forumRender);
+
+  /* ----- ERROR HANDLE MIDDLEWARE ----- */
+
+  error(app);
 };
