@@ -14,7 +14,7 @@ async function userFindNickName(params) {
 
 async function userCreate(params) {
   const sql =
-    'INSERT INTO user(ui_email, ui_name, ui_id, ui_password,' +
+    'INSERT INTO user(ui_email, ui_nickname, ui_id, ui_password,' +
     'ui_email_status, create_datetime, update_datetime)' +
     'VALUES(?, ?, ?, ?, ?, now(), now())';
 

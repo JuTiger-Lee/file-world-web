@@ -15,12 +15,9 @@ module.exports = () => {
 
   const forumApiDcos = {};
 
-  const adminApiDocs = {};
-
   const apiDcos = {
     ...userApiDocs,
     ...forumApiDcos,
-    ...adminApiDocs,
   };
 
   const swaggerAPI = new SwaggerAPI();

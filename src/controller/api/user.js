@@ -10,7 +10,7 @@ async function idDataCheck(makeResponse, ui_id) {
   const findUserID = await userModel.userFindID([ui_id]);
 
   // id duplicate check
-  if (findUserID.data.length && findUserID.status === 222) {
+  if (findUserID.data.length) {
     makeResponse.init(409, 409, 'id duplicate');
     throw makeResponse.makeErrorResponse({}, 'signUp Error id duplicate');
   }
@@ -19,7 +19,7 @@ async function idDataCheck(makeResponse, ui_id) {
 async function nicknameDataCheck(makeResponse, ui_nickname) {
   const findUserNickName = await userModel.userFindNickName([ui_nickname]);
 
-  if (findUserNickName.data.length && findUserNickName.status === 222) {
+  if (findUserNickName.data.length) {
     makeResponse.init(409, 409, 'nickname duplicate');
     throw makeResponse.makeErrorResponse({}, 'user nickname Check Error');
   }
@@ -91,9 +91,9 @@ async function singUp(req, res, next) {
       ]);
 
       // affectedRows => add row
-      if (createUser.status === 222 && createUser.data.affectedRows > 0) {
+      if (createUser.data.affectedRows > 0) {
         makeResponse.init(201, 201, 'success');
-        return res.send(makeResponse.makeSuccessResponse([]));
+        return res.json(makeResponse.makeSuccessResponse([]));
       }
     }
   } catch (err) {
@@ -152,7 +152,7 @@ function signIn(req, res, next) {
 
         makeResponse.init(200, 200, 'success');
 
-        return res.send(makeResponse.makeSuccessResponse([{ token }]));
+        return res.json(makeResponse.makeSuccessResponse([{ token }]));
       });
     } catch (err) {
       console.log(err);

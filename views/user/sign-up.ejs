@@ -62,7 +62,7 @@
         }
 
         function reqDataCheck(reqResult) {
-            if (reqResult.status === 201) {
+            if (reqResult.code === 201) {
                 return window.location.href = '/user/sign-in';
             } else {
                 return alert('회원가입 실패')
