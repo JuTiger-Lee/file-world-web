@@ -1,7 +1,6 @@
 const path = require('path');
 const passport = require('passport');
 const methodOverride = require('method-override');
-const error = require('../middleware/error');
 const { port, envFound } = require('../utils/setting');
 const passportConfig = require('./passport');
 
@@ -36,6 +35,9 @@ class Server {
     // Template engine registration
     this.app.set('view engine', 'ejs');
 
+    // x-powered-by remove
+    this.app.disable('x-powered-by');
+
     // passport setting
     this.app.use(passport.initialize());
     passportConfig();
@@ -43,14 +45,13 @@ class Server {
 
   routing() {
     routes(this.app);
-    error(this.app);
   }
 
   createServer() {
     this.app
       .listen(port, () => console.log(`${port} server start`))
       .on('error', err => {
-        console.error(err);
+        console.log('create Server Error: ', err);
         process.exit(1);
       });
   }
