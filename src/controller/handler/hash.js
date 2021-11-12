@@ -2,12 +2,36 @@ const crypto = require('crypto');
 
 // https://www.npmjs.com/package/bcrypt
 const bcrypt = require('bcrypt');
-const { MakeErrorRespone } = require('../../utils/makeRes');
+const MakeResponse = require('./MakeResponse');
 
 /**
- *
- * @param {String} reqHash 해쉬할 문자
- * @param {Number} hashNumber 암호화 강도(몇번 암호화를 할지 높을 수록 좋지만 그만큼 자원 낭비)
+ * req password
+ * @param {String} password
+ * db password
+ * @param {String} userPassword
+ * @returns
+ */
+function compare(password, userPassword) {
+  try {
+    const hashPassword = crypto
+      .createHash('sha256')
+      .update(password)
+      .digest('base64');
+
+    return bcrypt.compareSync(hashPassword, userPassword);
+  } catch (err) {
+    const makeResponse = new MakeResponse();
+
+    makeResponse.init(500, 500, 'password compare Error');
+    throw makeResponse.MakeErrorRespone(err, 'compare Error');
+  }
+}
+
+/**
+ * 해쉬할 문자
+ * @param {String} reqHash
+ * 암호화 강도(몇번 암호화를 할지 높을 수록 좋지만 그만큼 자원 낭비)
+ * @param {Number} hashNumber
  * @returns
  */
 function encrypt(password, hashNumber) {
@@ -23,24 +47,14 @@ function encrypt(password, hashNumber) {
 
     return bcrypt.hashSync(hashPassword, hashNumber);
   } catch (err) {
-    throw new MakeErrorRespone(err, [], 702, 'Hash Encrypt Error');
+    const makeResponse = new MakeResponse();
+
+    makeResponse.init(500, 500, 'password encrypt Error');
+    throw makeResponse.MakeErrorRespone(err, 'encrypt Error');
   }
 }
 
 function decrypt() {}
-
-function compare(password, userPassword) {
-  try {
-    const hashPassword = crypto
-      .createHash('sha256')
-      .update(password)
-      .digest('base64');
-
-    return bcrypt.compareSync(hashPassword, userPassword);
-  } catch (err) {
-    throw new MakeErrorRespone(err, [], 702, 'compare Error');
-  }
-}
 
 module.exports = {
   encrypt,
