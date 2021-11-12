@@ -52,9 +52,9 @@ async function query(sql, params) {
 
     makeResponse.init(500, 666, 'query Error');
     throw makeResponse.makeErrorResponse(err, 'DB Query Error');
+  } finally {
+    closeConnDB(conn);
   }
-
-  closeConnDB(conn);
 
   return result;
 }
