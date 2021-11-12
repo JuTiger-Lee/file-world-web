@@ -1,7 +1,6 @@
 const mysql = require('mysql');
 const { development } = require('../config/db');
-const debug = require('../utils/debug');
-const { MakeErrorRespone, makeRespone } = require('../utils/makeRes');
+const MakeResponse = require('../controller/handler/MakeResponse');
 
 function connDB() {
   const conn = mysql.createConnection(development);
@@ -25,6 +24,7 @@ function closeConnDB(conn) {
  * @returns {Object}
  */
 async function query(sql, params) {
+  const makeResponse = new MakeResponse();
   let result = {};
   let conn = {};
 
@@ -45,25 +45,26 @@ async function query(sql, params) {
         const queryData = await getQueryData(conn, sql, params);
         await conn.commit();
 
-        result = makeRespone({}, queryData, 222, 'success');
+        result = {
+          status: 222,
+          message: 'success',
+          data: queryData,
+        };
       } catch (err) {
         await conn.rollback();
 
-        debug.error(`status: 666 message: query Error Error: ${err}`);
-
-        throw new MakeErrorRespone(err, [], 603, 'query Error');
+        makeResponse.init(500, 603, 'query Error');
+        throw makeResponse.makeErrorResponse(err, 'DB Query Error');
       }
     } catch (err) {
       await conn.rollback();
 
-      debug.error(`status: 666 message: query beginTransaction Error: ${err}`);
-
-      throw new MakeErrorRespone(err, [], 602, 'beginTransaction Error');
+      makeResponse.init(500, 602, 'beginTransaction Error');
+      throw makeResponse.makeErrorResponse(err, 'DB beginTransaction Error');
     }
   } catch (err) {
-    debug.error(`status: 666 message: query DB Error: ${err}`);
-
-    throw new MakeErrorRespone(err, [], 601, 'DB Error');
+    makeResponse.init(500, 601, 'DB connection Error');
+    throw makeResponse.makeErrorResponse(err, 'DB connection Error');
   }
 
   closeConnDB(conn);
