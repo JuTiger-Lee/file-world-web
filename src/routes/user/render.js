@@ -2,8 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/login', (req, res) => {
-  res.render('../views/user/login');
+router.get('/sign-in', (req, res) => {
+  res.render('../views/user/sign-in');
 });
 
 router.get('/sign-up', (req, res) => {
