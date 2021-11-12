@@ -1,5 +1,9 @@
 class Pagenation {
-  constructor() {}
+  constructor(pageSize, currentPage) {}
+
+  getTotalValue() {}
+
+  getPageSize() {}
 }
 
 module.exports = Pagenation;
