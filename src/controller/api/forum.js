@@ -4,7 +4,6 @@ const Pagenation = require('../handler/Pagenation');
 
 async function list(req, res, next) {
   try {
-    console.log('rrrr', req.query);
     const makeResponse = new MakeResponse();
 
     const listForum = await forumModel.forumList([]);
