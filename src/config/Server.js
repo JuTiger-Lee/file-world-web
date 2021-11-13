@@ -48,12 +48,8 @@ class Server {
   }
 
   createServer() {
-    this.app
-      .listen(port, () => console.log(`${port} server start`))
-      .on('error', err => {
-        console.log('create Server Error: ', err);
-        process.exit(1);
-      });
+    const PORT = process.env.PORT || 8081;
+    this.app.listen(PORT, () => console.log(`${PORT} server start`));
   }
 }
 
