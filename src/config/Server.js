@@ -44,10 +44,7 @@ class Server {
   }
 
   routing() {
-    // routes(this.app);
-    this.app.get('/', (req, res) => {
-      res.send('hello');
-    });
+    routes(this.app);
   }
 
   createServer() {
