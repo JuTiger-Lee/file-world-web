@@ -2,13 +2,17 @@ const successNotifi = {
   state: 'success',
   SIGN_IN_SUCCESS: {
     title: 'SIGN IN SUCCESS',
-    message: '로그인을 성공 하셨습니다.',
+    message: 'sign in success',
   },
   SIGN_UP_SUCCESS: {
     title: 'SIGN_UP_SUCCESS',
-    message: '회원가입을 성공 하셨습니다.',
+    message: 'sign up success',
   },
 };
+
+const dangerNotifi = {};
+
+const warningNotifi = {};
 
 function notification(state = 'primary', title, message) {
   const notificationBox = document.querySelector('.notification-box');
@@ -23,13 +27,11 @@ function notification(state = 'primary', title, message) {
 
   notificationBox.append(notificationDiv);
 
-  // setTimeout(() => {
-  //   $('.alert').alert('close');
-  // }, 3000);
+  setTimeout(() => {
+    $('.alert')
+      .fadeTo(500, 0)
+      .slideUp(500, function () {
+        $(this).remove();
+      });
+  }, 3000);
 }
-
-notification(
-  successNotifi.state,
-  successNotifi.SIGN_IN_SUCCESS.title,
-  successNotifi.SIGN_IN_SUCCESS.message,
-);
