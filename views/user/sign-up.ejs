@@ -52,12 +52,61 @@
             // email regular expression
             const emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
-            if (!userEmail.trim() || !userEmail) return alert('이메일을 입력해주세요.');
-            if (!userEmail.match(emailRegExp)) return alert('이메일 형식이 잘 못되었습니다.');
-            if (!userID.trim() || !userID) return alert('아이디를 입력해주세요.');
-            if (!userPassword.trim() || !userPassword) return alert('비밀번호를 입력해주세요.');
-            if (!userVerifyPassword.trim() || !userVerifyPassword) return alert('확인 비밀번호를 입력해주세요.');
-            if(userVerifyPassword !== userPassword) return alert('비밀번호가 일치하지 않습니다.')
+            if (!userEmail.trim() || !userEmail) {
+                return notification(
+                    'warning',
+                    'Enter required values',
+                    'Please enter your Email.'
+                );
+            }
+            
+            if (!userEmail.match(emailRegExp)) {
+                return notification(
+                    'warning',
+                    'Enter required values',
+                    'Email format is incorrect.'
+                );
+            }
+
+            if(!userNickname.trim() || !userNickname) {
+                return notification(
+                    'warning',
+                    'Enter required values',
+                    'Please enter your Nickname'
+                );
+            }
+
+            if (!userID.trim() || !userID) {
+                return notification(
+                    'warning',
+                    'Enter required values',
+                    'Please enter your ID'
+                );
+            }
+
+            if (!userPassword.trim() || !userPassword) {
+                return notification(
+                    'warning',
+                    'Enter required values',
+                    'Please enter your Password'
+                );
+            }
+
+            if (!userVerifyPassword.trim() || !userVerifyPassword) {
+                return notification(
+                    'warning',
+                    'Enter required values',
+                    'Please enter your Confirm password'
+                );
+            }
+
+            if(userVerifyPassword !== userPassword) {
+                return notification(
+                    'warning',
+                    'Enter required values',
+                    'Passwords do not match.'
+                );
+            }
 
             return {
                 userEmail,
@@ -68,10 +117,11 @@
         }
 
         function reqDataCheck(reqResult) {
-            if (reqResult.code === 201) {
-                return window.location.href = '/user/sign-in';
+            if (reqResult.code === 200) {
+                window.location.href = '/user/sign-in';
+                return notification('warning', 'SIGNUP SUCCESS', 'signup success');
             } else {
-                return alert('회원가입 실패')
+                return notification('warning', 'SIGNUP FAIL', 'signup fail');
             }
         }
 
@@ -83,11 +133,11 @@
                 ui_nickname: userNickname,
                 ui_id: userID,
                 ui_password: userPassword,
-            }
+            };
 
             const reqResult = await reqAjax('/api/user/sign-up', 'post', bodyData);
 
-            return reqDataCheck(reqSignup);
+            return reqDataCheck(reqResult);
         }
 
         signupBtn.addEventListener('click', () => reqSignup());
