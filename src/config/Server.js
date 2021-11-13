@@ -7,9 +7,9 @@ const passportConfig = require('./passport');
 // router
 const routes = require('../routes/routes');
 
-if (envFound.error) {
-  throw new Error("⚠️ Couldn't find .env file ⚠️");
-}
+// if (envFound.error) {
+//   throw new Error("⚠️ Couldn't find .env file ⚠️");
+// }
 
 class Server {
   /**
@@ -44,7 +44,10 @@ class Server {
   }
 
   routing() {
-    routes(this.app);
+    // routes(this.app);
+    this.app.get('/', (req, res) => {
+      res.send('hello');
+    });
   }
 
   createServer() {
