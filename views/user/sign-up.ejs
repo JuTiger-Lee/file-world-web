@@ -23,6 +23,9 @@
                     <div class="form-group">
                         <input class="form-control user-password" type="password" placeholder="Password">
                     </div>
+                    <div class="form-group">
+                        <input class="form-control user-verify-password" type="password" placeholder="Verify Password">
+                    </div>
 
                     <div class="signup-btn-box">
                         <div class="signup-btn btn btn-primary">
@@ -44,6 +47,7 @@
             const userNickname = document.querySelector('.user-nickname').value;
             const userID = document.querySelector('.user-id').value;
             const userPassword = document.querySelector('.user-password').value;
+            const userVerifyPassword = document.querySelector('.user-verify-password').value;
 
             // email regular expression
             const emailRegExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
@@ -52,6 +56,8 @@
             if (!userEmail.match(emailRegExp)) return alert('이메일 형식이 잘 못되었습니다.');
             if (!userID.trim() || !userID) return alert('아이디를 입력해주세요.');
             if (!userPassword.trim() || !userPassword) return alert('비밀번호를 입력해주세요.');
+            if (!userVerifyPassword.trim() || !userVerifyPassword) return alert('확인 비밀번호를 입력해주세요.');
+            if(userVerifyPassword !== userPassword) return alert('비밀번호가 일치하지 않습니다.')
 
             return {
                 userEmail,

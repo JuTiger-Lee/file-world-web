@@ -15,7 +15,11 @@ const swaggerInfo = {
     'GET: list 및 화면 render시 등 사용 \n' +
     'POST: 사용자 생성 및 게시글 작성시 등 사용 \n' +
     'PUT: 사용자 변경 및 게시글 변경시 등 사용 \n' +
-    'DELETE: 사용자 삭제 및 게시글 삭제시 등 사용',
+    'DELETE: 사용자 삭제 및 게시글 삭제시 등 사용 \n\n' +
+    '### ERR CODE AND HTTP STATUS \n' +
+    'ERR CODE는 어플리케이션에서 관리 하는 CODE 이므로 더 주의깊게 봐야함 \n' +
+    'HTTP STATUS는 HTTP에 맞게 했으니 참고 \n' +
+    '모든 API HTTP STATUS 보다는 code를 우선시 봐야 함',
 };
 
 const swaggerTags = [
@@ -60,6 +64,12 @@ const swaggerComponents = {
   },
   DB_ERROR: {
     description: 'database Error',
+    type: 'object',
+    properties: {
+      666: {
+        type: 'DB Query Error',
+      },
+    },
   },
 };
 

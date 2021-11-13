@@ -1,36 +1,38 @@
 <%- include('../common/header.ejs') %>
     <link rel="stylesheet" href="../static/css/forum/list.css">
     <div id="forum-list-box">
-        <div class="forum-post-list-box row">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="forum-top-list card-body">
-                        <h5 class="card-title">TOP Forum</h5>
-                        <div style="display: flex; margin-top: 20px">
-                            <div class="forum-user-profile-box">
-                                <div class="forum-profile forum-top-profile">
-                                    <img src="../static/images/146675.jpg" alt="">
-                                </div>
-                            </div>
-                        </div>
-                        <div style="display: flex; margin-top: 20px">
-                            <div class="forum-user-profile-box">
-                                <div class="forum-profile forum-top-profile">
-                                    <img src="../static/images/Animal_ Fallow Deer_ Species_ Mammal.jpg" alt="">
-                                </div>
-                            </div>
-                        </div>
-                        <div style="display: flex; margin-top: 20px">
-                            <div class="forum-user-profile-box">
-                                <div class="forum-profile forum-top-profile">
-                                    <img src="../static/images/Bee_ Insects_ Pollinate_ Fly.jpg" alt="">
-                                </div>
-                            </div>
-                        </div>
+        <div class="forum-post-list-box row" style="margin-top: 20px">
+            <div class="col-md-9">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <select id="inputState" class="form-control">
+                            <option selected>Data export</option>
+                            <option>Image resize</option>
+                            <option>File controller</option>
+                            <option>ETC</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <select id="inputState" class="form-control">
+                            <option selected>10</option>
+                            <option>30</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" placeholder="Tag Search">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control" placeholder="Title Search">
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary">Search</button>
+                        <a href="/forum/write">
+                            <button class="btn btn-primary">Write</button>
+                        </a>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-9">
                 <div class="card">
                     <div class="card-body" style="display: flex;">
                         <div class="forum-user-profile-box">
@@ -106,12 +108,39 @@
                         </div>
                     </div>
                 </div>
-            <div id="pagination"
-                style="
+
+                <div id="pagination" style="
                 display: flex; 
                 justify-content: center;
-                margin-top: 10px;"
-            ></div>
+                margin-top: 10px;"></div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="forum-top-list card-body">
+                        <h5 class="card-title">TOP Forum</h5>
+                        <div style="display: flex; margin-top: 20px">
+                            <div class="forum-user-profile-box">
+                                <div class="forum-profile forum-top-profile">
+                                    <img src="../static/images/146675.jpg" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; margin-top: 20px">
+                            <div class="forum-user-profile-box">
+                                <div class="forum-profile forum-top-profile">
+                                    <img src="../static/images/Animal_ Fallow Deer_ Species_ Mammal.jpg" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; margin-top: 20px">
+                            <div class="forum-user-profile-box">
+                                <div class="forum-profile forum-top-profile">
+                                    <img src="../static/images/Bee_ Insects_ Pollinate_ Fly.jpg" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -119,35 +148,35 @@
         $('#pagination').pagination({
             // 데이터 넣는 곳
             dataSource: [
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
-                {'idx': 1},
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
+                { 'idx': 1 },
             ],
             pageSize: 10,
             className: 'paginationjs-theme-blue',
@@ -155,4 +184,4 @@
             }
         })
     </script>
-    <%- include('../common/footer.ejs') %>
+<%- include('../common/footer.ejs') %>
