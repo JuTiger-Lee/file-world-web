@@ -92,7 +92,7 @@ async function singUp(req, res, next) {
 
       // affectedRows => add row
       if (createUser.data.affectedRows > 0) {
-        makeResponse.init(201, 201, 'success');
+        makeResponse.init(201, 200, 'success');
         return res.json(makeResponse.makeSuccessResponse([]));
       }
     }
@@ -139,8 +139,9 @@ function signIn(req, res, next) {
         // make token
         const token = jwt.sign(
           {
-            // user id
+            // user id and idx
             id: user.data[0].ui_id,
+            idx: user.data[0].ui_idx,
           },
           // secret key
           AUTH_KEY,

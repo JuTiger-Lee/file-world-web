@@ -31,15 +31,19 @@ async function reqAjax(url, method, params) {
 
     return getReqResults.data;
   } catch (err) {
-    console.log('ajax Error: ', err);
-    // logout
     if (err.response.status === 401) {
       localStorage.removeItem('user');
-      alert('로그아웃되었습니다.');
       window.location.href = '/';
+      return notification('danger', 'LOG OUT', 'Logged out.');
     } else if (err.response.status === 500) {
-      alert('서버 오류');
+      return notification(
+        'danger',
+        'SERVER ERROR',
+        'We are sorry for the disruption to the service.',
+      );
     }
+
+    return err.response.data;
   } finally {
     screen.style.display = 'none';
   }

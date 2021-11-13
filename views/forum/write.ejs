@@ -1,5 +1,101 @@
 <%- include('../common/header.ejs') %>
-    <div id="forum-write-box">
+    <script src="../../static/assets/summernote/summernote-lite.js"></script>
+    <script src="../../static/assets/summernote/lang/summernote-ko-KR.js"></script>
+    <link rel="stylesheet" href="../../static/assets/summernote/summernote-lite.css">
 
+    <div id="forum-write-box" style="width:80%; margin: auto; margin-top: 20px;">
+        <h2>Add New Post</h2>
+
+        <div class="forum-write-contents-box" style="margin-top: 40px;">
+            <form>
+                <div class="form-group">
+                    <label for="forum-write-title">Title</label>
+                    <input type="text" class="form-control forum-write-title">
+                </div>
+                <div class="form-group">
+                    <label for="forum-write-category">Category</label>
+                    <select class="form-control forum-write-category">
+                        <option selected>Data export</option>
+                        <option>Image resize</option>
+                        <option>File controller</option>
+                        <option>ETC</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="forum-write-tag">Tag</label>
+                    <input type="email" class="form-control forum-write-tag">
+                </div>
+            </form>
+            <div id="summernote"></div>
+            <div class="forum-write-btn-box" style="float:right">
+                <a href="/forum/list">
+                    <button class="btn btn-danger">Cancle</button>
+                </a>
+                <button class="btn btn-primary mt-2 mb-2 forum-write-save-btn">Save</button>
+            </div>
+        </div>
     </div>
-<%- include('../common/footer.ejs') %>
+
+    <script>
+        const forumWriteSaveBtn = document.querySelector('.forum-write-save-btn');
+        console.log('token',localStorage.getItem('token'));
+
+        $('#summernote').summernote({
+            height: 500,
+            focus: true,
+            disableResizeEditor: true,
+            focus: true,
+            lang: 'ko-KR',
+            placeholder: 'contents',
+        });
+
+        function forumValueCheck(forumWriteTitle) {
+            if (!forumWriteTitle.trim() || !forumWriteTitle) {
+                return alert('제목을 작성해주세요.');
+            }
+
+            if ($("#summernote").summernote('isEmpty')) {
+                return alert('내용을 작성해주세요.');
+            }
+
+            return true;
+        }
+
+        function reqDataCheck(reqResult) {
+            if (reqResult.code === 200) {
+                alert('작성 성공');
+
+                return window.location.href = '/forum/list';
+            } else {
+                alert('작성 실패');
+
+                return window.location.href = '/forum/list';
+            }
+        }
+
+        async function reqForumWrite() {
+            const forumWriteTitle = document.querySelector('.forum-write-title').value;
+            const forumWriteCategory = document.querySelector('.forum-write-category').value;
+            const forumWriteContetns = $('#summernote').summernote('code');
+            // const forumWriteTag = document.querySelector('.forum-write-Tag');
+
+            const forumWriteValueResult = forumValueCheck(forumWriteTitle);
+
+            if (forumWriteValueResult) {
+
+                const bodyData = {
+                    fi_title: forumWriteTitle,
+                    fi_category: forumWriteCategory,
+                    fi_tag: [],
+                    fi_content: forumWriteContetns,
+                }
+
+                const reqResult = await reqAjax('/api/forum/write', 'post', bodyData);
+
+                return reqDataCheck(reqResult);
+            }
+        }
+
+        forumWriteSaveBtn.addEventListener('click', () => reqForumWrite());
+    </script>
+    <%- include('../common/footer.ejs') %>

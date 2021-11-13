@@ -45,17 +45,24 @@
         const loginGoogleBtn = document.querySelector('.login-google-btn');
         const loginFacebookBtn = document.querySelector('.login-facebook-btn');
 
-        function loginValueCheck() {
-            const userID = document.querySelector('.user-id').value;
-            const userPassword = document.querySelector('.user-password').value;
-
-            if (!userID.trim() || !userID) return alert('id를 입력해주세요.');
-            if (!userPassword.trim() || !userPassword) return alert('password를 입력해주세요.');
-
-            return {
-                userID,
-                userPassword,
+        function loginValueCheck(userID, userPassword) {
+            if (!userID.trim() || !userID) {
+                return notification(
+                    'warning',
+                    'Enter required values',
+                    'Please enter your ID.'
+                );
             }
+
+            if (!userPassword.trim() || !userPassword) {
+                return notification(
+                    'warning',
+                    'Enter required values',
+                    'Please enter your Password.'
+                );
+            }
+
+            return true;
         }
 
         function reqDataCheck(reqResult) {
@@ -63,25 +70,31 @@
                 // 토큰 저장
                 localStorage.setItem('token', reqResult.data[0].token);
 
-                return window.location.href = '/';
+                window.location.href = '/';
+                return notification('success', 'LOGIN SUCCESS', 'login success');
             } else {
-                return alert('로그인 실패')
+                return notification('warning', 'LOGIN FAIL', 'login fail');
             }
         }
 
         async function reqSignIn() {
-            const { userID, userPassword } = loginValueCheck();
+            const userID = document.querySelector('.user-id').value;
+            const userPassword = document.querySelector('.user-password').value;
 
-            const bodyData = {
-                ui_id: userID,
-                ui_password: userPassword,
-            };
+            const loginValueResult = loginValueCheck(userID, userPassword);
 
-            const reqResult = await reqAjax('/api/user/sign-in', 'post', bodyData);
-            
-            return reqDataCheck(reqResult);
+            if (loginValueResult) {
+                const bodyData = {
+                    ui_id: userID,
+                    ui_password: userPassword,
+                };
+
+                const reqResult = await reqAjax('/api/user/sign-in', 'post', bodyData);
+
+                return reqDataCheck(reqResult);
+            }
         }
 
         loginLocalBtn.addEventListener('click', () => reqSignIn());
     </script>
-<%- include('../common/footer.ejs') %>
+    <%- include('../common/footer.ejs') %>

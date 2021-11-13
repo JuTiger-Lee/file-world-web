@@ -83,6 +83,6 @@ async function jwtVerify(payload, done) {
 }
 
 module.exports = () => {
-  passport.use(new LocalStrategy(passportOption, passportVerify));
-  passport.use(new JWTStrategy(jwtOption, jwtVerify));
+  passport.use('local', new LocalStrategy(passportOption, passportVerify));
+  passport.use('jwt', new JWTStrategy(jwtOption, jwtVerify));
 };

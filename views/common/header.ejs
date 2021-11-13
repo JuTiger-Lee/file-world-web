@@ -34,6 +34,7 @@
 </head>
 
 <body>
+    <div class="notification-box"></div>
     <div class="text-center screen">
         <div class="spinner-border text-primary loading" role="status">
             <span class="sr-only">Loading...</span>
@@ -58,7 +59,9 @@
             </div>
         </nav>
 
+        <script src="../static/js/notification.js"></script>
         <script>
+            
             const headerNavbarMenu = document.getElementById('header-navbar-menu');
 
             function createMenu() {
@@ -79,7 +82,7 @@
                             <a class="nav-link" href="/pricing">Pricing</a>
                         </li>
                         ${localStorage.getItem('token') ?
-                                `<li class="nav-item dropdown">
+                        `<li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         User
@@ -89,8 +92,8 @@
                                         <a class="dropdown-item sign-out">Logout</a>
                                     </div>
                                 </li>`
-                            :
-                                `<li class="nav-item">
+                        :
+                        `<li class="nav-item">
                                     <a class="nav-link" href="/user/sign-in">Login</a>
                                 </li>
                                 <li class="nav-item">
