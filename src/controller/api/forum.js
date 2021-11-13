@@ -1,6 +1,6 @@
 const forumModel = require('../../models/forum');
 const MakeResponse = require('../handler/MakeResponse');
-const Pagenation = require('../handler/Pagenation');
+// const Pagenation = require('../handler/Pagenation');
 
 async function list(req, res, next) {
   try {
