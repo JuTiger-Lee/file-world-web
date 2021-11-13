@@ -1,7 +1,7 @@
 <%- include('../common/header.ejs') %>
     <link rel="stylesheet" href="../static/css/forum/list.css">
     <div id="forum-list-box">
-        <div class="forum-post-list-box row" style="margin-top: 20px">
+        <div class="forum-list-post-box row" style="margin-top: 20px">
             <div class="col-md-9">
                 <div class="form-row">
                     <div class="form-group col-md-2">
@@ -33,82 +33,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body" style="display: flex;">
-                        <div class="forum-user-profile-box">
-                            <div class="forum-profile">
-                                <img src="../static/images/146675.jpg" alt="">
-                            </div>
-                            <div class="forum-profile-name">
-                                <p>crow</p>
-                            </div>
-                        </div>
-                        <div class="forum-post-info-box">
-                            <div class="forum-title-box">
-                                <h5 class="card-title">데이터 추출이 안됩니다.</h5>
-                            </div>
-                            <div class="forum-info-box">
-                                <div class="forum-comment-box">
-                                    <span style="color: #12a7e4; font-weight: bold;"><i class="fas fa-comment"></i> 50
-                                        Answers</span>
-                                </div>
-                                <div class="fourm-view-box">
-                                    <span style="color: #2b8d6e; font-weight: bold;"><i class="fas fa-eye"></i> 50
-                                        Views</span>
-                                </div>
-                                <div class="fourm-like-box">
-                                    <span style="color: #ed635e; font-weight: bold;"><i class="far fa-heart"></i> 10
-                                        Like</span>
-                                </div>
-                            </div>
-                            <div class="forum-category-box">
-                                <div class="card">data export</div>
-                                <div class="card">image resize</div>
-                                <div class="card">file controller</div>
-                            </div>
-                            <p class="card-text forum-date">2021-09-28</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body" style="display: flex;">
-                        <div class="forum-user-profile-box">
-                            <div class="forum-profile">
-                                <img src="../static/images/Animal_ Fallow Deer_ Species_ Mammal.jpg" alt="profile">
-                            </div>
-                            <div class="forum-profile-name">
-                                <p>crow</p>
-                            </div>
-                        </div>
-                        <div class="forum-post-info-box">
-                            <div class="forum-title-box">
-                                <h5 class="card-title">이미지 리사이즈 오류 나요.</h5>
-                            </div>
-                            <div class="forum-info-box">
-                                <div class="forum-comment-box">
-                                    <span style="color: #12a7e4; font-weight: bold;"><i class="fas fa-comment"></i> 50
-                                        Answers</span>
-                                </div>
-                                <div class="fourm-view-box">
-                                    <span style="color: #2b8d6e; font-weight: bold;"><i class="fas fa-eye"></i> 50
-                                        Views</span>
-                                </div>
-                                <div class="fourm-like-box">
-                                    <span style="color: #ed635e; font-weight: bold;"><i class="far fa-heart"></i> 10
-                                        Like</span>
-                                </div>
-                            </div>
-                            <div class="forum-category-box">
-                                <div class="card">data export</div>
-                                <div class="card">image resize</div>
-                                <div class="card">file controller</div>
-                            </div>
-                            <p class="card-text" style="float: right; font-weight: bold; color: #b5b5b5">2021-09-28
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
+                <div class="forum-list-card-box"></div>
                 <div id="pagination" style="
                 display: flex; 
                 justify-content: center;
@@ -145,43 +70,69 @@
         </div>
     </div>
     <script>
-        $('#pagination').pagination({
-            // 데이터 넣는 곳
-            dataSource: [
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-                { 'idx': 1 },
-            ],
-            pageSize: 10,
-            className: 'paginationjs-theme-blue',
-            callback: function (data, pagination) {
+        const forumListCardBox = document.querySelector('.forum-list-card-box');
+
+        function makeForumList(title, category) {
+            const template = `
+                    <div class="card">
+                        <div class="card-body" style="display: flex;">
+                            <div class="forum-user-profile-box">
+                                <div class="forum-profile">
+                                    <img src="../static/images/146675.jpg" alt="">
+                                </div>
+                                <div class="forum-profile-name">
+                                    <p>crow</p>
+                                </div>
+                            </div>
+                            <div class="forum-post-info-box">
+                                <div class="forum-list-card-header-box">
+                                    <div class="forum-category">${category}</div>
+                                    <div class="forum-title-box">
+                                        <a href="#" class="card-title forum-list-title">DUMMY</a>
+                                    </div>
+                                </div>
+                                <div class="forum-info-box">
+                                    <div class="forum-comment-box">
+                                        <span style="color: #12a7e4; font-weight: bold;"><i class="fas fa-comment"></i>
+                                            50
+                                            Answers</span>
+                                    </div>
+                                    <div class="fourm-view-box">
+                                        <span style="color: #2b8d6e; font-weight: bold;"><i class="fas fa-eye"></i> 50
+                                            Views</span>
+                                    </div>
+                                    <div class="fourm-like-box">
+                                        <span style="color: #ed635e; font-weight: bold;"><i class="far fa-heart"></i> 10
+                                            Like</span>
+                                    </div>
+                                </div>
+                                <div class="forum-tag-box">
+                                    <div class="card">data export</div>
+                                    <div class="card">image resize</div>
+                                    <div class="card">file controller</div>
+                                </div>
+                                <p class="card-text forum-date">2021-09-28</p>
+                            </div>
+                        </div>
+                    </div>`;
+
+            return template;
+        }
+
+        async function reqForumList() {
+            const reqResult = await reqAjax('/api/forum/list', 'post', {});
+            let template = '';
+
+            for (let i = 0; i < reqResult.data.length; i++) {
+                template += makeForumList(
+                    reqResult.data[i].fi_title,
+                    reqResult.data[i].fi_category
+                );
             }
-        })
+
+            forumListCardBox.innerHTML = template;
+        }
+
+        reqForumList();
     </script>
-<%- include('../common/footer.ejs') %>
+    <%- include('../common/footer.ejs') %>
