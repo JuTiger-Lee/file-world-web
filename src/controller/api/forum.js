@@ -1,16 +1,31 @@
 const forumModel = require('../../models/forum');
 const MakeResponse = require('../handler/MakeResponse');
-// const Pagenation = require('../handler/Pagenation');
+const Pagination = require('../handler/Pagination');
 
 async function list(req, res, next) {
   try {
     const makeResponse = new MakeResponse();
+    const { pageSize, currentPage } = req.body;
 
-    const listForum = await forumModel.forumList([]);
+    // offset Pagination
+    const sql = {
+      list: `SELECT * FROM forum`,
+      total: 'SELECT COUNT(fi_idx) as total FROM forum',
+      where: '',
+      whereList: [],
+      order: `ORDER BY fi_idx DESC`,
+      limit: '',
+      params: [],
+    };
+
+    const pagination = new Pagination();
+    await pagination.init(pageSize, currentPage, sql);
+
+    const getPagingData = pagination.getPageInfo();
 
     makeResponse.init(200, 200, 'success');
 
-    return res.json(makeResponse.makeSuccessResponse(listForum.data));
+    return res.json(makeResponse.makeSuccessResponse(getPagingData));
   } catch (err) {
     console.log(err);
     return next(err);
