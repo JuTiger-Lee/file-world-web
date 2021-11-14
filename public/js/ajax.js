@@ -31,8 +31,8 @@ async function reqAjax(url, method, params) {
 
     return getReqResults.data;
   } catch (err) {
-    if (err.response.status === 401) {
-      localStorage.removeItem('user');
+    if (err.response.status === 401 || err.response.status === 419) {
+      localStorage.removeItem('token');
       window.location.href = '/';
       return notification('danger', 'LOG OUT', 'Logged out.');
     } else if (err.response.status === 500) {

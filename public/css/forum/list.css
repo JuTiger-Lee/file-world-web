@@ -46,9 +46,12 @@
   line-height: 26px;
   font-size: 16px;
   padding: 2px 4px;
+  padding-left: 10px;
+  padding-right: 10px;
   margin-right: 10px;
   color: white;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .forum-list-title {

@@ -6,7 +6,7 @@ router.get('/list', (req, res) => {
   res.render('../views/forum/list');
 });
 
-router.get('/detail', (req, res) => {
+router.get('/detail/:idx', (req, res) => {
   res.render('../views/forum/detail');
 });
 

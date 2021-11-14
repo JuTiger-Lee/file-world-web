@@ -27,9 +27,9 @@
                         <input type="text" class="form-control" placeholder="Title Search">
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-primary">Search</button>
+                        <button class="btn btn-primary mb-3">Search</button>
                         <a href="/forum/write">
-                            <button class="btn btn-primary">Write</button>
+                            <button class="btn btn-primary mb-3">Write</button>
                         </a>
                     </div>
                 </div>
@@ -70,11 +70,10 @@
         </div>
     </div>
     <script>
-        const forumListCardBox = document.querySelector('.forum-list-card-box');
+        'use strict';
 
-        function makeForumList(title, category) {
-            const template = `
-                    <div class="card">
+        function makeForumListTemplate (idx, title, category) {
+            return `<div class="card">
                         <div class="card-body" style="display: flex;">
                             <div class="forum-user-profile-box">
                                 <div class="forum-profile">
@@ -88,7 +87,7 @@
                                 <div class="forum-list-card-header-box">
                                     <div class="forum-category">${category}</div>
                                     <div class="forum-title-box">
-                                        <a href="#" class="card-title forum-list-title">DUMMY</a>
+                                        <a href="/forum/detail/${idx}" class="card-title forum-list-title">${title}</a>
                                     </div>
                                 </div>
                                 <div class="forum-info-box">
@@ -107,32 +106,76 @@
                                     </div>
                                 </div>
                                 <div class="forum-tag-box">
-                                    <div class="card">data export</div>
-                                    <div class="card">image resize</div>
-                                    <div class="card">file controller</div>
+                                    <div class="card">ERROR</div>
+                                    <div class="card">HELP</div>
+                                    <div class="card">??</div>
                                 </div>
                                 <p class="card-text forum-date">2021-09-28</p>
                             </div>
                         </div>
                     </div>`;
+        }
 
-            return template;
+        function makePaginationTemplate(pagingeNumbers) {
+            return `<nav class="mt-5">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled" style="display: flex">
+                                <a class="page-link" href="#"><i class="fas fa-angle-double-left"></i></a>
+                                <a class="page-link" href="#" tabindex="-1"><i class="fas fa-angle-left"></i></a>
+                            </li>
+                            ${
+                                (function() {
+                                    let pagingNumberTemplate = '';
+
+                                    for(let i = 0; i < pagingeNumbers; i++) {
+                                         pagingNumberTemplate += 
+                                                `<li class="page-item">
+                                                    <a class="page-link" href="#">${i+1}</a>
+                                                </li>`;
+
+                                    }
+
+                                    return pagingNumberTemplate;
+                                })()
+                            }
+                            <li class="page-item" style="display: flex">
+                                <a class="page-link" href="#"><i class="fas fa-angle-right"></i></a>
+                                <a class="page-link" href="#"><i class="fas fa-angle-double-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>`;
+        }
+
+        function reqDataCheck(reqResult) {
+            const forumListCardBox = document.querySelector('.forum-list-card-box');
+            let template = '';
+
+            if (reqResult.code === 200 && reqResult.data.list.length) {
+                for (let i = 0; i < reqResult.data.list.length; i++) {
+                    template += makeForumListTemplate (
+                        reqResult.data.list[i].fi_idx,
+                        reqResult.data.list[i].fi_title,
+                        reqResult.data.list[i].fi_category
+                    );
+                }
+
+                if(reqResult.data.totalPage > 0) template += makePaginationTemplate(reqResult.data.totalPage);
+
+                forumListCardBox.innerHTML = template;
+            } else {
+                alert('SORRY');
+            }
         }
 
         async function reqForumList() {
-            const reqResult = await reqAjax('/api/forum/list', 'post', {});
-            let template = '';
+            const reqResult = await reqAjax('/api/forum/list', 'post', {
+                pageSize: 10,
+                currentPage: 1,
+            });
 
-            for (let i = 0; i < reqResult.data.length; i++) {
-                template += makeForumList(
-                    reqResult.data[i].fi_title,
-                    reqResult.data[i].fi_category
-                );
-            }
-
-            forumListCardBox.innerHTML = template;
+            return reqDataCheck(reqResult);
         }
 
         reqForumList();
     </script>
-    <%- include('../common/footer.ejs') %>
+<%- include('../common/footer.ejs') %>

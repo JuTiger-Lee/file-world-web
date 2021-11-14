@@ -18,7 +18,7 @@ class MakeResponse {
 
   /**
    *
-   * @param {Array<Object>} data
+   * @param {Array<Object> || Object} data
    * @returns
    */
   makeSuccessResponse(data = []) {
