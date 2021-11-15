@@ -25,7 +25,7 @@ function notification(state = 'primary', title, message) {
     '<span aria-hidden="true">&times;</span>' +
     '</button>';
 
-  notificationBox.append(notificationDiv);
+  notificationBox.innerHTML = notificationDiv;
 
   setTimeout(() => {
     $('.alert')
