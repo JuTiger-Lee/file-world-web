@@ -7,6 +7,7 @@ const passportConfig = require('./passport');
 // router
 const routes = require('../routes/routes');
 
+// dev inspection
 // if (envFound.error) {
 //   throw new Error("⚠️ Couldn't find .env file ⚠️");
 // }
@@ -48,8 +49,7 @@ class Server {
   }
 
   createServer() {
-    const PORT = process.env.PORT || 8081;
-    this.app.listen(PORT, () => console.log(`${PORT} server start`));
+    this.app.listen(port, () => console.log(`${port} server start`));
   }
 }
 
