@@ -159,7 +159,9 @@
                     );
                 }
 
-                if(reqResult.data.totalPage > 0) template += makePaginationTemplate(reqResult.data.totalPage);
+                if(reqResult.data.totalPage > 0) {
+                    template += makePaginationTemplate(reqResult.data.totalPage);
+                }
 
                 forumListCardBox.innerHTML = template;
             } else {
