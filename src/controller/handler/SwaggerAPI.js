@@ -11,6 +11,7 @@ const swaggerInfo = {
     '### ADMIN \n' +
     'LOCAL: http://localhost:8081/admin \n' +
     'DEV: https://dev-file-world.loca.lt/admin \n' +
+    'PROD: ---' +
     '### API MTHOD \n' +
     'GET: list 및 화면 render시 등 사용 \n' +
     'POST: 사용자 생성 및 게시글 작성시 등 사용 \n' +
