@@ -9,11 +9,11 @@ async function list(req, res, next) {
 
     // offset Pagination
     const sql = {
-      list: `SELECT * FROM forum`,
+      list: 'SELECT * FROM forum',
       total: 'SELECT COUNT(fi_idx) as total FROM forum',
       where: '',
       whereList: [],
-      order: `ORDER BY fi_idx DESC`,
+      order: 'ORDER BY fi_idx DESC',
       limit: '',
       params: [],
     };
