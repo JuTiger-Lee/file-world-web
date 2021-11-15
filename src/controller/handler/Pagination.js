@@ -16,6 +16,12 @@ class Pagination {
     this.combineTotalSQL = '';
   }
 
+  /**
+   *
+   * @param {Number} pageSize
+   * @param {Number} currentPage
+   * @param {Ojbect} sql
+   */
   async init(pageSize, currentPage, sql) {
     this.pageSize = pageSize;
     this.currentPage = currentPage;
@@ -53,9 +59,12 @@ class Pagination {
   }
 
   sqlCombine() {
+    // list sql
     this.combineListSQL =
       `${this.sql.list} ${this.sql.where}` +
       `${this.sql.order} ${this.sql.limit}`;
+
+    // rows length sql
     this.combineTotalSQL = `${this.sql.total} ${this.sql.where}`;
   }
 
