@@ -19,6 +19,7 @@ async function idDataCheck(makeResponse, ui_id) {
 async function nicknameDataCheck(makeResponse, ui_nickname) {
   const findUserNickName = await userModel.userFindNickName([ui_nickname]);
 
+  // nickname duplicate check
   if (findUserNickName.data.length) {
     makeResponse.init(409, 409, 'nickname duplicate');
     throw makeResponse.makeErrorResponse({}, 'user nickname Check Error');
