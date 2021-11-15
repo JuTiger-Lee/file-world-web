@@ -48,9 +48,7 @@ class Server {
   }
 
   createServer() {
-    const PORT = process.env.PORT || 8081;
-
-    this.app.listen(PORT, () => console.log(`${PORT} server start`));
+    this.app.listen(port, () => console.log(`${port} server start`));
   }
 }
 
