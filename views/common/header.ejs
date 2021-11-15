@@ -57,7 +57,6 @@
         
         <script>
             const headerNavbarMenu = document.getElementById('header-navbar-menu');
-            const space = ' ';
 
             function menuClickEvent() {
                 const menuList = document.querySelectorAll('.menu-list > li > a');
@@ -65,7 +64,7 @@
 
                 for(let i = 0; i < menuList.length; i++) {
                     if(location.href === menuList[i].href) {
-                        menuList[i].parentElement.className += `${space}active`;
+                        menuList[i].parentElement.className += ` active`;
                     }
                 }
             }
@@ -88,7 +87,7 @@
                             <a class="nav-link" href="/pricing">Pricing</a>
                         </li>
                         ${localStorage.getItem('token') ?
-                        `<li class="nav-item dropdown">
+                                `<li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         User
@@ -99,13 +98,13 @@
                                     </div>
                                 </li>`
                         :
-                        `<li class="nav-item">
+                                `<li class="nav-item">
                                     <a class="nav-link" href="/user/sign-in">Login</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/user/sign-up">Sign Up</a>
                                 </li>`
-                    }`;
+                        }`;
 
                 headerNavbarMenu.append(ul);
 
