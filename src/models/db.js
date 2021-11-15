@@ -1,9 +1,19 @@
 const mysql = require('mysql');
-const { development } = require('../config/db');
+const { local, dev, prod } = require('../config/db');
 const MakeResponse = require('../controller/handler/MakeResponse');
 
+let connDBType = '';
+
+if (process.env.NODE_ENV === 'prod') {
+  connDBType = prod;
+} else if (process.env.NODE_ENV === 'dev') {
+  connDBType = dev;
+} else {
+  connDBType = local;
+}
+
 function connDB() {
-  const conn = mysql.createConnection(development);
+  const conn = mysql.createConnection(connDBType);
   conn.connect();
 
   return conn;
