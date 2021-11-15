@@ -38,7 +38,6 @@
 
     <script>
         const forumWriteSaveBtn = document.querySelector('.forum-write-save-btn');
-        console.log('token',localStorage.getItem('token'));
 
         $('#summernote').summernote({
             height: 500,
@@ -80,7 +79,6 @@
             const forumWriteValueResult = forumValueCheck(forumWriteTitle);
 
             if (forumWriteValueResult) {
-
                 const bodyData = {
                     fi_title: forumWriteTitle,
                     fi_category: forumWriteCategory,
