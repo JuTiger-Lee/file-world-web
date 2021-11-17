@@ -66,6 +66,7 @@ async function jwtVerify(payload, done) {
      * 
      * {
           "id": "jeffrey", => 사용지 id
+          "idx": "111" => 사용자 idx
           "iat": 1636213873, => 토큰 생성시간
           "exp": 1636213933 => 토큰 만료시간
         }
