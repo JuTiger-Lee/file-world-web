@@ -1,5 +1,36 @@
 <%- include('../common/header.ejs') %>
-    <div id="forum-write-box">
+    <script src="../../static/assets/summernote/summernote-lite.js"></script>
+    <script src="../../static/assets/summernote/lang/summernote-ko-KR.js"></script>
+    <link rel="stylesheet" href="../../static/assets/summernote/summernote-lite.css">
+    <link rel="stylesheet" href="../static/css/forum/write.css">
 
+    <div id="forum-write-box">
+        <h2>Add New Post</h2>
+        <div class="forum-write-contents-box">
+            <form>
+                <div class="form-group">
+                    <label for="forum-write-title">Title</label>
+                    <input type="text" class="form-control forum-write-title">
+                </div>
+                <div class="form-group">
+                    <label for="forum-write-category">Category</label>
+                    <select class="form-control forum-write-category">
+                        <option selected>Data export</option>
+                        <option>Image resize</option>
+                        <option>File controller</option>
+                        <option>Issue</option>
+                        <option>ETC</option>
+                    </select>
+                </div>
+                <div id="summernote"></div>
+            </form>
+            <div class="forum-write-btn-box">
+                <a href="/forum/list">
+                    <button class="btn btn-danger">Cancle</button>
+                </a>
+                <button class="btn btn-primary mt-2 mb-2 forum-write-save-btn">Save</button>
+            </div>
+        </div>
     </div>
+    <script src="./write.js"></script>
 <%- include('../common/footer.ejs') %>

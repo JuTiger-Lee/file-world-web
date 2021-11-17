@@ -1,7 +1,7 @@
 const express = require('express');
-const userController = require('../../controller/api/user');
 
 const router = express.Router();
+const userController = require('../../controller/api/user');
 
 router.post('/id-check', userController.idCheck);
 router.post('/nickname-check', userController.nicknameCheck);

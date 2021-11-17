@@ -1,0 +1,13 @@
+#forum-write-box {
+  width: 80%;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.forum-write-contents-box {
+  margin-top: 40px;
+}
+
+.forum-write-btn-box {
+  float: right;
+}

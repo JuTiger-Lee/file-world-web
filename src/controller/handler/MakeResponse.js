@@ -4,7 +4,7 @@ class MakeResponse {
   /**
    * http status
    * @param {Number} httpStatus
-   * err code
+   * err code(애플리케이션 err code)
    * @param {Number} code
    * custom status
    * @param {Number} status
@@ -18,7 +18,7 @@ class MakeResponse {
 
   /**
    *
-   * @param {Array<Object>} data
+   * @param {Array<Object> || Object} data
    * @returns
    */
   makeSuccessResponse(data = []) {
@@ -31,6 +31,8 @@ class MakeResponse {
 
   /**
    * @param {Object} err
+   * 서버 애플리케이션에 보이는 error name
+   * 디버깅 쉽게하기 위한 목적
    * @param {String} name
    * @returns
    */

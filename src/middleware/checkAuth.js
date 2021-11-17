@@ -1,17 +1,23 @@
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
 const MakeResponse = require('../controller/handler/MakeResponse');
 
 module.exports = (req, res, next) => {
   const makeResponse = new MakeResponse();
 
+  const tokeDecode = beareToken => {
+    const token = beareToken.split(' ')[1];
+
+    return jwt.decode(token);
+  };
+
   passport.authenticate('jwt', { session: false }, (error, user, info) => {
     if (error) {
-      makeResponse.init(
-        401,
-        401,
-        info.reason || info.message || 'Unauthorized Error',
+      makeResponse.init(401, 401, 'Unauthorized Error');
+      throw makeResponse.makeErrorResponse(
+        error,
+        'passport authenticate Error',
       );
-      throw makeResponse.MakeErrorRespone(error, 'passport authenticate Error');
     }
 
     if (!user) {
@@ -21,13 +27,17 @@ module.exports = (req, res, next) => {
        * invalid signature => 토큰 변조
        * {name: "JsonWebTokenError", message: "invalid signature"}
        */
-      makeResponse.init(
-        401,
-        401,
-        info.reason || info.message || 'Unauthorized Error',
-      );
-      throw makeResponse.MakeErrorRespone({}, 'passport User not found Error');
+      if (info.name === 'TokenExpiredError') {
+        makeResponse.init(419, 419, '토큰 만료');
+      } else {
+        makeResponse.init(401, 401, '유효하지 않은 토큰');
+      }
+
+      throw makeResponse.makeErrorResponse({}, 'passport User not found Error');
     }
+
+    const decodeToken = tokeDecode(req.headers.authorization);
+    req.user = decodeToken;
 
     next();
   })(req, res, next);

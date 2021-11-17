@@ -2,10 +2,15 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const { AUTH_KEY } = require('../../utils/setting');
 const MakeResponse = require('../handler/MakeResponse');
-const userModel = require('../../models/user');
 const Email = require('../handler/Email');
 const hashHandler = require('../handler/hash');
+const userModel = require('../../models/user');
 
+/**
+ *
+ * @param {Object} makeResponse
+ * @param {String} ui_id
+ */
 async function idDataCheck(makeResponse, ui_id) {
   const findUserID = await userModel.userFindID([ui_id]);
 
@@ -16,9 +21,15 @@ async function idDataCheck(makeResponse, ui_id) {
   }
 }
 
+/**
+ *
+ * @param {Object} makeResponse
+ * @param {String} ui_nickname
+ */
 async function nicknameDataCheck(makeResponse, ui_nickname) {
   const findUserNickName = await userModel.userFindNickName([ui_nickname]);
 
+  // nickname duplicate check
   if (findUserNickName.data.length) {
     makeResponse.init(409, 409, 'nickname duplicate');
     throw makeResponse.makeErrorResponse({}, 'user nickname Check Error');
@@ -91,10 +102,14 @@ async function singUp(req, res, next) {
       ]);
 
       // affectedRows => add row
-      if (createUser.data.affectedRows > 0) {
-        makeResponse.init(201, 201, 'success');
-        return res.json(makeResponse.makeSuccessResponse([]));
+      if (!createUser.data.affectedRows) {
+        makeResponse.init(500, 500, 'User insert Error');
+        throw makeResponse.makeErrorResponse({}, 'signUp user insert Error');
       }
+
+      makeResponse.init(201, 200, 'success');
+
+      return res.json(makeResponse.makeSuccessResponse([]));
     }
   } catch (err) {
     console.log(err);
@@ -139,8 +154,9 @@ function signIn(req, res, next) {
         // make token
         const token = jwt.sign(
           {
-            // user id
+            // user id and idx
             id: user.data[0].ui_id,
+            idx: user.data[0].ui_idx,
           },
           // secret key
           AUTH_KEY,
@@ -161,6 +177,7 @@ function signIn(req, res, next) {
   })(req, res);
 }
 
+// Use when cookie or session based
 function signOut(req, res, next) {}
 
 module.exports = {

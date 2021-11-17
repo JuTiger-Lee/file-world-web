@@ -4,16 +4,22 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "local": "nodemon src/app.js",
-    "dev": "npx localtunnel --port 8081 --subdomain dev-file-world",
-    "start": "node src/app.js"
+    "test": "cross-env NODE_ENV=local npx localtunnel --port 8081 --subdomain dev-file-world",
+    "dev": "cross-env NODE_ENV=local nodemon src/app.js",
+    "start": "cross-env NODE_ENV=dev node src/app.js",
+    "prod": "cross-env NODE_ENV=prod node src/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "14.17.1",
+    "npm": "7.19.0"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "debug": "^2.6.9",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",

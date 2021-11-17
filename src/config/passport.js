@@ -66,6 +66,7 @@ async function jwtVerify(payload, done) {
      * 
      * {
           "id": "jeffrey", => 사용지 id
+          "idx": "111" => 사용자 idx
           "iat": 1636213873, => 토큰 생성시간
           "exp": 1636213933 => 토큰 만료시간
         }
@@ -83,6 +84,6 @@ async function jwtVerify(payload, done) {
 }
 
 module.exports = () => {
-  passport.use(new LocalStrategy(passportOption, passportVerify));
-  passport.use(new JWTStrategy(jwtOption, jwtVerify));
+  passport.use('local', new LocalStrategy(passportOption, passportVerify));
+  passport.use('jwt', new JWTStrategy(jwtOption, jwtVerify));
 };

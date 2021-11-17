@@ -35,6 +35,7 @@ module.exports = app => {
 
     // 개발 서버
     'https://dev-file-world.loca.lt',
+    'https://file-world.herokuapp.com',
   ];
 
   const corsOption = {
@@ -48,7 +49,7 @@ module.exports = app => {
     },
   };
 
-  // const authURIList = ['*'];
+  const authURIList = ['/api/forum/write'];
 
   /* ----- SOP ALLOW URL ----- */
 
@@ -56,7 +57,7 @@ module.exports = app => {
 
   /* ----- TOKEN CHECK MIDDLEWARE ----- */
 
-  // app.use(authURIList, checkAuth);
+  app.use(authURIList, checkAuth);
 
   /* ----- SWAGGER MIDDLEWARE ----- */
 

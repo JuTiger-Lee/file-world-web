@@ -56,9 +56,9 @@ const signUp = {
     
           * 결과 JSON
           {
-            "data": [],
-            "status": 201,
+            "code": 201,
             "message": "success",
+            "data": [],
           }`,
       parameters: [
         {
@@ -119,9 +119,9 @@ const signIn = {
 
       * 결과 JSON
       {
-        "data": [{ token: 'example token' }],
-        "status": 200,
+        "code": 200,
         "message": "success",
+        "data": [{ token: 'example token' }],
       }`,
       parameters: [
         {

@@ -7,8 +7,10 @@ const passportConfig = require('./passport');
 // router
 const routes = require('../routes/routes');
 
-if (envFound.error) {
-  throw new Error("⚠️ Couldn't find .env file ⚠️");
+if (process.env.NODE_ENV === 'local') {
+  if (envFound.error) {
+    throw new Error("⚠️ Couldn't find .env file ⚠️");
+  }
 }
 
 class Server {
@@ -32,6 +34,8 @@ class Server {
       this.express.static(path.join(__dirname, '../../public')),
     );
 
+    this.app.use(this.express.static(path.join(__dirname, '../../views')));
+
     // Template engine registration
     this.app.set('view engine', 'ejs');
 
@@ -48,12 +52,7 @@ class Server {
   }
 
   createServer() {
-    this.app
-      .listen(port, () => console.log(`${port} server start`))
-      .on('error', err => {
-        console.log('create Server Error: ', err);
-        process.exit(1);
-      });
+    this.app.listen(port, () => console.log(`${port} server start`));
   }
 }
 
