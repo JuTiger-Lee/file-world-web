@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "test": "cross-env NODE_ENV=local npx localtunnel --port 8081 --subdomain dev-file-world",
     "dev": "cross-env NODE_ENV=local nodemon src/app.js",
     "start": "cross-env NODE_ENV=dev node src/app.js",
     "prod": "cross-env NODE_ENV=prod node src/app.js"
