@@ -1,0 +1,243 @@
+#user-box {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+}
+
+.user-form-box {
+  width: 100%;
+  min-height: 90vh;
+  margin: auto;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 62px 0px rgb(0 0 0 / 15%);
+}
+
+.user-content {
+  padding: 65px 30px 45px;
+  width: 100%;
+}
+
+.user-body input {
+  min-height: 50px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: 1px solid #e7e7e7;
+  padding: 10px 15px;
+  color: #111;
+}
+
+/* header start */
+.user-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.user-header .user-logo {
+  display: block;
+  margin-bottom: 7px;
+  max-width: 40vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.user-header p {
+  color: #999898;
+}
+/* header end */
+
+.user-local-btn {
+  font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 17px;
+  font-weight: 500;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: none;
+  border: 0;
+  color: #fff;
+  border-radius: 3px;
+  padding: 10px 36px;
+  margin-bottom: 10px;
+  width: 100%;
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.user-style-line {
+  overflow: hidden;
+  text-align: center;
+}
+
+.user-style-line h3 {
+  text-align: center;
+  font-weight: 300;
+  margin-bottom: 30px;
+  font-size: 20px;
+  color: #a4a4a4;
+  display: inline-block;
+  position: relative;
+  padding: 0 25px;
+  z-index: 1;
+}
+
+.user-style-line h3:before {
+  display: inline-block;
+  content: '';
+  height: 1px;
+  width: 100%;
+  background-color: #ebebeb;
+  left: 100%;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  position: absolute;
+  z-index: 1;
+}
+
+.user-style-line h3:after {
+  display: inline-block;
+  content: '';
+  height: 1px;
+  width: 100%;
+  background-color: #ebebeb;
+  right: 100%;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  position: absolute;
+  z-index: 1;
+}
+
+/* social user start */
+
+ul {
+  list-style: outside none none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.user-socials {
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin-right: -35px;
+  margin-left: -35px;
+  margin-bottom: 20px;
+}
+
+ul.user-socials li {
+  max-width: 100%;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 33.33333%;
+  flex: 0 0 33.33333%;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-bottom: 10px;
+}
+
+ul.user-socials li a {
+  border-radius: 2px;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: flex-start;
+  -ms-flex-pack: flex-start;
+  justify-content: flex-start;
+  font-size: 14px;
+  height: 45px;
+  color: #ffffff;
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+ul.user-socials li a i {
+  border-radius: 2px 0 0 2px;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+}
+
+ul.user-socials li a span {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-flex: 1;
+  flex: 1;
+}
+
+ul.user-socials li.user-google a {
+  background-color: #cc3333;
+}
+
+ul.user-socials li.user-google a i {
+  background-color: #db4437;
+}
+
+ul.user-socials li.user-google a:hover {
+  background-color: #e75042;
+}
+
+ul.user-socials li.user-facebook a {
+  background-color: #3b5998;
+}
+
+ul.user-socials li.user-facebook a i {
+  background-color: #4867aa;
+}
+
+ul.user-socials li.user-facebook a:hover {
+  background-color: #5676bb;
+}
+
+/* social user end */
+
+.user-register.inline-text {
+  margin-left: 3px;
+}
+
+@media only screen and (max-width: 875px) {
+  ul.user-socials li {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .col-xl-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
