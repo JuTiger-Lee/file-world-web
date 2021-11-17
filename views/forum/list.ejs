@@ -1,29 +1,39 @@
 <%- include('../common/header.ejs') %>
     <link rel="stylesheet" href="../static/css/forum/list.css">
+
     <div id="forum-list-box">
-        <div class="forum-list-post-box row" style="margin-top: 20px">
+        <div class="row forum-list-post-box">
             <div class="col-md-3">
-                <div class="card">
-                    <div class="forum-top-list card-body">
+                <div class="card forum-top-list">
+                    <div class="card-body">
                         <h5 class="card-title">TOP Forum</h5>
-                        <div style="display: flex; margin-top: 20px">
+                        <div class="forum-list-top-box">
                             <div class="forum-user-profile-box">
                                 <div class="forum-profile forum-top-profile">
                                     <img src="../static/images/146675.jpg" alt="">
                                 </div>
-                            </div>
-                        </div>
-                        <div style="display: flex; margin-top: 20px">
-                            <div class="forum-user-profile-box">
-                                <div class="forum-profile forum-top-profile">
-                                    <img src="../static/images/Animal_ Fallow Deer_ Species_ Mammal.jpg" alt="">
+                                <div class="forum-profile-name">
+                                    <p>crow</p>
                                 </div>
                             </div>
                         </div>
-                        <div style="display: flex; margin-top: 20px">
+                        <div class="forum-list-top-box">
                             <div class="forum-user-profile-box">
                                 <div class="forum-profile forum-top-profile">
-                                    <img src="../static/images/Bee_ Insects_ Pollinate_ Fly.jpg" alt="">
+                                    <img src="../static/images/146675.jpg" alt="">
+                                </div>
+                                <div class="forum-profile-name">
+                                    <p>crow</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="forum-list-top-box">
+                            <div class="forum-user-profile-box">
+                                <div class="forum-profile forum-top-profile">
+                                    <img src="../static/images/146675.jpg" alt="">
+                                </div>
+                                <div class="forum-profile-name">
+                                    <p>crow</p>
                                 </div>
                             </div>
                         </div>
@@ -32,7 +42,7 @@
             </div>
             <div class="col-md-9">
                 <div class="form-row">
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <select id="inputState" class="form-control">
                             <option selected>Data export</option>
                             <option>Image resize</option>
@@ -44,12 +54,13 @@
                     <div class="form-group col-md-2">
                         <select id="inputState" class="form-control">
                             <option selected>10</option>
+                            <option>20</option>
                             <option>30</option>
                             <option>50</option>
                             <option>100</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-5">
                         <input type="text" class="form-control" placeholder="Title Search">
                     </div>
                     <div class="col-auto">
@@ -60,130 +71,10 @@
                     </div>
                 </div>
                 <div class="forum-list-card-box"></div>
-                <div id="pagination" 
-                    style="
-                            display: flex; 
-                            justify-content: center;
-                            margin-top: 10px;
-                        "
-                >
+                <div id="pagination">
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        'use strict';
-
-        function makeForumListTemplate (idx, title, category) {
-            return `<div class="card">
-                        <div class="card-body" style="display: flex; height: 140px">
-                            <div class="forum-user-profile-box">
-                                <div class="forum-profile">
-                                    <img src="../static/images/146675.jpg" alt="">
-                                </div>
-                                <div class="forum-profile-name">
-                                    <p>crow</p>
-                                </div>
-                            </div>
-                            <div class="forum-post-info-box">
-                                <div class="forum-list-card-header-box">
-                                    <div class="forum-category">${category}</div>
-                                    <div class="forum-title-box">
-                                        <a href="/forum/detail/${idx}" class="card-title forum-list-title">${title}</a>
-                                    </div>
-                                </div>
-                                <div class="forum-info-box">
-                                    <div class="forum-comment-box">
-                                        <span style="color: #12a7e4; font-weight: bold; font-size: 17px">
-                                            <i class="fas fa-comment"></i>
-                                            50 Answers
-                                        </span>
-                                    </div>
-                                    <div class="fourm-view-box">
-                                        <span style="color: #2b8d6e; font-weight: bold; font-size: 17px">
-                                            <i class="fas fa-eye"></i> 
-                                            50 Views
-                                        </span>
-                                    </div>
-                                    <div class="fourm-like-box">
-                                        <span style="color: #ed635e; font-weight: bold; font-size: 17px">
-                                            <i class="far fa-heart"></i> 
-                                            10 Like
-                                        </span>
-                                    </div>
-                                </div>
-                  
-                            </div>
-
-                        </div>
-                        <div class="card-footer" style="backgroud-color: white !important">
-                             <p class="card-text forum-date">2021-09-28</p>
-                        </div>
-                    </div>`;
-        }
-
-        function makePaginationTemplate(pagingeNumbers) {
-            return `<nav class="mt-3">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled" style="display: flex">
-                                <a class="page-link" href="/forum/list?currentPage=1"><i class="fas fa-angle-double-left"></i></a>
-                                <a class="page-link" href="#" tabindex="-1"><i class="fas fa-angle-left"></i></a>
-                            </li>
-                            ${
-                                (function() {
-                                    let pagingNumberTemplate = '';
-
-                                    for(let i = 0; i < pagingeNumbers; i++) {
-                                         pagingNumberTemplate += 
-                                                `<li class="page-item">
-                                                    <a class="page-link" href="/forum/list?currentPage=${i+1}">${i+1}</a>
-                                                </li>`;
-
-                                    }
-
-                                    return pagingNumberTemplate;
-                                })()
-                            }
-                            <li class="page-item" style="display: flex">
-                                <a class="page-link" href="#"><i class="fas fa-angle-right"></i></a>
-                                <a class="page-link" href="/forum/list?currentPage=${pagingeNumbers}"><i class="fas fa-angle-double-right"></i></a>
-                            </li>
-                        </ul>
-                    </nav>`;
-        }
-
-        function reqDataCheck(reqResult) {
-            const forumListCardBox = document.querySelector('.forum-list-card-box');
-            let template = '';
-
-            if (reqResult.code === 200 && reqResult.data.list.length) {
-                for (let i = 0; i < reqResult.data.list.length; i++) {
-                    template += makeForumListTemplate (
-                        reqResult.data.list[i].fi_idx,
-                        reqResult.data.list[i].fi_title,
-                        reqResult.data.list[i].fi_category
-                    );
-                }
-
-                if(reqResult.data.totalPage > 0) {
-                    template += makePaginationTemplate(reqResult.data.totalPage);
-                }
-
-                forumListCardBox.innerHTML = template;
-            } else {
-                alert('SORRY');
-            }
-        }
-
-        async function reqForumList() {
-            const reqResult = await reqAjax('/api/forum/list', 'post', {
-                pageSize: 10,
-                currentPage: 1,
-            });
-
-            return reqDataCheck(reqResult);
-        }
-
-        reqForumList();
-    </script>
-<%- include('../common/footer.ejs') %>
+    <script src="./list.js"></script>
+    <%- include('../common/footer.ejs') %>

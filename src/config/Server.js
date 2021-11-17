@@ -34,6 +34,8 @@ class Server {
       this.express.static(path.join(__dirname, '../../public')),
     );
 
+    this.app.use(this.express.static(path.join(__dirname, '../../views')));
+
     // Template engine registration
     this.app.set('view engine', 'ejs');
 

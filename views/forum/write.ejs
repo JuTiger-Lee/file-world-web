@@ -2,11 +2,11 @@
     <script src="../../static/assets/summernote/summernote-lite.js"></script>
     <script src="../../static/assets/summernote/lang/summernote-ko-KR.js"></script>
     <link rel="stylesheet" href="../../static/assets/summernote/summernote-lite.css">
+    <link rel="stylesheet" href="../static/css/forum/write.css">
 
-    <div id="forum-write-box" style="width:80%; margin: auto; margin-top: 20px;">
+    <div id="forum-write-box">
         <h2>Add New Post</h2>
-
-        <div class="forum-write-contents-box" style="margin-top: 40px;">
+        <div class="forum-write-contents-box">
             <form>
                 <div class="form-group">
                     <label for="forum-write-title">Title</label>
@@ -22,9 +22,9 @@
                         <option>ETC</option>
                     </select>
                 </div>
+                <div id="summernote"></div>
             </form>
-            <div id="summernote"></div>
-            <div class="forum-write-btn-box" style="float:right">
+            <div class="forum-write-btn-box">
                 <a href="/forum/list">
                     <button class="btn btn-danger">Cancle</button>
                 </a>
@@ -32,62 +32,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        const forumWriteSaveBtn = document.querySelector('.forum-write-save-btn');
-
-        $('#summernote').summernote({
-            height: 500,
-            focus: true,
-            disableResizeEditor: true,
-            focus: true,
-            lang: 'ko-KR',
-            placeholder: 'contents',
-        });
-
-        function forumValueCheck(forumWriteTitle) {
-            if (!forumWriteTitle.trim() || !forumWriteTitle) {
-                return alert('제목을 작성해주세요.');
-            }
-
-            if ($("#summernote").summernote('isEmpty')) {
-                return alert('내용을 작성해주세요.');
-            }
-
-            return true;
-        }
-
-        function reqDataCheck(reqResult) {
-            if (reqResult.code === 200) {
-                return window.location.href = '/forum/list';
-            } else {
-                alert('작성 실패');
-
-                return window.location.href = '/forum/list';
-            }
-        }
-
-        async function reqForumWrite() {
-            const forumWriteTitle = document.querySelector('.forum-write-title').value;
-            const forumWriteCategory = document.querySelector('.forum-write-category').value;
-            const forumWriteContetns = $('#summernote').summernote('code');
-
-            const forumWriteValueResult = forumValueCheck(forumWriteTitle);
-
-            if (forumWriteValueResult) {
-                const bodyData = {
-                    fi_title: forumWriteTitle,
-                    fi_category: forumWriteCategory,
-                    fi_tag: [],
-                    fi_content: forumWriteContetns,
-                }
-
-                const reqResult = await reqAjax('/api/forum/write', 'post', bodyData);
-
-                return reqDataCheck(reqResult);
-            }
-        }
-
-        forumWriteSaveBtn.addEventListener('click', () => reqForumWrite());
-    </script>
-    <%- include('../common/footer.ejs') %>
+    <script src="./write.js"></script>
+<%- include('../common/footer.ejs') %>

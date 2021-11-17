@@ -1,6 +1,15 @@
 #forum-list-box {
   width: 80%;
   margin: auto;
+  margin-top: 20px;
+}
+
+.forum-list-top-box {
+  display: flex;
+}
+
+.forum-top-list {
+  margin-bottom: 20px;
 }
 
 .forum-list-card-box > div {
@@ -12,8 +21,8 @@
 }
 
 .forum-profile {
-  width: 75px;
-  height: 75px;
+  width: 60px;
+  height: 60px;
   border-radius: 70%;
   overflow: hidden;
 }
@@ -64,13 +73,20 @@
 
 /* card body */
 
+.forum-list-card-box .card-body {
+  display: flex;
+  height: 120px;
+}
+
 .forum-info-box {
   display: flex;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .forum-info-box div {
   margin-right: 10px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .forum-post-info-box {
@@ -83,4 +99,10 @@
   float: right;
   font-weight: bold;
   color: #b5b5b5;
+}
+
+/* card footer */
+
+.forum-list-card-box .card-footer {
+  padding: 0.25rem 1.35rem;
 }
