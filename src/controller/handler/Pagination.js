@@ -33,8 +33,9 @@ class Pagination {
 
     this.offset();
     this.sqlCombine();
+
     this.pagingInfo.list = await this.getList();
-    this.pagingInfo.totalPage = await this.getTotal();
+    this.pagingInfo.totalPage = await this.getTotalPage();
   }
 
   // get next, prev, current page value
@@ -74,14 +75,13 @@ class Pagination {
     return list.data;
   }
 
-  async getTotal() {
+  async getTotalPage() {
     const total = await model.query(this.combineTotalSQL, this.sql.params);
-    const totalPage = Math.ceil(total.data[0].total / this.pagingInfo.end);
 
-    return totalPage;
+    return Math.ceil(total.data[0].total / this.pagingInfo.end);
   }
 
-  getPageInfo() {
+  getPagingInfo() {
     return this.pagingInfo;
   }
 }
