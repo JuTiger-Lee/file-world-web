@@ -3,8 +3,8 @@
   margin: auto;
 }
 
-.forum-list-post-box > div > .card {
-  margin-top: 5px;
+.forum-list-card-box > div {
+  margin-bottom: 20px;
 }
 
 .forum-user-profile-box {
@@ -42,7 +42,7 @@
 }
 
 .forum-category {
-  background-color: #4c5564;
+  background-color: #007bff;
   line-height: 26px;
   font-size: 16px;
   padding: 2px 4px;
@@ -65,30 +65,18 @@
 /* card body */
 
 .forum-info-box {
-  display: inline-flex;
+  display: flex;
+  margin-top: 20px;
 }
 
 .forum-info-box div {
   margin-right: 10px;
 }
 
-.forum-tag-box {
-  display: flex;
-  margin-top: 15px;
-}
-
 .forum-post-info-box {
   width: 100%;
   margin-left: 20px;
-}
-
-.forum-tag-box > div {
-  background-color: #4ab2b5;
-  margin-right: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  cursor: pointer;
-  color: white;
+  margin-top: 3px;
 }
 
 .forum-date {
