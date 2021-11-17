@@ -34,7 +34,8 @@ async function reqAjax(url, method, params) {
     if (err.response.status === 401 || err.response.status === 419) {
       localStorage.removeItem('token');
       window.location.href = '/';
-      return notification('danger', 'LOG OUT', 'Logged out.');
+
+      return alert('log out.');
     } else if (err.response.status === 500) {
       return notification(
         'danger',
