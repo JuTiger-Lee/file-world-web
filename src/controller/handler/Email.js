@@ -1,10 +1,6 @@
 const nodemailer = require('nodemailer');
-const dotenv = require('dotenv');
+const { mailUser, mailPassword } = require('../../utils/setting');
 const MakeResponse = require('./MakeResponse');
-
-dotenv.config();
-
-// TODO: Send class Message class 분리
 
 class Email {
   /**
@@ -17,8 +13,8 @@ class Email {
       setting: {
         service: 'gmail',
         auth: {
-          user: process.env.MAIL_USER,
-          pass: process.env.MAIL_PASSWORD,
+          user: mailUser,
+          pass: mailPassword,
         },
       },
       sendInfo: {
@@ -28,7 +24,7 @@ class Email {
         subject,
         // 내용
         html: ``,
-        from: process.env.MAIL_USER,
+        from: mailUser,
       },
     };
 
@@ -46,26 +42,5 @@ class Email {
     }
   }
 }
-
-// TODO: 211106 코드 가독성 높이기
-// class Send extends Email {
-//   constructor() {
-//     super();
-//   }
-
-//   async send() {}
-
-//   async allSend() {}
-// }
-
-// class Message extends Email {
-//   constructor() {
-//     super();
-//   }
-
-//   joinMessage() {}
-
-//   newMessage() {}
-// }
 
 module.exports = Email;
