@@ -8,9 +8,7 @@ module.exports = (req, res, next) => {
   const tokeDecode = beareToken => {
     const token = beareToken.split(' ')[1];
 
-    const decodeToken = jwt.decode(token);
-
-    return decodeToken;
+    return jwt.decode(token);
   };
 
   passport.authenticate('jwt', { session: false }, (error, user, info) => {
@@ -29,7 +27,6 @@ module.exports = (req, res, next) => {
        * invalid signature => 토큰 변조
        * {name: "JsonWebTokenError", message: "invalid signature"}
        */
-
       if (info.name === 'TokenExpiredError') {
         makeResponse.init(419, 419, '토큰 만료');
       } else {
