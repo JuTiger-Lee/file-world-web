@@ -2,43 +2,6 @@
     <link rel="stylesheet" href="../static/css/forum/list.css">
     <div id="forum-list-box">
         <div class="forum-list-post-box row" style="margin-top: 20px">
-            <div class="col-md-9">
-                <div class="form-row">
-                    <div class="form-group col-md-2">
-                        <select id="inputState" class="form-control">
-                            <option selected>Data export</option>
-                            <option>Image resize</option>
-                            <option>File controller</option>
-                            <option>ETC</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <select id="inputState" class="form-control">
-                            <option selected>10</option>
-                            <option>30</option>
-                            <option>50</option>
-                            <option>100</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <input type="text" class="form-control" placeholder="Tag Search">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <input type="text" class="form-control" placeholder="Title Search">
-                    </div>
-                    <div class="col-auto">
-                        <button class="btn btn-primary mb-3">Search</button>
-                        <a href="/forum/write">
-                            <button class="btn btn-primary mb-3">Write</button>
-                        </a>
-                    </div>
-                </div>
-                <div class="forum-list-card-box"></div>
-                <div id="pagination" style="
-                display: flex; 
-                justify-content: center;
-                margin-top: 10px;"></div>
-            </div>
             <div class="col-md-3">
                 <div class="card">
                     <div class="forum-top-list card-body">
@@ -67,6 +30,45 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-9">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <select id="inputState" class="form-control">
+                            <option selected>Data export</option>
+                            <option>Image resize</option>
+                            <option>File controller</option>
+                            <option>Issue</option>
+                            <option>ETC</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <select id="inputState" class="form-control">
+                            <option selected>10</option>
+                            <option>30</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control" placeholder="Title Search">
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary mb-3">Search</button>
+                        <a href="/forum/write">
+                            <button class="btn btn-primary mb-3">Write</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="forum-list-card-box"></div>
+                <div id="pagination" 
+                    style="
+                            display: flex; 
+                            justify-content: center;
+                            margin-top: 10px;
+                        "
+                >
+                </div>
+            </div>
         </div>
     </div>
     <script>
@@ -74,7 +76,7 @@
 
         function makeForumListTemplate (idx, title, category) {
             return `<div class="card">
-                        <div class="card-body" style="display: flex;">
+                        <div class="card-body" style="display: flex; height: 140px">
                             <div class="forum-user-profile-box">
                                 <div class="forum-profile">
                                     <img src="../static/images/146675.jpg" alt="">
@@ -92,35 +94,39 @@
                                 </div>
                                 <div class="forum-info-box">
                                     <div class="forum-comment-box">
-                                        <span style="color: #12a7e4; font-weight: bold;"><i class="fas fa-comment"></i>
-                                            50
-                                            Answers</span>
+                                        <span style="color: #12a7e4; font-weight: bold; font-size: 17px">
+                                            <i class="fas fa-comment"></i>
+                                            50 Answers
+                                        </span>
                                     </div>
                                     <div class="fourm-view-box">
-                                        <span style="color: #2b8d6e; font-weight: bold;"><i class="fas fa-eye"></i> 50
-                                            Views</span>
+                                        <span style="color: #2b8d6e; font-weight: bold; font-size: 17px">
+                                            <i class="fas fa-eye"></i> 
+                                            50 Views
+                                        </span>
                                     </div>
                                     <div class="fourm-like-box">
-                                        <span style="color: #ed635e; font-weight: bold;"><i class="far fa-heart"></i> 10
-                                            Like</span>
+                                        <span style="color: #ed635e; font-weight: bold; font-size: 17px">
+                                            <i class="far fa-heart"></i> 
+                                            10 Like
+                                        </span>
                                     </div>
                                 </div>
-                                <div class="forum-tag-box">
-                                    <div class="card">ERROR</div>
-                                    <div class="card">HELP</div>
-                                    <div class="card">??</div>
-                                </div>
-                                <p class="card-text forum-date">2021-09-28</p>
+                  
                             </div>
+
+                        </div>
+                        <div class="card-footer" style="backgroud-color: white !important">
+                             <p class="card-text forum-date">2021-09-28</p>
                         </div>
                     </div>`;
         }
 
         function makePaginationTemplate(pagingeNumbers) {
-            return `<nav class="mt-5">
+            return `<nav class="mt-3">
                         <ul class="pagination justify-content-center">
                             <li class="page-item disabled" style="display: flex">
-                                <a class="page-link" href="#"><i class="fas fa-angle-double-left"></i></a>
+                                <a class="page-link" href="/forum/list?currentPage=1"><i class="fas fa-angle-double-left"></i></a>
                                 <a class="page-link" href="#" tabindex="-1"><i class="fas fa-angle-left"></i></a>
                             </li>
                             ${
@@ -130,7 +136,7 @@
                                     for(let i = 0; i < pagingeNumbers; i++) {
                                          pagingNumberTemplate += 
                                                 `<li class="page-item">
-                                                    <a class="page-link" href="#">${i+1}</a>
+                                                    <a class="page-link" href="/forum/list?currentPage=${i+1}">${i+1}</a>
                                                 </li>`;
 
                                     }
@@ -140,7 +146,7 @@
                             }
                             <li class="page-item" style="display: flex">
                                 <a class="page-link" href="#"><i class="fas fa-angle-right"></i></a>
-                                <a class="page-link" href="#"><i class="fas fa-angle-double-right"></i></a>
+                                <a class="page-link" href="/forum/list?currentPage=${pagingeNumbers}"><i class="fas fa-angle-double-right"></i></a>
                             </li>
                         </ul>
                     </nav>`;

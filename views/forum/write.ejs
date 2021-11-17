@@ -18,12 +18,9 @@
                         <option selected>Data export</option>
                         <option>Image resize</option>
                         <option>File controller</option>
+                        <option>Issue</option>
                         <option>ETC</option>
                     </select>
-                </div>
-                <div class="form-group">
-                    <label for="forum-write-tag">Tag</label>
-                    <input type="email" class="form-control forum-write-tag">
                 </div>
             </form>
             <div id="summernote"></div>
@@ -74,7 +71,6 @@
             const forumWriteTitle = document.querySelector('.forum-write-title').value;
             const forumWriteCategory = document.querySelector('.forum-write-category').value;
             const forumWriteContetns = $('#summernote').summernote('code');
-            // const forumWriteTag = document.querySelector('.forum-write-Tag');
 
             const forumWriteValueResult = forumValueCheck(forumWriteTitle);
 
