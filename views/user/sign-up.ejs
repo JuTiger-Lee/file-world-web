@@ -1,35 +1,59 @@
 <%- include('../common/header.ejs') %>
-    <link rel="stylesheet" href="../static/css/user/signup.css">
+    <link rel="stylesheet" href="../static/css/user/common.css">
 
-    <div id="singup-box">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="signup-title-logo-box" style="text-align: center;">
-                    <h1>File<span class="header-world-logo"> W<i class="fas fa-globe fa-sm"></i>rld</span></h1>
-                </div>
-                <div class="signup-form-box">
-                    <div class="form-group">
-                        <input type="email" class="form-control user-email" aria-describedby="emailHelp"
-                            placeholder="Enter email">
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                            else.</small>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control user-nickname" placeholder="nickname">
-                    </div>
-                    <div class="form-group">
-                        <input type="id" class="form-control user-id" placeholder="ID">
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control user-password" type="password" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control user-verify-password" type="password" placeholder="Verify Password">
-                    </div>
+    <div id="user-box">
+        <div class="container">
+            <div class="row align-items-center justify-content-cente">
+                <div class="col-xl-7 col-lg-8 col-sm-10 col-12 user-form-box">
+                    <div class="user-content">
+                        <div class="user-header">
+                            <a href="/" class="user-logo">
+                                <h1>File World</h1>
+                            </a>
+                            <p>Sign Up into your pages account</p>
+                        </div>
+                        <div class="user-body">
+                            <div class="form-group">
+                                <input type="email" class="form-control user-email" aria-describedby="emailHelp"
+                                    placeholder="Enter email">
+                                    <small id="emailHelp" class="form-text text-muted">
+                                        We'll never share your email with anyone else.
+                                    </small>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control user-nickname" placeholder="nickname">
+                            </div>
+                            <div class="form-group">
+                                <input type="id" class="form-control user-id" placeholder="ID" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control user-password" placeholder="Password"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control user-verify-password" type="password" placeholder="Verify Password">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary user-local-btn">Sign Up</button>
+                            </div>
+                            <div class="user-style-line">
+                                <h3>Or user With</h3>
+                            </div>
+                            <ul class="user-socials">
+                                <li class="user-google">
+                                    <a href="#" title="google">
+                                        <i class="fab fa-google-plus-g"></i>
+                                        <span>Google+</span>
+                                    </a>
+                                </li>
 
-                    <div class="signup-btn-box">
-                        <div class="signup-btn btn btn-primary">
-                            <span>SIGNUP</span>
+                                <li class="user-facebook">
+                                    <a href="#" title="Facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                        <span>Facebook</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -59,7 +83,7 @@
                     'Please enter your Email.'
                 );
             }
-            
+
             if (!userEmail.match(emailRegExp)) {
                 return notification(
                     'warning',
@@ -68,7 +92,7 @@
                 );
             }
 
-            if(!userNickname.trim() || !userNickname) {
+            if (!userNickname.trim() || !userNickname) {
                 return notification(
                     'warning',
                     'Enter required values',
@@ -100,7 +124,7 @@
                 );
             }
 
-            if(userVerifyPassword !== userPassword) {
+            if (userVerifyPassword !== userPassword) {
                 return notification(
                     'warning',
                     'Enter required values',
@@ -142,4 +166,4 @@
 
         signupBtn.addEventListener('click', () => reqSignup());
     </script>
-<%- include('../common/footer.ejs') %>
+    <%- include('../common/footer.ejs') %>
