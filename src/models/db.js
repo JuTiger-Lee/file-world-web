@@ -2,8 +2,9 @@ const mysql = require('mysql');
 const { local, dev, prod } = require('../config/db');
 const MakeResponse = require('../controller/handler/MakeResponse');
 
-let connDBType = '';
+let connDBType = {};
 
+// server type에 맞게 db 연결
 if (process.env.NODE_ENV === 'prod') {
   connDBType = prod;
 } else if (process.env.NODE_ENV === 'dev') {
