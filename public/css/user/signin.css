@@ -1,52 +1,17 @@
-#login-box {
-  width: 100%;
-  margin: auto;
+.user-forgot-password {
+  color: #63bbff;
+  font-size: 15px;
+  margin-bottom: 5px;
+  display: block;
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
-.login-title-logo-box {
-  margin-bottom: 40px;
-}
-
-.login-form-box {
-  width: 40%;
-  margin: auto;
-}
-
-.login-btn-box {
-  margin: auto;
+.user-footer {
   text-align: center;
 }
 
-.login-btn-box div {
-  width: 100%;
-  border-radius: 2%;
-  cursor: pointer;
-  margin: auto;
-  margin-top: 10px;
-}
-
-.login-btn-box div:nth-child(2) {
-  background-color: #c1553a;
-  border: none;
-}
-
-.login-btn-box div:nth-child(3) {
-  background-color: #3b5998;
-  border: none;
-}
-
-.login-forgot-password {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.login-forgot-password > p {
-  font-weight: bold;
-  cursor: pointer;
-  color: #b5b5b5;
-}
-
-.login-forgot-password > p:hover {
-  border-bottom: 1px solid;
+.user-footer p {
+  color: #999898;
 }
