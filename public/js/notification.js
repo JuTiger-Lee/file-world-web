@@ -19,19 +19,19 @@ function notification(state = 'primary', title, message) {
   const notificationDiv = document.createElement('div');
 
   notificationDiv.className = `alert alert-${state} alert-dismissible fade show`;
-  notificationDiv.innerHTML = `<h5 class="alert-heading">${title}</h5> <span>${message}</span>`;
-  notificationDiv.innerHTML +=
-    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+  notificationDiv.innerHTML =
+    `<h5 class="alert-heading">${title}</h5> <span>${message}</span>` +
+    '<button class="close" data-dismiss="alert" aria-label="Close">' +
     '<span aria-hidden="true">&times;</span>' +
     '</button>';
 
   notificationBox.innerHTML = notificationDiv;
 
-  setTimeout(() => {
-    $('.alert')
-      .fadeTo(500, 0)
-      .slideUp(500, function () {
-        $(this).remove();
-      });
-  }, 3000);
+  // setTimeout(() => {
+  //   $('.alert')
+  //     .fadeTo(500, 0)
+  //     .slideUp(500, function () {
+  //       $(this).remove();
+  //     });
+  // }, 3000);
 }

@@ -2,14 +2,16 @@
 
 const forumWriteSaveBtn = document.querySelector('.forum-write-save-btn');
 
-$('#summernote').summernote({
-  height: 500,
-  focus: true,
-  disableResizeEditor: true,
-  focus: true,
-  lang: 'ko-KR',
-  placeholder: 'contents',
-});
+function init() {
+  $('#summernote').summernote({
+    height: 500,
+    focus: true,
+    disableResizeEditor: true,
+    focus: true,
+    lang: 'ko-KR',
+    placeholder: 'contents',
+  });
+}
 
 function forumValueCheck(forumWriteTitle) {
   if (!forumWriteTitle.trim() || !forumWriteTitle) {
@@ -56,4 +58,5 @@ async function reqForumWrite() {
   }
 }
 
+init();
 forumWriteSaveBtn.addEventListener('click', () => reqForumWrite());

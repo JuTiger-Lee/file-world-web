@@ -38,9 +38,7 @@ function makeForumListTemplate(idx, title, category) {
                                 </span>
                             </div>
                         </div>
-          
                     </div>
-
                 </div>
                 <div class="card-footer">
                      <p class="card-text forum-date">2021-09-28</p>
