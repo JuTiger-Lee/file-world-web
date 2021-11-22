@@ -4,13 +4,13 @@ function pagingEvent(totalPage, currentPage) {
   const prevPaging = document.querySelector('.prev-paging');
   const numberPaging = document.querySelectorAll('.number-paging');
 
-  $(document.body).on('click', 'a', function (e) {
-    const $this = $(this);
-    const href = $this.attr('href');
+  // $(document.body).on('click', 'a', function (e) {
+  //   const $this = $(this);
+  //   const href = $this.attr('href');
 
-    window.location.hash = href;
-    e.preventDefault();
-  });
+  //   window.location.hash = href;
+  //   e.preventDefault();
+  // });
 
   for (let i = 0; i < numberPaging.length; i++) {
     numberPaging[i].addEventListener('click', e => {
