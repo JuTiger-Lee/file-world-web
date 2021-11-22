@@ -3,8 +3,9 @@ const jwt = require('jsonwebtoken');
 const { AUTH_KEY } = require('../../utils/setting');
 const MakeResponse = require('../handler/MakeResponse');
 const Email = require('../handler/Email');
-const hashHandler = require('../handler/hash');
+const { encrypt } = require('../handler/hash');
 const userModel = require('../../models/user');
+const Pagination = require('../handler/Pagination');
 
 /**
  *
@@ -12,10 +13,10 @@ const userModel = require('../../models/user');
  * @param {String} ui_id
  */
 async function idDataCheck(makeResponse, ui_id) {
-  const findUserID = await userModel.userFindID([ui_id]);
+  const user = await userModel.findUserID([ui_id]);
 
   // id duplicate check
-  if (findUserID.data.length) {
+  if (user.data.length) {
     makeResponse.init(409, 409, 'id duplicate');
     throw makeResponse.makeErrorResponse({}, 'signUp Error id duplicate');
   }
@@ -27,10 +28,10 @@ async function idDataCheck(makeResponse, ui_id) {
  * @param {String} ui_nickname
  */
 async function nicknameDataCheck(makeResponse, ui_nickname) {
-  const findUserNickName = await userModel.userFindNickName([ui_nickname]);
+  const user = await userModel.findUserNickname([ui_nickname]);
 
   // nickname duplicate check
-  if (findUserNickName.data.length) {
+  if (user.data.length) {
     makeResponse.init(409, 409, 'nickname duplicate');
     throw makeResponse.makeErrorResponse({}, 'user nickname Check Error');
   }
@@ -74,6 +75,7 @@ async function singUp(req, res, next) {
   try {
     const makeResponse = new MakeResponse();
     const { ui_email, ui_nickname, ui_id, ui_password } = req.body;
+    const beforeProfileImage = '/upload/profile/blank_profile.png';
 
     // id duplicate check
     await idDataCheck(makeResponse, ui_id);
@@ -82,7 +84,7 @@ async function singUp(req, res, next) {
     await nicknameDataCheck(makeResponse, ui_nickname);
 
     // password encrypted
-    const hashPassword = hashHandler.encrypt(ui_password, 10);
+    const hashPassword = encrypt(ui_password, 10);
 
     // email send
     const email = new Email(
@@ -93,16 +95,17 @@ async function singUp(req, res, next) {
 
     // email status change 0: default 1: send 2: join success
     if (sendResult.messageId) {
-      const createUser = await userModel.userCreate([
+      const newUser = await userModel.createUser([
         ui_email,
         ui_nickname,
         ui_id,
         hashPassword,
+        beforeProfileImage,
         1,
       ]);
 
       // affectedRows => add row
-      if (!createUser.data.affectedRows) {
+      if (!newUser.data.affectedRows) {
         makeResponse.init(500, 500, 'User insert Error');
         throw makeResponse.makeErrorResponse({}, 'signUp user insert Error');
       }
@@ -177,6 +180,47 @@ function signIn(req, res, next) {
   })(req, res);
 }
 
+async function profile(req, res, next) {
+  try {
+    const makeResponse = new MakeResponse();
+    const { idx } = req.user;
+
+    // offset Pagination
+    const sql = {
+      list: 'SELECT * FROM forum',
+      total: 'SELECT COUNT(fi_idx) as total FROM forum',
+      where: 'where ui_idx = ?',
+      whereList: [],
+      order: 'ORDER BY fi_idx DESC',
+      limit: '',
+      params: [idx],
+    };
+
+    const findUserIdx = await userModel.findUserIdx([idx]);
+    const pagination = new Pagination(10, 1, sql);
+    pagination.init();
+
+    const getPagingData = await pagination.getPagingInfo();
+    findUserIdx.data[0].pagination = getPagingData;
+
+    makeResponse.init(200, 200, 'success');
+
+    return res.json(makeResponse.makeSuccessResponse(findUserIdx.data));
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+}
+
+async function profileUpload(req, res, next) {
+  try {
+    console.log('rrr', req.file);
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+}
+
 // Use when cookie or session based
 function signOut(req, res, next) {}
 
@@ -186,4 +230,6 @@ module.exports = {
   signOut,
   idCheck,
   nicknameCheck,
+  profile,
+  profileUpload,
 };

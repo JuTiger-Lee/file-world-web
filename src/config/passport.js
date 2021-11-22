@@ -4,7 +4,7 @@ const { Strategy: LocalStrategy } = require('passport-local');
 
 const { AUTH_KEY } = require('../utils/setting');
 const userModel = require('../models/user');
-const hashHandler = require('../controller/handler/hash');
+const { compare } = require('../controller/handler/hash');
 
 const passportOption = { usernameField: 'ui_id', passwordField: 'ui_password' };
 const jwtOption = {
@@ -29,7 +29,7 @@ const jwtOption = {
  */
 async function passportVerify(id, password, done) {
   try {
-    const user = await userModel.userFindID([id]);
+    const user = await userModel.findUserID([id]);
 
     // user find
     if (!user.data.length) {
@@ -37,10 +37,7 @@ async function passportVerify(id, password, done) {
     }
 
     // password compare
-    const compareResult = hashHandler.compare(
-      password,
-      user.data[0].ui_password,
-    );
+    const compareResult = compare(password, user.data[0].ui_password);
 
     // password inconsistency
     if (!compareResult) {
@@ -71,7 +68,7 @@ async function jwtVerify(payload, done) {
           "exp": 1636213933 => 토큰 만료시간
         }
      */
-    const user = await userModel.userFindID([payload.id]);
+    const user = await userModel.findUserID([payload.id]);
 
     if (!user.data.length) {
       return done(null, false, { reason: 'Unauthorized Error' });
