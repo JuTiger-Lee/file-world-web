@@ -41,9 +41,9 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <div class="form-row">
+                <div class="form-row forum-list-search-box">
                     <div class="form-group col-md-3">
-                        <select id="inputState" class="form-control">
+                        <select class="form-control search-category">
                             <option selected>ALL</option>
                             <option>Data export</option>
                             <option>Image resize</option>
@@ -53,7 +53,7 @@
                         </select>
                     </div>
                     <div class="form-group col-md-2">
-                        <select id="inputState" class="form-control">
+                        <select class="form-control search-pageSize">
                             <option selected>10</option>
                             <option>20</option>
                             <option>30</option>
@@ -62,7 +62,7 @@
                         </select>
                     </div>
                     <div class="form-group col-md-5">
-                        <input type="text" class="form-control" placeholder="Title Search">
+                        <input type="text" class="form-control search-title" placeholder="Title Search">
                     </div>
                     <div class="col-auto">
                         <button class="btn btn-primary mb-3">Search</button>
@@ -72,10 +72,9 @@
                     </div>
                 </div>
                 <div class="forum-list-card-box"></div>
-                <div id="pagination">
-                </div>
+                <div id="pagination" class="mb-3"></div>
             </div>
         </div>
     </div>
     <script src="./list.js"></script>
-<%- include('../common/footer.ejs') %>
+    <%- include('../common/footer.ejs') %>
