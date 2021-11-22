@@ -1,6 +1,6 @@
 const db = require('./db');
 
-async function forumCreate(params) {
+async function createForum(params) {
   const sql =
     'INSERT INTO forum(fi_title, fi_category, fi_content, ui_idx,' +
     'create_datetime, update_datetime)' +
@@ -10,5 +10,5 @@ async function forumCreate(params) {
 }
 
 module.exports = {
-  forumCreate,
+  createForum,
 };
