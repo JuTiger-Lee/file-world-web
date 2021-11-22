@@ -2,18 +2,23 @@ const mysql = require('mysql');
 const { local, dev, prod } = require('../config/db');
 const MakeResponse = require('../controller/handler/MakeResponse');
 
-let connDBType = {};
+function getConnType() {
+  let connDBType = {};
 
-// server type에 맞게 db 연결
-if (process.env.NODE_ENV === 'prod') {
-  connDBType = prod;
-} else if (process.env.NODE_ENV === 'dev') {
-  connDBType = dev;
-} else {
-  connDBType = local;
+  // server type에 맞게 db 연결
+  if (process.env.NODE_ENV === 'prod') {
+    connDBType = prod;
+  } else if (process.env.NODE_ENV === 'dev') {
+    connDBType = dev;
+  } else {
+    connDBType = local;
+  }
+
+  return connDBType;
 }
 
 function connDB() {
+  const connDBType = getConnType();
   const conn = mysql.createConnection(connDBType);
   conn.connect();
 
@@ -38,7 +43,14 @@ async function query(sql, params) {
   const makeResponse = new MakeResponse();
   const conn = connDB();
 
-  let result = {};
+  const startTransaction = () => {
+    return new Promise((res, rej) => {
+      conn.beginTransaction(err => {
+        if (err) rej(err);
+        else res();
+      });
+    });
+  };
 
   const getQueryData = () => {
     return new Promise((res, rej) => {
@@ -50,24 +62,22 @@ async function query(sql, params) {
   };
 
   try {
-    await conn.beginTransaction();
+    await startTransaction();
     const queryData = await getQueryData(conn, sql, params);
-    await conn.commit();
+    conn.commit();
 
-    result = {
+    return {
       // expandability...
       data: queryData,
     };
   } catch (err) {
-    await conn.rollback();
+    conn.rollback();
 
     makeResponse.init(500, 666, 'query Error');
     throw makeResponse.makeErrorResponse(err, 'DB Query Error');
   } finally {
     closeConnDB(conn);
   }
-
-  return result;
 }
 
 // TODO...
