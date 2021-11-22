@@ -1,14 +1,14 @@
 'use strict';
 
-function makeForumListTemplate(idx, title, category) {
+function makeForumListTemplate(idx, profile, nickanme, title, category, date) {
   return `<div class="card">
                 <div class="card-body">
                     <div class="forum-user-profile-box">
                         <div class="forum-profile">
-                            <img src="../static/images/146675.jpg" alt="">
+                            <img src="${profile}" alt="">
                         </div>
                         <div class="forum-profile-name">
-                            <p>crow</p>
+                            <p>${nickanme}</p>
                         </div>
                     </div>
                     <div class="forum-post-info-box">
@@ -41,69 +41,49 @@ function makeForumListTemplate(idx, title, category) {
                     </div>
                 </div>
                 <div class="card-footer">
-                     <p class="card-text forum-date">2021-09-28</p>
+                     <p class="card-text forum-date">${date}</p>
                 </div>
             </div>`;
-}
-
-function makePaginationTemplate(pagingeNumbers) {
-  return `<nav class="mt-3">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled" style="display: flex">
-                        <a class="page-link" href="/forum/list?currentPage=1"><i class="fas fa-angle-double-left"></i></a>
-                        <a class="page-link" href="#" tabindex="-1"><i class="fas fa-angle-left"></i></a>
-                    </li>
-                    ${(function () {
-                      let pagingNumberTemplate = '';
-
-                      for (let i = 0; i < pagingeNumbers; i++) {
-                        pagingNumberTemplate += `<li class="page-item">
-                                            <a class="page-link" href="/forum/list?currentPage=${
-                                              i + 1
-                                            }">${i + 1}</a>
-                                        </li>`;
-                      }
-
-                      return pagingNumberTemplate;
-                    })()}
-                    <li class="page-item" style="display: flex">
-                        <a class="page-link" href="#"><i class="fas fa-angle-right"></i></a>
-                        <a class="page-link" href="/forum/list?currentPage=${pagingeNumbers}"><i class="fas fa-angle-double-right"></i></a>
-                    </li>
-                </ul>
-            </nav>`;
 }
 
 function reqDataCheck(reqResult) {
   const forumListCardBox = document.querySelector('.forum-list-card-box');
   let template = '';
 
-  if (reqResult.code === 200 && reqResult.data.list.length) {
-    for (let i = 0; i < reqResult.data.list.length; i++) {
+  if (reqResult.code === 200 && reqResult.data[0].pagination.list.length) {
+    for (let i = 0; i < reqResult.data[0].pagination.list.length; i++) {
       template += makeForumListTemplate(
-        reqResult.data.list[i].fi_idx,
-        reqResult.data.list[i].fi_title,
-        reqResult.data.list[i].fi_category,
+        reqResult.data[0].pagination.list[i].fi_idx,
+        reqResult.data[0].pagination.list[i].ui_profile,
+        reqResult.data[0].pagination.list[i].ui_nickname,
+        reqResult.data[0].pagination.list[i].fi_title,
+        reqResult.data[0].pagination.list[i].fi_category,
+        reqResult.data[0].pagination.list[i].update_datetime,
       );
     }
 
-    if (reqResult.data.totalPage > 0) {
-      template += makePaginationTemplate(reqResult.data.totalPage);
+    if (reqResult.data[0].pagination.totalPage > 0) {
+      makePagination(reqResult.data[0].pagination);
     }
 
     forumListCardBox.innerHTML = template;
   } else {
     alert('SORRY');
   }
+
+  return window.scrollTo(0, 0);
 }
 
-async function reqForumList() {
-  const reqResult = await reqAjax('/api/forum/list', 'post', {
-    pageSize: 10,
-    currentPage: 1,
-  });
+async function reqForumList(queryString) {
+  const reqResult = await reqAjax(`/api/forum/list?${queryString}`, 'get');
 
   return reqDataCheck(reqResult);
 }
 
-reqForumList();
+function init() {
+  const queryString = window.location.search.substr(1).split('&');
+
+  reqForumList('currentPage=1&category=ALL&pageSize=10&title_search=ALL');
+}
+
+init();
