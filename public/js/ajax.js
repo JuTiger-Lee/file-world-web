@@ -7,7 +7,7 @@
  * @param {Array || Object} params
  * @returns
  */
-async function reqAjax(url, method, params) {
+async function reqAjax(url, method, params, option) {
   const screen = document.querySelector('.screen');
   const bearerToken = `bearer ${localStorage.getItem('token')}`;
 
@@ -18,6 +18,11 @@ async function reqAjax(url, method, params) {
     },
   };
 
+  if (option) {
+    config.headers = option;
+    config.headers.Authorization = bearerToken;
+  }
+
   let getReqResults = {};
 
   try {
@@ -26,7 +31,7 @@ async function reqAjax(url, method, params) {
     if (method === 'post' || method === 'put') {
       getReqResults = await axios[method](url, params, config);
     } else {
-      getReqResults = await axios[method](url);
+      getReqResults = await axios[method](url, config);
     }
 
     return getReqResults.data;
