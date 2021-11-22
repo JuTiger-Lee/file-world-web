@@ -1,68 +1,55 @@
 const model = require('../../models/db');
 
 class Pagination {
-  constructor() {
-    this.pagingInfo = {
-      start: '',
-      end: '',
-      totalPage: '',
-      // nextPage: '',
-      // prevPage: '',
-      currentPage: '',
-      list: [],
-    };
-
-    this.combineListSQL = '';
-    this.combineTotalSQL = '';
-  }
-
   /**
    *
    * @param {Number} pageSize
    * @param {Number} currentPage
    * @param {Ojbect} sql
    */
-  async init(pageSize, currentPage, sql) {
+  constructor(pageSize, currentPage, sql) {
     this.pageSize = pageSize;
     this.currentPage = currentPage;
     this.sql = sql;
-
-    this.pagingInfo.currentPage = this.directionPage();
-    this.pagingInfo.start = this.start();
-    this.pagingInfo.end = this.end();
-
-    this.offset();
-    this.sqlCombine();
-
-    this.pagingInfo.list = await this.getList();
-    this.pagingInfo.totalPage = await this.getTotalPage();
   }
 
-  // get next, prev, current page value
-  directionPage() {
+  init() {
+    this.pagingInfo = {
+      startIndex: 0,
+      endIndex: 0,
+      pageSize: 0,
+      totalPage: 0,
+      list: [],
+      currentPage: 0,
+    };
+
+    this.pagingPage = 10;
+    this.combineListSQL = '';
+    this.combineTotalSQL = '';
+  }
+
+  // current page value
+  getCurrentPage() {
     if (this.currentPage < 1) this.currentPage = 1;
 
-    this.pagingInfo.currentPage = this.currentPage;
+    return this.currentPage;
   }
 
-  // start page
-  start() {
-    return this.pageSize * (this.currentPage - 1);
+  getPageGroup() {
+    return Math.ceil(this.currentPage / this.pagingPage);
   }
 
-  // page size
-  end() {
-    return this.pageSize;
-  }
+  getOffset() {
+    const startIndex = this.pageSize * (this.currentPage - 1);
+    this.pagingInfo.pageSize = this.pageSize;
 
-  offset() {
-    this.sql.limit += ` LIMIT ${this.pagingInfo.start}, ${this.pagingInfo.end}`;
+    return ` LIMIT ${startIndex}, ${this.pagingInfo.pageSize}`;
   }
 
   sqlCombine() {
     // list sql
     this.combineListSQL =
-      `${this.sql.list} ${this.sql.where}` +
+      `${this.sql.list} ${this.sql.where} ` +
       `${this.sql.order} ${this.sql.limit}`;
 
     // rows length sql
@@ -78,10 +65,53 @@ class Pagination {
   async getTotalPage() {
     const total = await model.query(this.combineTotalSQL, this.sql.params);
 
-    return Math.ceil(total.data[0].total / this.pagingInfo.end);
+    return Math.ceil(total.data[0].total / this.pagingInfo.pageSize);
   }
 
-  getPagingInfo() {
+  getLast() {
+    let endIndex = this.pageGorup * this.pagingPage;
+
+    if (endIndex > this.pagingInfo.totalPage) {
+      endIndex = this.pagingInfo.totalPage;
+    }
+
+    return endIndex;
+  }
+
+  getFirst() {
+    let startIndex = 1;
+
+    if (this.pagingInfo.endIndex - (this.pagingPage - 1) <= 0) {
+      startIndex = 1;
+    } else {
+      startIndex = this.pagingInfo.endIndex - (this.pagingPage - 1);
+
+      if (this.currentPage > 10) {
+        if (startIndex <= 11) {
+          startIndex = this.pagingInfo.endIndex - (startIndex - 2);
+        } else {
+          startIndex =
+            this.pagingInfo.endIndex -
+            (startIndex - 10 * (this.pageGorup - 2) - 2);
+        }
+      }
+    }
+
+    return startIndex;
+  }
+
+  async getPagingInfo() {
+    this.pagingInfo.currentPage = this.getCurrentPage();
+    this.pageGorup = this.getPageGroup();
+
+    this.sql.limit += this.getOffset();
+    this.sqlCombine();
+
+    this.pagingInfo.list = await this.getList();
+    this.pagingInfo.totalPage = await this.getTotalPage();
+    this.pagingInfo.endIndex = this.getLast();
+    this.pagingInfo.startIndex = this.getFirst();
+
     return this.pagingInfo;
   }
 }
