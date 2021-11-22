@@ -1,0 +1,46 @@
+<%- include('../common/header.ejs') %>
+    <link rel="stylesheet" href="../../static/css/user/profile.css">
+    <link rel="stylesheet" href="../../static/css/forum/list.css">
+
+    <div id="profile-box" style="width: 80%; margin: auto;">
+        <div class="profile-page">
+            <div class="page-header header-filter" data-parallax="true"
+                style="background-image:url('../../static/images/146675.jpg');"></div>
+            <div class="main main-raised">
+                <div class="card card-body">
+                    <div class="container-fuild">
+                        <div class="row gx-4 mb-2">
+                            <div class="col-auto">
+                                <div class="profile" style="display: flex;">
+                                    <div class="avatar">
+                                        <img 
+                                            src="/upload/profile/blank_profile.png" 
+                                            alt="profile image"
+                                            class="img-raised rounded-circle img-fluid"
+                                        >
+                                        <!-- <button class="btn btn-primary chagne-profile"><i class="fas fa-plus-circle"></i></button> -->
+                                        <input type="file" class="change-profile" />
+                                    </div>
+                                    <div class="col-auto my-auto">
+                                        <div class="h-100">
+                                            <h5 class="mb-1 profile-user-name"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row forum-list-post-box">
+                <div class="col-md-3"></div>
+                <div class="col-md-9">
+                    <div class="forum-list-card-box" style="margin-top: 20px"></div>
+                    <div id="pagination" class="mb-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./profile.js"></script>
+    <%- include('../common/footer.ejs') %>
