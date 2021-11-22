@@ -1,6 +1,6 @@
 const cors = require('cors');
 
-const apiDocs = require('../apiDocs/index');
+const apiDocs = require('../controller/apiDocs/index');
 const checkAuth = require('../middleware/checkAuth');
 const error = require('../middleware/error');
 
@@ -49,7 +49,11 @@ module.exports = app => {
     },
   };
 
-  const authURIList = ['/api/forum/write'];
+  const authURIList = [
+    '/api/forum/write',
+    '/api/user/profile',
+    '/api/iser/profile-upload',
+  ];
 
   /* ----- SOP ALLOW URL ----- */
 
