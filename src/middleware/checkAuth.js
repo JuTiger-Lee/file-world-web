@@ -5,7 +5,7 @@ const MakeResponse = require('../controller/handler/MakeResponse');
 module.exports = (req, res, next) => {
   const makeResponse = new MakeResponse();
 
-  const tokeDecode = beareToken => {
+  const decodeToken = beareToken => {
     const token = beareToken.split(' ')[1];
 
     return jwt.decode(token);
@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
 
   passport.authenticate('jwt', { session: false }, (error, user, info) => {
     if (error) {
-      makeResponse.init(401, 401, 'Unauthorized Error');
+      makeResponse.init(500, 500, 'Unauthorized Error');
       throw makeResponse.makeErrorResponse(
         error,
         'passport authenticate Error',
@@ -36,8 +36,7 @@ module.exports = (req, res, next) => {
       throw makeResponse.makeErrorResponse({}, 'passport User not found Error');
     }
 
-    const decodeToken = tokeDecode(req.headers.authorization);
-    req.user = decodeToken;
+    req.user = decodeToken(req.headers.authorization);
 
     next();
   })(req, res, next);
