@@ -34,6 +34,11 @@ class Server {
       this.express.static(path.join(__dirname, '../../public')),
     );
 
+    this.app.use(
+      '/upload',
+      this.express.static(path.join(__dirname, '../../public/images/upload')),
+    );
+
     this.app.use(this.express.static(path.join(__dirname, '../../views')));
 
     // Template engine registration
