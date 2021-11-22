@@ -4,8 +4,8 @@ const forumModel = require('../../models/forum');
 
 async function list(req, res, next) {
   try {
-    const { currentPage, pageSize, category, title_search } = req.query;
     const makeResponse = new MakeResponse();
+    const { currentPage, pageSize, category, title_search } = req.query;
 
     // offset Pagination
     const sql = {
