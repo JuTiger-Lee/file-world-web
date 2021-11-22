@@ -1,14 +1,23 @@
 const multer = require('multer');
-const hashHanlder = require('../controller/handler/hash');
+const path = require('path');
+const { randomSuffix } = require('../controller/handler/hash');
 
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, done) {
-      done(null, 'upload/'); // 저장 경로 done이라고 생각하면 됨 null=> 서버에러, 2번쨰는 성공했을때
+      // 저장 경로
+      done(null, path.join(__dirname, '../upload'));
     },
-    filename(req, file, done) {},
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname);
+      const basename = path.basename(file.originalname, ext);
+      const hash = randomSuffix();
+
+      // 파일 저장시 이름
+      done(null, `${basename}_${hash}${ext}`);
+    },
   }),
-  limits: {},
+  // limits: { fileSize: 20 * 1024 * 1024 },
 });
 
 module.exports = upload;
