@@ -1,6 +1,6 @@
 'use strict';
 
-const signupBtn = document.querySelector('.signup-btn');
+const userSignupLocalBtn = document.querySelector('.user-signup-local-btn');
 
 function signupValueCheck() {
   const userEmail = document.querySelector('.user-email').value;
@@ -12,64 +12,8 @@ function signupValueCheck() {
   ).value;
 
   // email regular expression
-  const emailRegExp =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-
-  if (!userEmail.trim() || !userEmail) {
-    return notification(
-      'warning',
-      'Enter required values',
-      'Please enter your Email.',
-    );
-  }
-
-  if (!userEmail.match(emailRegExp)) {
-    return notification(
-      'warning',
-      'Enter required values',
-      'Email format is incorrect.',
-    );
-  }
-
-  if (!userNickname.trim() || !userNickname) {
-    return notification(
-      'warning',
-      'Enter required values',
-      'Please enter your Nickname',
-    );
-  }
-
-  if (!userID.trim() || !userID) {
-    return notification(
-      'warning',
-      'Enter required values',
-      'Please enter your ID',
-    );
-  }
-
-  if (!userPassword.trim() || !userPassword) {
-    return notification(
-      'warning',
-      'Enter required values',
-      'Please enter your Password',
-    );
-  }
-
-  if (!userVerifyPassword.trim() || !userVerifyPassword) {
-    return notification(
-      'warning',
-      'Enter required values',
-      'Please enter your Confirm password',
-    );
-  }
-
-  if (userVerifyPassword !== userPassword) {
-    return notification(
-      'warning',
-      'Enter required values',
-      'Passwords do not match.',
-    );
-  }
+  // const emailRegExp =
+  //   /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
   return {
     userEmail,
@@ -103,4 +47,4 @@ async function reqSignup() {
   return reqDataCheck(reqResult);
 }
 
-signupBtn.addEventListener('click', () => reqSignup());
+userSignupLocalBtn.addEventListener('click', () => reqSignup());
