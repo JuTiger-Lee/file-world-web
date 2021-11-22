@@ -10,4 +10,8 @@ router.get('/sign-up', (req, res) => {
   res.render('../views/user/sign-up');
 });
 
+router.get('/profile', (req, res) => {
+  res.render('../views/user/profile');
+});
+
 module.exports = router;
