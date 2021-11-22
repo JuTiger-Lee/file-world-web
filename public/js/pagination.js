@@ -4,25 +4,13 @@ function pagingEvent(totalPage, currentPage) {
   const prevPaging = document.querySelector('.prev-paging');
   const numberPaging = document.querySelectorAll('.number-paging');
 
-  // const cateogry = document.querySelector(
-  //   '.forum-list-search-box .search-category',
-  // ).value;
+  $(document.body).on('click', 'a', function (e) {
+    const $this = $(this);
+    const href = $this.attr('href');
 
-  // const pageSize = document.querySelector(
-  //   '.forum-list-search-box .search-pageSize',
-  // ).value;
-
-  // const title = document.querySelector(
-  //   '.forum-list-search-box .search-title',
-  // ).value;
-
-  // $(document.body).on('click', 'a', function (e) {
-  //   const $this = $(this);
-  //   const href = $this.attr('href');
-
-  //   window.location.hash = href;
-  //   e.preventDefault();
-  // });
+    window.location.hash = href;
+    e.preventDefault();
+  });
 
   for (let i = 0; i < numberPaging.length; i++) {
     numberPaging[i].addEventListener('click', e => {
@@ -54,6 +42,18 @@ function pagingEvent(totalPage, currentPage) {
   }
 
   function test(currentPage) {
+    const cateogry = document.querySelector(
+      '.forum-list-search-box .search-category',
+    ).value;
+
+    const pageSize = document.querySelector(
+      '.forum-list-search-box .search-pageSize',
+    ).value;
+
+    const title = document.querySelector(
+      '.forum-list-search-box .search-title',
+    ).value;
+
     const queryString =
       `currentPage=${currentPage}&category=${cateogry}` +
       `&pageSize=${pageSize}&title_search=${title}`;
