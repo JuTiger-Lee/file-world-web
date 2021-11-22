@@ -4,6 +4,10 @@ const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const MakeResponse = require('./MakeResponse');
 
+function randomSuffix() {
+  return crypto.randomBytes(5).toString('hex');
+}
+
 /**
  * req password
  * @param {String} password
@@ -23,7 +27,7 @@ function compare(password, userPassword) {
     const makeResponse = new MakeResponse();
 
     makeResponse.init(500, 500, 'password compare Error');
-    throw makeResponse.MakeErrorRespone(err, 'compare Error');
+    throw makeResponse.makeErrorResponse(err, 'compare Error');
   }
 }
 
@@ -60,4 +64,5 @@ module.exports = {
   encrypt,
   decrypt,
   compare,
+  randomSuffix,
 };
