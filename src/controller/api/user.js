@@ -189,7 +189,7 @@ async function profile(req, res, next) {
     const sql = {
       list: 'SELECT * FROM forum',
       total: 'SELECT COUNT(fi_idx) as total FROM forum',
-      where: 'where ui_idx = ?',
+      where: 'WHERE ui_idx = ?',
       whereList: [],
       order: 'ORDER BY fi_idx DESC',
       limit: '',

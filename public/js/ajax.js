@@ -13,17 +13,13 @@ async function reqAjax(url, method, params, option) {
 
   // token send
   const config = {
-    headers: {
-      Authorization: bearerToken,
-    },
+    headers: {},
   };
 
-  if (option) {
-    config.headers = option;
-    config.headers.Authorization = bearerToken;
-  }
-
   let getReqResults = {};
+
+  if (option) config.headers = option;
+  if (bearerToken) config.headers.Authorization = bearerToken;
 
   try {
     screen.style.display = 'block';

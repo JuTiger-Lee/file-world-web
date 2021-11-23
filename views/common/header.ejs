@@ -56,6 +56,15 @@
         <script src="../../static/js/ajax.js"></script>
         <script src="../../static/js/pagination.js"></script>
         <script>
+
+            function signOut() {
+                const signOut = document.querySelector('.sign-out');
+
+                if (signOut) {
+                    signOut.addEventListener('click', () => localStorage.removeItem('token'));
+                }
+            }
+
             function menuClickEvent() {
                 const menuList = document.querySelectorAll('.menu-list > li > a');
 
@@ -107,14 +116,6 @@
 
                 signOut();
                 menuClickEvent();
-            }
-
-            function signOut() {
-                const signOut = document.querySelector('.sign-out');
-
-                if (signOut) {
-                    signOut.addEventListener('click', () => localStorage.removeItem('token'));
-                }
             }
 
             createMenu();
