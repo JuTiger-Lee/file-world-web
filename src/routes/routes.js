@@ -52,7 +52,7 @@ module.exports = app => {
   const authURIList = [
     '/api/forum/write',
     '/api/user/profile',
-    '/api/iser/profile-upload',
+    '/api/user/profile-upload',
   ];
 
   /* ----- SOP ALLOW URL ----- */
