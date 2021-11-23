@@ -2,7 +2,8 @@
   "name": "file-world-web",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "src/app.js",
+  "bin": "src/app.js",
   "scripts": {
     "test": "cross-env NODE_ENV=local npx localtunnel --port 8081 --subdomain dev-file-world",
     "dev": "cross-env NODE_ENV=local nodemon src/app.js",
