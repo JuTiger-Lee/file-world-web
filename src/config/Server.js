@@ -36,7 +36,7 @@ class Server {
 
     this.app.use(
       '/upload',
-      this.express.static(path.join(__dirname, '../../public/images/upload')),
+      this.express.static(path.join(__dirname, '../../public/upload')),
     );
 
     this.app.use(this.express.static(path.join(__dirname, '../../views')));
