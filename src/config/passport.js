@@ -6,7 +6,10 @@ const { AUTH_KEY } = require('../utils/setting');
 const userModel = require('../models/user');
 const { compare } = require('../controller/handler/hash');
 
-const passportOption = { usernameField: 'ui_id', passwordField: 'ui_password' };
+const passportOption = {
+  usernameField: 'ui_email',
+  passwordField: 'ui_password',
+};
 const jwtOption = {
   // bear token 체계 요청시 앞에 bear를 넣어야함
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('authorization'),
@@ -22,14 +25,14 @@ const jwtOption = {
  * error가 있을 시 : done(err, false)
  * error는 없으나 user가 없을 때 : done(null, false)
  * error도 없고 user를 찾았을 때 : done(null, user);
- * @param {String} id
+ * @param {String} email
  * @param {String} password
  * @param {Function} done
  * @returns
  */
-async function passportVerify(id, password, done) {
+async function passportVerify(email, password, done) {
   try {
-    const user = await userModel.findUserID([id]);
+    const user = await userModel.findUserEmail([email]);
 
     // user find
     if (!user.data.length) {
@@ -68,7 +71,7 @@ async function jwtVerify(payload, done) {
           "exp": 1636213933 => 토큰 만료시간
         }
      */
-    const user = await userModel.findUserID([payload.id]);
+    const user = await userModel.findUserEmail([payload.email]);
 
     if (!user.data.length) {
       return done(null, false, { reason: 'Unauthorized Error' });
