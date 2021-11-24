@@ -6,7 +6,8 @@ const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, done) {
       // 저장 경로
-      done(null, path.join(__dirname, '../upload'));
+      const destPath = `../../public/upload/${file.fieldname}`;
+      done(null, path.join(__dirname, destPath));
     },
     filename(req, file, done) {
       const ext = path.extname(file.originalname);
