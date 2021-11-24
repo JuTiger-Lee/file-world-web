@@ -4,6 +4,31 @@ function pagingEvent(totalPage, currentPage) {
   const prevPaging = document.querySelector('.prev-paging');
   const numberPaging = document.querySelectorAll('.number-paging');
 
+  function reqForumListController(currentPage) {
+    const cateogry = document.querySelector(
+      '.forum-list-search-box .search-category',
+    ).value;
+
+    const pageSize = document.querySelector(
+      '.forum-list-search-box .search-pageSize',
+    ).value;
+
+    const title = document.querySelector(
+      '.forum-list-search-box .search-title',
+    ).value;
+
+    const queryString =
+      `currentPage=${currentPage}` +
+      `&category=${cateogry}` +
+      `&pageSize=${pageSize}`;
+
+    if (title) queryString += `&titleSearch=${title}`;
+
+    history.pushState(queryString);
+
+    return reqForumList(queryString);
+  }
+
   for (let i = 0; i < numberPaging.length; i++) {
     numberPaging[i].addEventListener('click', e => {
       const clickPaging =
@@ -33,31 +58,6 @@ function pagingEvent(totalPage, currentPage) {
     prevPaging.childNodes[1].addEventListener('click', () => {
       reqForumListController(currentPage - 1);
     });
-  }
-
-  function reqForumListController(currentPage) {
-    const cateogry = document.querySelector(
-      '.forum-list-search-box .search-category',
-    ).value;
-
-    const pageSize = document.querySelector(
-      '.forum-list-search-box .search-pageSize',
-    ).value;
-
-    const title = document.querySelector(
-      '.forum-list-search-box .search-title',
-    ).value;
-
-    const queryString =
-      `currentPage=${currentPage}` +
-      `&category=${cateogry}` +
-      `&pageSize=${pageSize}`;
-
-    if (title) queryString += `&titleSearch=${title}`;
-
-    history.pushState(queryString);
-
-    return reqForumList(queryString);
   }
 }
 
