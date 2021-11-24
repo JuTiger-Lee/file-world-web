@@ -4,22 +4,33 @@ const forumModel = require('../../models/forum');
 
 async function list(req, res, next) {
   try {
-    const makeResponse = new MakeResponse();
     const { currentPage, pageSize, category, title_search } = req.query;
+    const makeResponse = new MakeResponse();
 
     // offset Pagination
     const sql = {
       list:
-        'SELECT us.ui_idx, us.ui_nickname, us.ui_profile,' +
+        'SELECT us.ui_idx, us.ui_nickname, us.ui_profile, us.ui_profile_hash,' +
         'fo.update_datetime, fo.fi_title, fo.fi_category, fo.fi_idx' +
         ' FROM forum as fo INNER JOIN user as us ON us.ui_idx = fo.ui_idx',
-      total: 'SELECT COUNT(fi_idx) as total FROM forum',
-      where: '',
-      whereList: [],
+      total:
+        'SELECT COUNT(fi_idx) as total FROM forum as fo' +
+        ' INNER JOIN user as us ON us.ui_idx = fo.ui_idx',
+      where: 'WHERE us.status = ? AND fo.status = ?',
       order: 'ORDER BY fi_idx DESC',
       limit: '',
-      params: [],
+      params: [1, 1],
     };
+
+    if (category !== 'ALL') {
+      sql.where += ' AND fo.category = ?';
+      sql.params.push(category);
+    }
+
+    if (title_search) {
+      sql.where += ' LIKE ?';
+      sql.params.push(`%${title_search}%`);
+    }
 
     const pagination = new Pagination(pageSize, currentPage, sql);
     pagination.init();
@@ -39,8 +50,8 @@ async function list(req, res, next) {
 
 async function write(req, res, next) {
   try {
-    const makeResponse = new MakeResponse();
     const { fi_title, fi_category, fi_content } = req.body;
+    const makeResponse = new MakeResponse();
 
     const newForum = await forumModel.createForum([
       fi_title,
