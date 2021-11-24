@@ -39,7 +39,7 @@ class Pagination {
     return Math.ceil(this.currentPage / this.pagingPage);
   }
 
-  getOffset() {
+  getLimit() {
     const startIndex = this.pageSize * (this.currentPage - 1);
     this.pagingInfo.pageSize = this.pageSize;
 
@@ -104,7 +104,7 @@ class Pagination {
     this.pagingInfo.currentPage = this.getCurrentPage();
     this.pageGorup = this.getPageGroup();
 
-    this.sql.limit += this.getOffset();
+    this.sql.limit += this.getLimit();
     this.sqlCombine();
 
     this.pagingInfo.list = await this.getList();
