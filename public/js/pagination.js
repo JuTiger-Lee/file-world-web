@@ -4,44 +4,38 @@ function pagingEvent(totalPage, currentPage) {
   const prevPaging = document.querySelector('.prev-paging');
   const numberPaging = document.querySelectorAll('.number-paging');
 
-  // $(document.body).on('click', 'a', function (e) {
-  //   const $this = $(this);
-  //   const href = $this.attr('href');
-
-  //   window.location.hash = href;
-  //   e.preventDefault();
-  // });
-
   for (let i = 0; i < numberPaging.length; i++) {
     numberPaging[i].addEventListener('click', e => {
       const clickPaging =
         numberPaging[i].childNodes[0].getAttribute('data-number');
 
-      test(clickPaging);
+      reqForumListController(clickPaging);
+
+      e.preventDefault();
     });
   }
 
   if (nextPaging) {
     nextPaging.childNodes[0].addEventListener('click', () => {
-      test(currentPage + 1);
+      reqForumListController(currentPage + 1);
     });
 
     nextPaging.childNodes[1].addEventListener('click', () => {
-      test(totalPage);
+      reqForumListController(totalPage);
     });
   }
 
   if (prevPaging) {
     prevPaging.childNodes[0].addEventListener('click', () => {
-      test(1);
+      reqForumListController(1);
     });
 
     prevPaging.childNodes[1].addEventListener('click', () => {
-      test(currentPage - 1);
+      reqForumListController(currentPage - 1);
     });
   }
 
-  function test(currentPage) {
+  function reqForumListController(currentPage) {
     const cateogry = document.querySelector(
       '.forum-list-search-box .search-category',
     ).value;
@@ -55,10 +49,15 @@ function pagingEvent(totalPage, currentPage) {
     ).value;
 
     const queryString =
-      `currentPage=${currentPage}&category=${cateogry}` +
-      `&pageSize=${pageSize}&title_search=${title}`;
+      `currentPage=${currentPage}` +
+      `&category=${cateogry}` +
+      `&pageSize=${pageSize}`;
 
-    reqForumList(queryString);
+    if (title) queryString += `&titleSearch=${title}`;
+
+    history.pushState(queryString);
+
+    return reqForumList(queryString);
   }
 }
 
