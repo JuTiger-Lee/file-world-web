@@ -1,6 +1,6 @@
 # folder
 node_modules/
-src/upload/
+# src/upload/
 
 # file
 package-lock.json
