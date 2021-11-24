@@ -48,22 +48,23 @@ function makeForumListTemplate(idx, profile, nickanme, title, category, date) {
 
 function reqDataCheck(reqResult) {
   const forumListCardBox = document.querySelector('.forum-list-card-box');
+  const { pagination } = reqResult.data[0];
   let template = '';
 
-  if (reqResult.code === 200 && reqResult.data[0].pagination.list.length) {
-    for (let i = 0; i < reqResult.data[0].pagination.list.length; i++) {
+  if (reqResult.code === 200 && pagination.list.length) {
+    for (let i = 0; i < pagination.list.length; i++) {
       template += makeForumListTemplate(
-        reqResult.data[0].pagination.list[i].fi_idx,
-        reqResult.data[0].pagination.list[i].ui_profile,
-        reqResult.data[0].pagination.list[i].ui_nickname,
-        reqResult.data[0].pagination.list[i].fi_title,
-        reqResult.data[0].pagination.list[i].fi_category,
-        reqResult.data[0].pagination.list[i].update_datetime,
+        pagination.list[i].fi_idx,
+        pagination.list[i].ui_profile_hash,
+        pagination.list[i].ui_nickname,
+        pagination.list[i].fi_title,
+        pagination.list[i].fi_category,
+        pagination.list[i].update_datetime,
       );
     }
 
-    if (reqResult.data[0].pagination.totalPage > 0) {
-      makePagination(reqResult.data[0].pagination);
+    if (pagination.totalPage > 0) {
+      makePagination(pagination);
     }
 
     forumListCardBox.innerHTML = template;
@@ -82,8 +83,15 @@ async function reqForumList(queryString) {
 
 function init() {
   const queryString = window.location.search.substr(1).split('&');
+  let reqQueryString = '';
 
-  reqForumList('currentPage=1&category=ALL&pageSize=10&title_search=ALL');
+  if (queryString.length) {
+    reqQueryString = queryString.join('');
+  } else {
+    reqQueryString = 'currentPage=1&category=ALL&pageSize=10&title_search=ALL';
+  }
+
+  reqForumList(reqQueryString);
 }
 
 init();
