@@ -33,7 +33,7 @@ class Email {
 
   async send() {
     try {
-      return await this.transporter.sendMail(this.mailOption.sendInfo);
+      await this.transporter.sendMail(this.mailOption.sendInfo);
     } catch (err) {
       const makeResponse = new MakeResponse();
 
