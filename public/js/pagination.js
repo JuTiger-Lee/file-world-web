@@ -4,7 +4,7 @@ function pagingEvent(totalPage, currentPage) {
   const prevPaging = document.querySelector('.prev-paging');
   const numberPaging = document.querySelectorAll('.number-paging');
 
-  function reqForumListController(currentPage) {
+  const reqForumListController = currentPage => {
     const cateogry = document.querySelector(
       '.forum-list-search-box .search-category',
     ).value;
@@ -27,7 +27,7 @@ function pagingEvent(totalPage, currentPage) {
     history.pushState(queryString);
 
     return reqForumList(queryString);
-  }
+  };
 
   for (let i = 0; i < numberPaging.length; i++) {
     numberPaging[i].addEventListener('click', e => {
