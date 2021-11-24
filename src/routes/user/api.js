@@ -4,7 +4,7 @@ const upload = require('../../middleware/multer');
 const router = express.Router();
 const userController = require('../../controller/api/user');
 
-router.post('/id-check', userController.idCheck);
+router.post('/id-check', userController.emailCheck);
 router.post('/nickname-check', userController.nicknameCheck);
 
 router.post('/sign-in', userController.signIn);
