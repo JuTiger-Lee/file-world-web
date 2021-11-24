@@ -5,7 +5,6 @@ const userSignupLocalBtn = document.querySelector('.user-signup-local-btn');
 function signupValueCheck() {
   const userEmail = document.querySelector('.user-email').value;
   const userNickname = document.querySelector('.user-nickname').value;
-  const userID = document.querySelector('.user-id').value;
   const userPassword = document.querySelector('.user-password').value;
   const userVerifyPassword = document.querySelector(
     '.user-verify-password',
@@ -18,7 +17,6 @@ function signupValueCheck() {
   return {
     userEmail,
     userNickname,
-    userID,
     userPassword,
   };
 }
@@ -33,12 +31,11 @@ function reqDataCheck(reqResult) {
 }
 
 async function reqSignup() {
-  const { userEmail, userNickname, userID, userPassword } = signupValueCheck();
+  const { userEmail, userNickname, userPassword } = signupValueCheck();
 
   const bodyData = {
     ui_email: userEmail,
     ui_nickname: userNickname,
-    ui_id: userID,
     ui_password: userPassword,
   };
 
