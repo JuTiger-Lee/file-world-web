@@ -24,6 +24,7 @@ class Server {
   }
 
   setting() {
+    // put delete method
     this.app.use(methodOverride());
     this.app.use(this.express.urlencoded({ extended: true }));
     this.app.use(this.express.json());
@@ -33,12 +34,10 @@ class Server {
       '/static',
       this.express.static(path.join(__dirname, '../../public')),
     );
-
     this.app.use(
       '/upload',
       this.express.static(path.join(__dirname, '../../public/upload')),
     );
-
     this.app.use(this.express.static(path.join(__dirname, '../../views')));
 
     // Template engine registration
