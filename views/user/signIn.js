@@ -4,8 +4,8 @@ const loginLocalBtn = document.querySelector('.user-local-btn');
 const loginGoogleBtn = document.querySelector('.user-google-btn');
 const loginFacebookBtn = document.querySelector('.user-facebook-btn');
 
-function loginValueCheck(userID, userPassword) {
-  if (!userID.trim() || !userID) {
+function loginValueCheck(userEmail, userPassword) {
+  if (!userEmail.trim() || !userEmail) {
     return notification(
       'warning',
       'Enter required values',
@@ -37,14 +37,14 @@ function reqDataCheck(reqResult) {
 }
 
 async function reqSignIn() {
-  const userID = document.querySelector('.user-id').value;
+  const userEmail = document.querySelector('.user-email').value;
   const userPassword = document.querySelector('.user-password').value;
 
-  const loginValueResult = loginValueCheck(userID, userPassword);
+  const loginValueResult = loginValueCheck(userEmail, userPassword);
 
   if (loginValueResult) {
     const bodyData = {
-      ui_id: userID,
+      ui_email: userEmail,
       ui_password: userPassword,
     };
 
