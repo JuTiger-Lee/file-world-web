@@ -12,16 +12,20 @@
                         <div class="row gx-4 mb-2">
                             <div class="col-auto">
                                 <div class="profile" style="display: flex;">
-                                    <div class="avatar">
-                                        <img 
-                                            src="/upload/profile/blank_profile.png" 
-                                            alt="profile image"
-                                            class="img-raised rounded-circle img-fluid"
-                                        >
-                                        <br>
-                                        <!-- <button class="btn btn-primary chagne-profile"><i class="fas fa-plus-circle"></i></button> -->
-                                        <input type="file" class="change-profile" />
+                                    <div class="avatar-wrapper">
+                                        <div class="avatar">
+                                            <img 
+                                                src="" 
+                                                alt="profile image"
+                                                class="img-raised rounded-circle img-fluid"
+                                            >
+                                        </div>
+                                        <label id="change-picture" for="input-file">
+                                            <i class="fas fa-pen"></i>
+                                        </label>
+                                        <input type="file" id="input-file" class="change-profile" style="display: none;" />
                                     </div>
+                             
                                     <div class="col-auto my-auto">
                                         <div class="h-100">
                                             <h5 class="mb-1 profile-user-name"></h5>
