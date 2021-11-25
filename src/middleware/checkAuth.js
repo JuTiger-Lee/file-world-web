@@ -44,7 +44,7 @@ module.exports = (req, res, next) => {
       next();
     } catch (err) {
       console.error(err);
-      return next();
+      return next(err);
     }
   })(req, res, next);
 };
