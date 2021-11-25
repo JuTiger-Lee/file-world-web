@@ -50,10 +50,11 @@ function reqDataCheck(reqResult) {
   const profile = document.querySelector('.avatar > img');
   const profileUserName = document.querySelector('.profile-user-name');
   const forumListCardBox = document.querySelector('.forum-list-card-box');
-  const { pagination, ui_nickname, ui_profile_hash } = reqResult.data[0];
   let template = '';
 
   if (reqResult.code === 200) {
+    const { pagination, ui_nickname, ui_profile_hash } = reqResult.data[0];
+
     for (let i = 0; i < pagination.list.length; i++) {
       template += makeForumListTemplate(
         pagination.list[i].fi_idx,
@@ -65,7 +66,7 @@ function reqDataCheck(reqResult) {
       );
     }
     if (pagination.totalPage > 0) {
-      makePagination(pagination);
+      makePagination(pagination, reqProfile);
     }
 
     profile.src = ui_profile_hash;
@@ -76,8 +77,8 @@ function reqDataCheck(reqResult) {
   }
 }
 
-async function reqProfile() {
-  const reqResult = await reqAjax('/api/user/profile', 'get');
+async function reqProfile(queryString) {
+  const reqResult = await reqAjax(`/api/user/profile?${queryString}`, 'get');
 
   reqDataCheck(reqResult);
 }
@@ -93,11 +94,24 @@ async function reqProfileUpload(e) {
   const reqResult = await reqAjax('/api/user/profile-upload', 'put', formData, {
     'Content-Type': 'multipart/form-data',
   });
-  console.log('reqResult---', reqResult);
 
-  reqProfile();
+  if (reqResult.code === 200) reqProfile('currentPage=1');
+  else alert('profile upload faill');
+}
+
+function init() {
+  const queryString = window.location.search.substr(1).split('&');
+  let reqQueryString = '';
+
+  if (queryString[0] !== '') {
+    reqQueryString = queryString.join('&');
+  } else {
+    reqQueryString = 'currentPage=1';
+  }
+
+  return reqProfile(reqQueryString);
 }
 
 chagneProfile.addEventListener('change', e => reqProfileUpload(e));
 
-reqProfile();
+init();
