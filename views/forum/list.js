@@ -1,5 +1,7 @@
 'use strict';
 
+const forumListSearchBtn = document.querySelector('.forum-list-search-btn');
+
 function makeForumListTemplate(idx, profile, nickanme, title, category, date) {
   return `<div class="card">
                 <div class="card-body">
@@ -48,10 +50,11 @@ function makeForumListTemplate(idx, profile, nickanme, title, category, date) {
 
 function reqDataCheck(reqResult) {
   const forumListCardBox = document.querySelector('.forum-list-card-box');
-  const { pagination } = reqResult.data[0];
   let template = '';
 
-  if (reqResult.code === 200 && pagination.list.length) {
+  if (reqResult.code === 200 && reqResult.data[0].pagination.list.length) {
+    const { pagination } = reqResult.data[0];
+
     for (let i = 0; i < pagination.list.length; i++) {
       template += makeForumListTemplate(
         pagination.list[i].fi_idx,
@@ -64,7 +67,7 @@ function reqDataCheck(reqResult) {
     }
 
     if (pagination.totalPage > 0) {
-      makePagination(pagination);
+      makePagination(pagination, reqForumList);
     }
 
     forumListCardBox.innerHTML = template;
@@ -81,17 +84,42 @@ async function reqForumList(queryString) {
   return reqDataCheck(reqResult);
 }
 
+function reqSearch() {
+  const cateogry = document.querySelector(
+    '.forum-list-search-box .search-category',
+  ).value;
+
+  const pageSize = document.querySelector(
+    '.forum-list-search-box .search-pageSize',
+  ).value;
+
+  const title = document.querySelector(
+    '.forum-list-search-box .search-title',
+  ).value;
+
+  let queryString =
+    `currentPage=1` + `&category=${cateogry}` + `&pageSize=${pageSize}`;
+
+  if (title) queryString += `&titleSearch=${title}`;
+
+  history.pushState(null, null, `?${queryString}`);
+
+  return reqForumList(queryString);
+}
+
 function init() {
   const queryString = window.location.search.substr(1).split('&');
   let reqQueryString = '';
 
-  if (queryString.length) {
-    reqQueryString = queryString.join('');
+  if (queryString[0] !== '') {
+    reqQueryString = queryString.join('&');
   } else {
-    reqQueryString = 'currentPage=1&category=ALL&pageSize=10&title_search=ALL';
+    reqQueryString = 'currentPage=1';
   }
 
-  reqForumList(reqQueryString);
+  return reqForumList(reqQueryString);
 }
+
+forumListSearchBtn.addEventListener('click', () => reqSearch());
 
 init();
