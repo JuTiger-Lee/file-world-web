@@ -4,32 +4,32 @@ const forumModel = require('../../models/forum');
 
 async function list(req, res, next) {
   try {
-    const { currentPage, pageSize, category, title_search } = req.query;
+    const { currentPage, pageSize = 10, category, titleSearch } = req.query;
     const makeResponse = new MakeResponse();
 
     // offset Pagination
     const sql = {
       list:
-        'SELECT us.ui_idx, us.ui_nickname, us.ui_profile, us.ui_profile_hash,' +
-        'fo.update_datetime, fo.fi_title, fo.fi_category, fo.fi_idx' +
-        ' FROM forum as fo INNER JOIN user as us ON us.ui_idx = fo.ui_idx',
+        'SELECT us.status, us.ui_idx, us.ui_nickname, us.ui_profile, us.ui_profile_hash,' +
+        'fo.fi_idx, fo.fi_title, fo.fi_category, fo.status, fo.update_datetime ' +
+        'FROM forum as fo INNER JOIN user as us ON us.ui_idx = fo.ui_idx',
       total:
-        'SELECT COUNT(fi_idx) as total FROM forum as fo' +
+        'SELECT COUNT(fo.fi_idx) as total FROM forum as fo' +
         ' INNER JOIN user as us ON us.ui_idx = fo.ui_idx',
       where: 'WHERE us.status = ? AND fo.status = ?',
-      order: 'ORDER BY fi_idx DESC',
+      order: 'ORDER BY fo.fi_idx DESC',
       limit: '',
       params: [1, 1],
     };
 
-    if (category !== 'ALL') {
-      sql.where += ' AND fo.category = ?';
+    if (category !== 'ALL' && category) {
+      sql.where += ' AND fo.fi_category = ?';
       sql.params.push(category);
     }
 
-    if (title_search) {
-      sql.where += ' LIKE ?';
-      sql.params.push(`%${title_search}%`);
+    if (titleSearch !== 'ALL' && titleSearch) {
+      sql.where += ' AND fo.fi_title LIKE ?';
+      sql.params.push(`%${titleSearch}%`);
     }
 
     const pagination = new Pagination(pageSize, currentPage, sql);
