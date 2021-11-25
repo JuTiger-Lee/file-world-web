@@ -203,8 +203,8 @@ async function profile(req, res, next) {
     const pagination = new Pagination(pageSize, currentPage, sql);
     pagination.init();
 
-    const getPagingData = await pagination.getPagingInfo();
-    findUserIdx.data[0].pagination = getPagingData;
+    const pagingData = await pagination.getPagingInfo();
+    findUserIdx.data[0].pagination = pagingData;
 
     makeResponse.init(200, 200, 'success');
 

@@ -35,12 +35,12 @@ async function list(req, res, next) {
     const pagination = new Pagination(pageSize, currentPage, sql);
     pagination.init();
 
-    const getPagingData = await pagination.getPagingInfo();
+    const pagingData = await pagination.getPagingInfo();
 
     makeResponse.init(200, 200, 'success');
 
     return res.json(
-      makeResponse.makeSuccessResponse([{ pagination: getPagingData }]),
+      makeResponse.makeSuccessResponse([{ pagination: pagingData }]),
     );
   } catch (err) {
     console.log(err);
