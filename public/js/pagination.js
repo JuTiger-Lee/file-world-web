@@ -1,42 +1,26 @@
 // TODO: 가독성 올릴 필요있음 및 uri query string ajax 구현필요
-function pagingEvent(totalPage, currentPage) {
+function pagingEvent(totalPage, currentPage, reqListCallback) {
   const nextPaging = document.querySelector('.next-paging');
   const prevPaging = document.querySelector('.prev-paging');
   const numberPaging = document.querySelectorAll('.number-paging');
 
   const reqForumListController = currentPage => {
-    const cateogry = document.querySelector(
-      '.forum-list-search-box .search-category',
-    ).value;
+    const queryCurrent = `currentPage=${currentPage}`;
 
-    const pageSize = document.querySelector(
-      '.forum-list-search-box .search-pageSize',
-    ).value;
+    history.replaceState({}, null, location.pathname);
+    history.pushState(null, null, `?${queryCurrent}`);
 
-    const title = document.querySelector(
-      '.forum-list-search-box .search-title',
-    ).value;
-
-    const queryString =
-      `currentPage=${currentPage}` +
-      `&category=${cateogry}` +
-      `&pageSize=${pageSize}`;
-
-    if (title) queryString += `&titleSearch=${title}`;
-
-    history.pushState(queryString);
-
-    return reqForumList(queryString);
+    return reqListCallback(queryCurrent);
   };
 
   for (let i = 0; i < numberPaging.length; i++) {
     numberPaging[i].addEventListener('click', e => {
+      e.preventDefault();
+
       const clickPaging =
         numberPaging[i].childNodes[0].getAttribute('data-number');
 
       reqForumListController(clickPaging);
-
-      e.preventDefault();
     });
   }
 
@@ -61,7 +45,10 @@ function pagingEvent(totalPage, currentPage) {
   }
 }
 
-function makePagination({ totalPage, currentPage, startIndex, endIndex }) {
+function makePagination(
+  { totalPage, currentPage, startIndex, endIndex },
+  reqListCallback,
+) {
   const pagination = document.querySelector('#pagination');
   let numCurrentPage = Number(currentPage);
   let pagingTemplate = '';
@@ -82,8 +69,9 @@ function makePagination({ totalPage, currentPage, startIndex, endIndex }) {
         numCurrentPage === i + 1 ? 'active' : ''
       }" style="cursor: pointer">` +
       `<a 
-          class="page-link" 
+          href="?current=${i + 1}"
           data-number="${i + 1}"
+          class="page-link" 
         >
           ${i + 1}
         </a>` +
@@ -102,5 +90,5 @@ function makePagination({ totalPage, currentPage, startIndex, endIndex }) {
 
   pagination.innerHTML = pagingTemplate;
 
-  return pagingEvent(totalPage, numCurrentPage);
+  return pagingEvent(totalPage, numCurrentPage, reqListCallback);
 }
