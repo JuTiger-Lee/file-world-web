@@ -67,13 +67,12 @@ a .material-icons {
 .profile-page .profile {
   text-align: center;
 }
-
+/* 
 .profile-page .profile img {
-  max-width: 90px;
   width: 100%;
   margin: 0 auto;
   border-radius: 0.5rem !important;
-}
+} */
 
 .img-raised {
   box-shadow: 0 5px 15px -8px rgba(0, 0, 0, 0.24),
@@ -83,4 +82,36 @@ a .material-icons {
 p {
   font-size: 14px;
   margin: 0 0 10px;
+}
+
+/*---*/
+
+.avatar-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar {
+  width: 164px;
+  height: 140px;
+}
+
+.avatar-wrapper img {
+  height: 100%;
+  width: 100%;
+  border-radius: 0.5rem !important;
+  object-fit: cover;
+}
+.avatar-wrapper #change-picture,
+.avatar-wrapper .change-picture {
+  position: absolute;
+  right: 3%;
+  top: 2%;
+  border: 0;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 8px 8px;
+  border-radius: 100%;
 }
