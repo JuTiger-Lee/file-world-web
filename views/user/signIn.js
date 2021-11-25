@@ -30,9 +30,10 @@ function reqDataCheck(reqResult) {
     localStorage.setItem('token', reqResult.data[0].token);
 
     window.location.href = '/';
-    return notification('success', 'LOGIN SUCCESS', 'login success');
+
+    return alert('login successs');
   } else {
-    return notification('warning', 'LOGIN FAIL', 'login fail');
+    return alert('login fail');
   }
 }
 

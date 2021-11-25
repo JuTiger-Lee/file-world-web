@@ -24,9 +24,9 @@ function signupValueCheck() {
 function reqDataCheck(reqResult) {
   if (reqResult.code === 200) {
     window.location.href = '/user/sign-in';
-    return notification('warning', 'SIGNUP SUCCESS', 'signup success');
+    return alert('signup success');
   } else {
-    return notification('warning', 'SIGNUP FAIL', 'signup fail');
+    return notification('signup fail');
   }
 }
 
