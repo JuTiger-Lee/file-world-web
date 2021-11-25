@@ -38,11 +38,7 @@ async function reqAjax(url, method, params, option) {
 
       return alert('log out.');
     } else if (err.response.status === 500) {
-      return notification(
-        'danger',
-        'SERVER ERROR',
-        'We are sorry for the disruption to the service.',
-      );
+      return alert('SERVER ERROR');
     }
 
     return err.response.data;
