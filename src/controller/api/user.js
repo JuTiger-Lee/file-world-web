@@ -18,7 +18,7 @@ async function emailDataCheck(makeResponse, ui_email) {
   // id duplicate check
   if (user.data.length) {
     makeResponse.init(409, 409, 'email duplicate');
-    throw makeResponse.makeErrorResponse({}, 'signUp Error Email duplicate');
+    throw makeResponse.makeErrorResponse({}, 'Email duplicate');
   }
 }
 
@@ -33,7 +33,7 @@ async function nicknameDataCheck(makeResponse, ui_nickname) {
   // nickname duplicate check
   if (user.data.length) {
     makeResponse.init(409, 409, 'nickname duplicate');
-    throw makeResponse.makeErrorResponse({}, 'user nickname Check Error');
+    throw makeResponse.makeErrorResponse({}, 'Nickname duplicate');
   }
 }
 
@@ -75,7 +75,7 @@ async function singUp(req, res, next) {
   try {
     const { ui_email, ui_nickname, ui_password } = req.body;
     const makeResponse = new MakeResponse();
-    const beforeProfileImage = '/upload/profile/blank_profile.png';
+    const beforeProfileImage = '/static/images/profile/blank_profile.png';
 
     const email = new Email(
       [ui_email],
@@ -185,6 +185,7 @@ function signIn(req, res, next) {
 
 async function profile(req, res, next) {
   try {
+    const { currentPage, pageSize = 10 } = req.query;
     const { idx } = req.user;
     const makeResponse = new MakeResponse();
 
@@ -199,7 +200,7 @@ async function profile(req, res, next) {
     };
 
     const findUserIdx = await userModel.findUserIdx([idx]);
-    const pagination = new Pagination(10, 1, sql);
+    const pagination = new Pagination(pageSize, currentPage, sql);
     pagination.init();
 
     const getPagingData = await pagination.getPagingInfo();
