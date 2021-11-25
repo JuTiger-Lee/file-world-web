@@ -13,6 +13,14 @@ module.exports = (req, res, next) => {
 
   passport.authenticate('jwt', { session: false }, (error, user, info) => {
     try {
+      if (error) {
+        makeResponse.init(500, 500, 'Unauthorized Error');
+        throw makeResponse.makeErrorResponse(
+          error,
+          'passport authenticate Error',
+        );
+      }
+
       if (!user) {
         /**
          * jwt expired => info message 유효기간 지날 경우
@@ -37,13 +45,6 @@ module.exports = (req, res, next) => {
     } catch (err) {
       console.error(err);
       return next();
-    }
-    if (error) {
-      makeResponse.init(500, 500, 'Unauthorized Error');
-      throw makeResponse.makeErrorResponse(
-        error,
-        'passport authenticate Error',
-      );
     }
   })(req, res, next);
 };
