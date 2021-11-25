@@ -1,10 +1,18 @@
 const db = require('./db');
 
+// TODO: email_status 0(비인증)인 사용자만 찾기
 async function findUserEmail(params) {
   const sql = 'SELECT * FROM user WHERE ui_email = ?';
 
   return db.query(sql, params);
 }
+
+// 이메일 인증된 유저 찾기
+// async function findCertUserEmail(params) {
+//   const sql = 'SELECT * FROM user WHERE ui_email = ? AND ui_email_status = 2';
+
+//   return db.query(sql, params);
+// }
 
 async function findUserIdx(params) {
   const sql =
