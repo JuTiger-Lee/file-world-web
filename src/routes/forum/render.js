@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/list', (req, res) => {
-  console.log('rrr', req.query);
   res.render('../views/forum/list');
 });
 
