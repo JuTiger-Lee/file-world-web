@@ -8,7 +8,7 @@ const upload = multer({
       let destPath = '';
 
       if (process.env.NODE_ENV === 'dev') {
-        destPath = `../../app/public/upload/${file.fieldname}`;
+        destPath = `../../../public/upload/${file.fieldname}`;
       } else {
         destPath = `../../public/upload/${file.fieldname}`;
       }
