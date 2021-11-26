@@ -30,6 +30,7 @@ class MakeResponse {
   }
 
   /**
+   *
    * @param {Object} err
    * 서버 애플리케이션에 보이는 error name
    * 디버깅 쉽게하기 위한 목적

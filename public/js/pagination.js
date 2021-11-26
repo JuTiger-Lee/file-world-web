@@ -24,27 +24,29 @@ function pagingEvent(totalPage, currentPage, reqListCallback) {
     });
   }
 
-  if (nextPaging) {
-    nextPaging.childNodes[0].addEventListener('click', () => {
-      reqForumListController(currentPage + 1);
-    });
+  nextPaging.childNodes[0].addEventListener('click', () => {
+    reqForumListController(currentPage + 1);
+  });
 
-    nextPaging.childNodes[1].addEventListener('click', () => {
-      reqForumListController(totalPage);
-    });
-  }
+  nextPaging.childNodes[1].addEventListener('click', () => {
+    reqForumListController(totalPage);
+  });
 
-  if (prevPaging) {
-    prevPaging.childNodes[0].addEventListener('click', () => {
-      reqForumListController(1);
-    });
+  prevPaging.childNodes[0].addEventListener('click', () => {
+    reqForumListController(1);
+  });
 
-    prevPaging.childNodes[1].addEventListener('click', () => {
-      reqForumListController(currentPage - 1);
-    });
-  }
+  prevPaging.childNodes[1].addEventListener('click', () => {
+    reqForumListController(currentPage - 1);
+  });
 }
 
+/**
+ *
+ * @param {Object} param0
+ * @param {Function} reqListCallback
+ * @returns
+ */
 function makePagination(
   { totalPage, currentPage, startIndex, endIndex },
   reqListCallback,

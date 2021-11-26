@@ -20,6 +20,7 @@ function getConnType() {
 function connDB() {
   const connDBType = getConnType();
   const conn = mysql.createConnection(connDBType);
+
   conn.connect();
 
   return conn;
