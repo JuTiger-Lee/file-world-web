@@ -24,21 +24,25 @@ function pagingEvent(totalPage, currentPage, reqListCallback) {
     });
   }
 
-  nextPaging.childNodes[0].addEventListener('click', () => {
-    reqForumListController(currentPage + 1);
-  });
+  if (nextPaging) {
+    nextPaging.childNodes[0].addEventListener('click', () => {
+      reqForumListController(currentPage + 1);
+    });
 
-  nextPaging.childNodes[1].addEventListener('click', () => {
-    reqForumListController(totalPage);
-  });
+    nextPaging.childNodes[1].addEventListener('click', () => {
+      reqForumListController(totalPage);
+    });
+  }
 
-  prevPaging.childNodes[0].addEventListener('click', () => {
-    reqForumListController(1);
-  });
+  if (prevPaging) {
+    prevPaging.childNodes[0].addEventListener('click', () => {
+      reqForumListController(1);
+    });
 
-  prevPaging.childNodes[1].addEventListener('click', () => {
-    reqForumListController(currentPage - 1);
-  });
+    prevPaging.childNodes[1].addEventListener('click', () => {
+      reqForumListController(currentPage - 1);
+    });
+  }
 }
 
 /**
