@@ -5,13 +5,7 @@ const { randomSuffix } = require('../controller/handler/hash');
 const upload = multer({
   storage: multer.diskStorage({
     destination(req, file, done) {
-      let destPath = '';
-
-      if (process.env.NODE_ENV === 'dev') {
-        destPath = `../../../public/upload/${file.fieldname}`;
-      } else {
-        destPath = `../../public/upload/${file.fieldname}`;
-      }
+      const destPath = `../../public/upload/${file.fieldname}`;
 
       done(null, path.join(__dirname, destPath));
     },
