@@ -77,16 +77,17 @@ async function singUp(req, res, next) {
     const makeResponse = new MakeResponse();
     const beforeProfileImage = '/static/images/profile/blank_profile.png';
 
-    const email = new Email(
-      [ui_email],
-      'We sincerely welcome you to join the File World.',
-    );
-
     // password encrypted
-    const hashPassword = encrypt(ui_password, 10);
+    const hashPassword = encrypt(ui_password);
 
     // 메일 인증 코드 생성
     const confirmCode = randomSuffix();
+
+    const email = new Email(
+      [ui_email],
+      'We sincerely welcome you to join the File World.',
+      confirmCode,
+    );
 
     // id duplicate check
     await emailDataCheck(makeResponse, ui_email);
