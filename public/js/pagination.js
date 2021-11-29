@@ -1,48 +1,69 @@
-// TODO: 가독성 올릴 필요있음 및 uri query string ajax 구현필요
-function pagingEvent(totalPage, currentPage, reqListCallback) {
+'use strict';
+
+/**
+ *
+ * @param {Function} reqListCallback
+ */
+function pagingEvent(reqListCallback) {
   const nextPaging = document.querySelector('.next-paging');
   const prevPaging = document.querySelector('.prev-paging');
   const numberPaging = document.querySelectorAll('.number-paging');
 
-  const reqForumListController = currentPage => {
+  /**
+   *
+   * @param {Number} currentPage
+   * @returns
+   */
+  const reqListController = currentPage => {
     const queryCurrent = `currentPage=${currentPage}`;
+    const parsingQuery = location.search.split('&');
+    let reqQuery = queryCurrent;
 
-    history.replaceState({}, null, location.pathname);
-    history.pushState(null, null, `?${queryCurrent}`);
+    for (let i = 0; i < parsingQuery.length; i++) {
+      if (parsingQuery[i].split('=').includes('?currentPage')) {
+        parsingQuery[i] = `currentPage=${currentPage}`;
+      }
+    }
 
-    return reqListCallback(queryCurrent);
+    if (location.search) {
+      const joinQuery = parsingQuery.join('&');
+      const pathCombineQuery = `${location.pathname}?${joinQuery}`;
+      reqQuery = joinQuery;
+
+      history.replaceState({}, null, pathCombineQuery);
+    } else {
+      history.pushState(null, null, `?${reqQuery}`);
+    }
+
+    return reqListCallback(reqQuery);
   };
 
-  for (let i = 0; i < numberPaging.length; i++) {
-    numberPaging[i].addEventListener('click', e => {
-      e.preventDefault();
+  /**
+   *
+   * @param {Array} clickPagings
+   * @param {Boolean} childeYn
+   */
+  const pagingClickHanlder = (clickPagings, childeYn = false) => {
+    for (let i = 0; i < clickPagings.length; i++) {
+      clickPagings[i].addEventListener('click', e => {
+        e.preventDefault();
 
-      const clickPaging =
-        numberPaging[i].childNodes[0].getAttribute('data-number');
+        let clickPaging = clickPagings[i].getAttribute('data-number');
 
-      reqForumListController(clickPaging);
-    });
-  }
+        if (childeYn) {
+          clickPaging =
+            clickPagings[i].childNodes[0].getAttribute('data-number');
+        }
 
-  if (nextPaging) {
-    nextPaging.childNodes[0].addEventListener('click', () => {
-      reqForumListController(currentPage + 1);
-    });
+        return reqListController(clickPaging);
+      });
+    }
+  };
 
-    nextPaging.childNodes[1].addEventListener('click', () => {
-      reqForumListController(totalPage);
-    });
-  }
+  if (nextPaging) pagingClickHanlder(nextPaging.childNodes, false);
+  if (prevPaging) pagingClickHanlder(prevPaging.childNodes, false);
 
-  if (prevPaging) {
-    prevPaging.childNodes[0].addEventListener('click', () => {
-      reqForumListController(1);
-    });
-
-    prevPaging.childNodes[1].addEventListener('click', () => {
-      reqForumListController(currentPage - 1);
-    });
-  }
+  return pagingClickHanlder(numberPaging, true);
 }
 
 /**
@@ -55,17 +76,29 @@ function makePagination(
   { totalPage, currentPage, startIndex, endIndex },
   reqListCallback,
 ) {
-  const pagination = document.querySelector('#pagination');
+  const pagination = document.getElementById('pagination');
   let numCurrentPage = Number(currentPage);
   let pagingTemplate = '';
 
-  if (currentPage <= 1) {
+  if (numCurrentPage <= 1) {
     pagingTemplate += '<li class="page-item"></li>';
   } else {
     pagingTemplate +=
       '<li class="page-item prev-paging" style="display: flex">' +
-      '<span class="page-link" style="cursor: pointer"><i class="fas fa-angle-double-left"></i></span>' +
-      '<span class="page-link" style="cursor: pointer"><i class="fas fa-angle-left"></i></span>' +
+      `<a 
+        class="page-link"
+        href="?currentPage=${1}"
+        data-number="${1}" 
+      >` +
+      '<i class="fas fa-angle-double-left"></i>' +
+      '</a>' +
+      `<a 
+        class="page-link"
+        href="?currentPage=${numCurrentPage - 1}"
+        data-number="${numCurrentPage - 1}" 
+      >` +
+      '<i class="fas fa-angle-left"></i>' +
+      '</span>' +
       '</li>';
   }
 
@@ -75,26 +108,38 @@ function makePagination(
         numCurrentPage === i + 1 ? 'active' : ''
       }" style="cursor: pointer">` +
       `<a 
-          href="?current=${i + 1}"
-          data-number="${i + 1}"
           class="page-link" 
+          href="?currentPage=${i + 1}"
+          data-number="${i + 1}"
         >
           ${i + 1}
         </a>` +
       '</li>';
   }
 
-  if (totalPage <= currentPage) {
+  if (totalPage <= numCurrentPage) {
     pagingTemplate += '<li class="page-item"></li>';
   } else {
     pagingTemplate +=
       '<li class="page-item next-paging" style="display: flex">' +
-      '<span class="page-link" style="cursor: pointer"><i class="fas fa-angle-right"></i></span>' +
-      '<span class="page-link" style="cursor: pointer"><i class="fas fa-angle-double-right"></i></span>' +
+      `<a 
+          class="page-link" 
+          href="?currentPage=${numCurrentPage + 1}"
+          data-number="${numCurrentPage + 1}"
+        >` +
+      '<i class="fas fa-angle-right"></i>' +
+      '</a>' +
+      `<a 
+          class="page-link" 
+          href="?currentPage=${totalPage}"
+          data-number="${totalPage}"
+        >` +
+      '<i class="fas fa-angle-double-right"></i>' +
+      '</a>' +
       '</li>';
   }
 
-  pagination.innerHTML = pagingTemplate;
+  if (totalPage > 0) pagination.innerHTML = pagingTemplate;
 
-  return pagingEvent(totalPage, numCurrentPage, reqListCallback);
+  return pagingEvent(reqListCallback);
 }
