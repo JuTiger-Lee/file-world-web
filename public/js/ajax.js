@@ -9,19 +9,19 @@
  */
 async function reqAjax(url, method, params, option) {
   const screen = document.querySelector('.screen');
-  const bearerToken = `bearer ${localStorage.getItem('token')}`;
+  const token = localStorage.getItem('token');
+  const bearerToken = `bearer ${token}`;
 
-  // token send
   const config = {
     headers: {},
   };
-
-  let getReqResults = {};
 
   if (option) config.headers = option;
   if (bearerToken) config.headers.Authorization = bearerToken;
 
   try {
+    let getReqResults = {};
+
     screen.style.display = 'block';
 
     if (method === 'post' || method === 'put') {
@@ -32,13 +32,21 @@ async function reqAjax(url, method, params, option) {
 
     return getReqResults.data;
   } catch (err) {
-    if (err.response.status === 401 || err.response.status === 419) {
-      localStorage.removeItem('token');
-      window.location.href = '/';
+    if (err.response.status === 401) {
+      alert('Please signin first.');
 
-      return alert('log out.');
-    } else if (err.response.status === 500) {
-      return alert('SERVER ERROR');
+      window.location.href = '/user/sign-in';
+    }
+
+    if (err.response.status === 419) {
+      localStorage.removeItem('token');
+      alert('log out.');
+
+      window.location.href = '/';
+    }
+
+    if (err.response.status === 500) {
+      alert('SERVER ERROR');
     }
 
     return err.response.data;
