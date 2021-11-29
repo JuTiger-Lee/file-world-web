@@ -30,7 +30,7 @@ module.exports = app => {
   // Access-Control-Allow-Origin
   // res.header("Access-Control-Allow-Origin", "http://localhost:8081");
 
-  const whiteOriginList = [
+  const allowOriginList = [
     'http://localhost:8081',
 
     // 개발 서버
@@ -41,7 +41,7 @@ module.exports = app => {
   const corsOption = {
     origin: (origin, callback) => {
       // 자기 자신 localhost는 origin 감지가 안됨
-      if (whiteOriginList.indexOf(origin) !== -1 || !origin) {
+      if (allowOriginList.indexOf(origin) !== -1 || !origin) {
         callback(null, true);
       } else {
         callback(new Error(`Not allowed by CORS Blocked origin ${origin}`));
