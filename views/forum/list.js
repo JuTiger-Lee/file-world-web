@@ -2,12 +2,23 @@
 
 const forumListSearchBtn = document.querySelector('.forum-list-search-btn');
 
-function makeForumListTemplate(idx, profile, nickanme, title, category, date) {
+/**
+ * profile에서도 똑같은 템플릿을 쓰기 때문에
+ * 핸들러를 만들어서 가독성을 높일 필요가 있음
+ * @param {Number} idx
+ * @param {String} profile
+ * @param {String} nickanme
+ * @param {String} title
+ * @param {String} category
+ * @param {Date} date
+ * @returns
+ */
+function makeForumListTemplate(idx, nickanme, title, category, date) {
   return `<div class="card">
                 <div class="card-body">
                     <div class="forum-user-profile-box">
-                        <div class="forum-profile">
-                            <img src="${profile}" alt="">
+                        <div class="forum-profile forum-user-profile">
+                            <img src="/static/images/profile/blank_profile.png" alt="user profile">
                         </div>
                         <div class="forum-profile-name">
                             <p>${nickanme}</p>
@@ -41,6 +52,22 @@ function makeForumListTemplate(idx, profile, nickanme, title, category, date) {
                             </div>
                         </div>
                     </div>
+                    <div class="forum-menu-box">
+                      <div class="dropdown show">
+                        <i class="fas fa-ellipsis-h" data-toggle="dropdown"></i>
+
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <a class="dropdown-item" href="#">
+                            <i class="fas fa-exclamation-triangle" style="text-align:left"></i>
+                            <span>Report</span>
+                          </a>
+                          <a class="dropdown-item" href="#">
+                            <i class="far fa-bookmark"></i>
+                            <span>Book Mark</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                 </div>
                 <div class="card-footer">
                      <p class="card-text forum-date">${date}</p>
@@ -48,44 +75,71 @@ function makeForumListTemplate(idx, profile, nickanme, title, category, date) {
             </div>`;
 }
 
-function reqDataCheck(reqResult) {
+/**
+ *
+ * @param {Array} reqResult
+ * @returns
+ */
+function reqDataCheck(reqResult, reqListCallback) {
   const forumListCardBox = document.querySelector('.forum-list-card-box');
-  let template = '';
+  forumListCardBox.innerHTML = '';
+
+  const loadProfile = profilePath => {
+    const forumProfile = document.querySelectorAll('.forum-user-profile > img');
+
+    for (let j = 0; j < forumProfile.length; j++) {
+      // forumProfile[j].onload = () => {};
+
+      forumProfile[j].onerror = () => {
+        forumProfile[j].src = '/static/images/profile/blank_profile.png';
+      };
+
+      forumProfile[j].src = profilePath;
+    }
+  };
 
   if (reqResult.code === 200 && reqResult.data[0].pagination.list.length) {
     const { pagination } = reqResult.data[0];
 
     for (let i = 0; i < pagination.list.length; i++) {
-      template += makeForumListTemplate(
+      forumListCardBox.innerHTML += makeForumListTemplate(
         pagination.list[i].fi_idx,
-        pagination.list[i].ui_profile_hash,
         pagination.list[i].ui_nickname,
         pagination.list[i].fi_title,
         pagination.list[i].fi_category,
         pagination.list[i].update_datetime,
       );
-    }
 
-    if (pagination.totalPage > 0) {
-      makePagination(pagination, reqForumList);
+      loadProfile(pagination.list[i].ui_profile_hash);
     }
-
-    forumListCardBox.innerHTML = template;
   } else {
-    alert('SORRY');
+    forumListCardBox.innerHTML = '';
   }
+
+  makePagination(reqResult.data[0].pagination, reqListCallback);
 
   return window.scrollTo(0, 0);
 }
 
+/**
+ *
+ * @param {String} queryString
+ * @returns
+ */
 async function reqForumList(queryString) {
-  const reqResult = await reqAjax(`/api/forum/list?${queryString}`, 'get');
+  let reqResult = [];
 
-  return reqDataCheck(reqResult);
+  const reqListCallback = async () => {
+    reqResult = await reqAjax(`/api/forum/list?${queryString}`, 'get');
+  };
+
+  reqListCallback();
+
+  return reqDataCheck(reqResult, reqListCallback);
 }
 
 function reqSearch() {
-  const cateogry = document.querySelector(
+  const category = document.querySelector(
     '.forum-list-search-box .search-category',
   ).value;
 
@@ -93,14 +147,19 @@ function reqSearch() {
     '.forum-list-search-box .search-pageSize',
   ).value;
 
-  const title = document.querySelector(
+  const titleSearch = document.querySelector(
     '.forum-list-search-box .search-title',
   ).value;
 
-  let queryString =
-    `currentPage=1` + `&category=${cateogry}` + `&pageSize=${pageSize}`;
+  let queryString = `currentPage=1&pageSize=${pageSize}`;
 
-  if (title) queryString += `&titleSearch=${title}`;
+  if (category.toUpperCase() !== 'ALL' || category.trim()) {
+    queryString += `&category=${category}`;
+  }
+
+  if (titleSearch || titleSearch.trim()) {
+    queryString += `&titleSearch=${titleSearch}`;
+  }
 
   history.pushState(null, null, `?${queryString}`);
 
@@ -110,6 +169,18 @@ function reqSearch() {
 function init() {
   const queryString = window.location.search.substr(1).split('&');
   let reqQueryString = '';
+
+  for (let i = 0; i < queryString.length; i++) {
+    const parsingQueryStrings = queryString[i].split('=');
+
+    const searchInput = document.querySelector(
+      `.forum-list-search-box .search-${parsingQueryStrings[0]}`,
+    );
+
+    if (searchInput) {
+      searchInput.value = parsingQueryStrings[1];
+    }
+  }
 
   if (queryString[0] !== '') {
     reqQueryString = queryString.join('&');
