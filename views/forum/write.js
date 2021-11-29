@@ -2,17 +2,6 @@
 
 const forumWriteSaveBtn = document.querySelector('.forum-write-save-btn');
 
-function init() {
-  $('#summernote').summernote({
-    height: 500,
-    focus: true,
-    disableResizeEditor: true,
-    focus: true,
-    lang: 'ko-KR',
-    placeholder: 'contents',
-  });
-}
-
 function forumValueCheck(forumWriteTitle) {
   if (!forumWriteTitle.trim() || !forumWriteTitle) {
     return alert('제목을 작성해주세요.');
@@ -58,5 +47,17 @@ async function reqForumWrite() {
   }
 }
 
-init();
+function init() {
+  $('#summernote').summernote({
+    height: 500,
+    focus: true,
+    disableResizeEditor: true,
+    focus: true,
+    lang: 'ko-KR',
+    placeholder: 'contents',
+  });
+}
+
 forumWriteSaveBtn.addEventListener('click', () => reqForumWrite());
+
+init();
