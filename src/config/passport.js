@@ -10,6 +10,7 @@ const passportOption = {
   usernameField: 'ui_email',
   passwordField: 'ui_password',
 };
+
 const jwtOption = {
   // bear token 체계 요청시 앞에 bear를 넣어야함
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('authorization'),
