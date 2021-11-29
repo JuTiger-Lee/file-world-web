@@ -46,13 +46,15 @@ function makeForumListTemplate(idx, profile, nickanme, title, category, date) {
             </div>`;
 }
 
-function reqDataCheck(reqResult) {
+function reqProfileDataCheck(reqResult, reqListCallback) {
   const profile = document.querySelector('.avatar > img');
   const profileUserName = document.querySelector('.profile-user-name');
   const forumListCardBox = document.querySelector('.forum-list-card-box');
+
+  forumListCardBox.innerHTML = '';
   let template = '';
 
-  if (reqResult.code === 200) {
+  if (reqResult.code === 200 && reqResult.data[0].pagination.list.length) {
     const { pagination, ui_nickname, ui_profile_hash } = reqResult.data[0];
 
     for (let i = 0; i < pagination.list.length; i++) {
@@ -65,9 +67,6 @@ function reqDataCheck(reqResult) {
         pagination.list[i].update_datetime,
       );
     }
-    if (pagination.totalPage > 0) {
-      makePagination(pagination, reqProfile);
-    }
 
     profile.src = ui_profile_hash;
     profileUserName.textContent = ui_nickname;
@@ -75,12 +74,27 @@ function reqDataCheck(reqResult) {
   } else {
     return alert('profile sorry');
   }
+
+  makePagination(pagination, reqListCallback);
+
+  return window.scrollTo(0, 0);
 }
 
 async function reqProfile(queryString) {
-  const reqResult = await reqAjax(`/api/user/profile?${queryString}`, 'get');
+  let reqResult = [];
 
-  reqDataCheck(reqResult);
+  const reqListCallback = () => {
+    reqResult = await reqAjax(`/api/user/profile?${queryString}`, 'get');
+  };
+
+  reqListCallback();
+
+  return reqProfileDataCheck(reqResult, reqListCallback);
+}
+
+function reqProfileUploadDataCheck(reqResult) {
+  if (reqResult.code === 200) reqProfile('currentPage=1');
+  else alert('profile upload faill');
 }
 
 async function reqProfileUpload(e) {
@@ -95,8 +109,7 @@ async function reqProfileUpload(e) {
     'Content-Type': 'multipart/form-data',
   });
 
-  if (reqResult.code === 200) reqProfile('currentPage=1');
-  else alert('profile upload faill');
+  return reqProfileUploadDataCheck(reqResult);
 }
 
 function init() {
