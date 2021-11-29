@@ -1,3 +1,21 @@
-.main-hello {
-    color: blue;
+#main-box {
+  width: 100%;
+  height: 60%;
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+}
+
+.main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.main-contents-box {
+  width: 80%;
+  height: 100%;
+  margin: auto;
 }
