@@ -1,6 +1,6 @@
 'use strict';
 
-const userSignupLocalBtn = document.querySelector('.user-signup-local-btn');
+const signUpSubmit = document.getElementById('signup-submit');
 
 function signupValueCheck() {
   const userEmail = document.querySelector('.user-email').value;
@@ -44,4 +44,8 @@ async function reqSignup() {
   return reqDataCheck(reqResult);
 }
 
-userSignupLocalBtn.addEventListener('click', () => reqSignup());
+signUpSubmit.addEventListener('submit', e => {
+  e.preventDefault();
+
+  return reqSignup();
+});

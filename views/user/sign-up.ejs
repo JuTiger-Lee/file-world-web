@@ -13,26 +13,31 @@
                             <p>Sign Up into your pages account</p>
                         </div>
                         <div class="user-body">
-                            <div class="form-group">
-                                <input type="email" class="form-control user-email" aria-describedby="emailHelp"
-                                    placeholder="Enter email">
+                            <form id="signup-submit">
+                                <div class="form-group">
+                                    <input type="email" class="form-control user-email" aria-describedby="emailHelp"
+                                        placeholder="Enter email">
                                     <small id="emailHelp" class="form-text text-muted">
                                         We'll never share your email with anyone else.
                                     </small>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control user-nickname" placeholder="nickname">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control user-password" placeholder="Password"
-                                    required>
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control user-verify-password" type="password" placeholder="Verify Password">
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-primary user-local-btn user-signup-local-btn">Sign Up</button>
-                            </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control user-nickname" placeholder="nickname">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control user-password" placeholder="Password"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control user-verify-password" type="password"
+                                        placeholder="Verify Password">
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary user-local-btn user-signup-local-btn">Sign
+                                        Up</button>
+                                </div>
+                            </form>
+
                             <div class="user-style-line">
                                 <h3>Or user With</h3>
                             </div>
@@ -58,4 +63,4 @@
         </div>
     </div>
     <script src="./signUp.js"></script>
-<%- include('../common/footer.ejs') %>
+    <%- include('../common/footer.ejs') %>
