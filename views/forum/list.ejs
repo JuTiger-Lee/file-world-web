@@ -1,9 +1,85 @@
 <%- include('../common/header.ejs') %>
     <link rel="stylesheet" href="../static/css/forum/list.css">
+    <style>
+        .popular-tags {
+            margin-bottom: 10px;
+        }
+
+        .popular-tags {
+            font-size: 20px;
+        }
+
+        .popular-tags>.inline-block:first-child {
+            margin-top: 0;
+        }
+
+        .popular-tags>.inline-block {
+            width: 100%;
+            margin-top: -8px;
+        }
+
+        .popular-tags>span {
+            margin-bottom: 10px;
+        }
+
+        .inline-block {
+            display: inline-block;
+            zoom: 1;
+        }
+
+        .popular-tags .tag-item {
+            float: left;
+            width: 80%;
+            background-color: #4fc3f7;
+            color: white;
+            font-weight: 500;
+            padding-left: 10px;
+            position: relative;
+            padding: 5px 5px 4px 10px;
+        }
+
+        .tag-item {
+            color: #a1a8ae;
+            padding: 0.2em 0.4em 0.3em;
+            font-size: 85%;
+            text-transform: uppercase;
+            color: #999;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .popular-tags-bar {
+            background-color: rgba(0, 0, 0, 0.07);
+            width: 0px;
+            height: 100%;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        .popular-tags .tag-topic-count {
+            float: left;
+            width: 20%;
+            margin-top: 0px;
+            background-color: #cbebf7;
+            color: #777;
+            padding: 4px 4px 5px 4px;
+            border: 0;
+            text-align: center;
+        }
+
+        .tag-topic-count {
+            padding: 0 0.4em 0.1em;
+            font-size: 85%;
+            font-weight: 700;
+            white-space: nowrap;
+            border-left: none;
+        }
+    </style>
 
     <div id="forum-list-box">
         <div class="row forum-list-post-box">
-            <div class="col-md-3">
+            <div class="col-lg-3 col-sm-12">
                 <div class="card forum-top-list">
                     <div class="card-body">
                         <h5 class="card-title">TOP Forum</h5>
@@ -39,17 +115,52 @@
                         </div>
                     </div>
                 </div>
+                
+
+                <div class="popular-tags">
+                    <span class="inline-block">
+                        <span>
+                            <span class="tag-item tag-plugin">Data Export
+                                <div class="popular-tags-bar" style="width: 100%;"></div>
+                            </span>
+                            <span class="tag-topic-count">253</span>
+                        </span>
+                    </span>
+                    <span class="inline-block">
+                        <span>
+                            <span class="tag-item tag-nodebb">Image Resize
+                                <div class="popular-tags-bar" style="width: 66.7984%;"></div>
+                            </span>
+                            <span class="tag-topic-count">169</span>
+                        </span>
+                    </span>
+                    <span class="inline-block">
+                        <span>
+                            <span class="tag-item tag-bug">File Controller
+                                <div class="popular-tags-bar" style="width: 36.7589%;"></div>
+                            </span>
+                            <span class="tag-topic-count">93</span>
+                        </span>
+                    </span>
+                    <span class="inline-block">
+                        <span>
+                            <span class="tag-item tag-theme">ETC
+                                <div class="popular-tags-bar" style="width: 23.3202%;"></div>
+                            </span>
+                            <span class="tag-topic-count">59</span>
+                        </span>
+                    </span>
+                </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-lg-9 col-sm-12">
                 <div class="form-row forum-list-search-box">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <select class="form-control search-category">
-                            <option selected>ALL</option>
-                            <option>Data export</option>
-                            <option>Image resize</option>
-                            <option>File controller</option>
-                            <option>Issue</option>
-                            <option>ETC</option>
+                            <option value="all" selected>ALL</option>
+                            <option value="data-export">Data export</option>
+                            <option value="image-resize">Image resize</option>
+                            <option value="file-controller">File controller</option>
+                            <option value="etc">ETC</option>
                         </select>
                     </div>
                     <div class="form-group col-md-2">
@@ -65,9 +176,15 @@
                         <input type="text" class="form-control search-title" placeholder="Title Search">
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-primary mb-3 forum-list-search-btn">Search</button>
+                        <button class="btn btn-primary mb-3 forum-list-search-btn">
+                            <i class="fas fa-search"></i>
+                            Search
+                        </button>
                         <a href="/forum/write">
-                            <button class="btn btn-primary mb-3">Write</button>
+                            <button class="btn btn-primary mb-3">
+                                <i class="far fa-edit"></i>
+                                Write
+                            </button>
                         </a>
                     </div>
                 </div>
