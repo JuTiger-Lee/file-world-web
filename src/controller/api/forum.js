@@ -27,7 +27,7 @@ async function list(req, res, next) {
       sql.params.push(category);
     }
 
-    if (titleSearch !== 'ALL' && titleSearch) {
+    if (titleSearch) {
       sql.where += ' AND fo.fi_title LIKE ?';
       sql.params.push(`%${titleSearch}%`);
     }
