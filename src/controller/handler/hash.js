@@ -9,20 +9,30 @@ function randomSuffix() {
 }
 
 /**
+ *
+ * @param {String} password
+ * @returns {String}
+ */
+function getHashPassword(password) {
+  /*
+   * sha 128 224 256 384 512
+   * 숫자가 클수록 해쉬를 하기 때문에 안전
+   */
+  return crypto.createHash('sha256').update(password).digest('base64');
+}
+
+/**
  * req password
  * @param {String} password
  * db password
- * @param {String} userPassword
+ * @param {String} ui_password
  * @returns
  */
-function compare(password, userPassword) {
+function compare(password, ui_password) {
   try {
-    const hashPassword = crypto
-      .createHash('sha256')
-      .update(password)
-      .digest('base64');
+    const hashPassword = getHashPassword(password);
 
-    return bcrypt.compareSync(hashPassword, userPassword);
+    return bcrypt.compareSync(hashPassword, ui_password);
   } catch (err) {
     const makeResponse = new MakeResponse();
 
@@ -38,18 +48,11 @@ function compare(password, userPassword) {
  * @param {Number} hashNumber
  * @returns
  */
-function encrypt(password, hashNumber) {
-  /*
-   * sha 128 224 256 384 512
-   * 숫자가 클수록 해쉬를 하기 때문에 안전
-   */
+function encrypt(password) {
   try {
-    const hashPassword = crypto
-      .createHash('sha256')
-      .update(password)
-      .digest('base64');
+    const hashPassword = getHashPassword(password);
 
-    return bcrypt.hashSync(hashPassword, hashNumber);
+    return bcrypt.hashSync(hashPassword, 10);
   } catch (err) {
     const makeResponse = new MakeResponse();
 
@@ -58,11 +61,8 @@ function encrypt(password, hashNumber) {
   }
 }
 
-function decrypt() {}
-
 module.exports = {
   encrypt,
-  decrypt,
   compare,
   randomSuffix,
 };
