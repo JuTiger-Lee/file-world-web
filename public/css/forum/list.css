@@ -101,6 +101,18 @@
   color: #b5b5b5;
 }
 
+/* card menu */
+
+.forum-menu-box span {
+  font-weight: 500;
+}
+
+.forum-menu-box > .dropdown > i {
+  font-size: 25px;
+  cursor: pointer;
+  color: #999;
+}
+
 /* card footer */
 
 .forum-list-card-box .card-footer {
