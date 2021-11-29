@@ -31,7 +31,7 @@ module.exports = (req, res, next) => {
         if (info.name === 'TokenExpiredError') {
           makeResponse.init(419, 419, '토큰 만료');
         } else {
-          makeResponse.init(401, 401, '유효하지 않은 토큰');
+          makeResponse.init(401, 401, '인증된 사용자가 아님');
         }
 
         throw makeResponse.makeErrorResponse(
