@@ -10,6 +10,10 @@ router.get('/sign-up', (req, res) => {
   res.render('../views/user/sign-up');
 });
 
+router.get('/email-auth', (req, res) => {
+  res.render('../views/user/email-auth');
+});
+
 router.get('/profile', (req, res) => {
   res.render('../views/user/profile');
 });
