@@ -17,8 +17,13 @@ async function emailDataCheck(makeResponse, ui_email) {
 
   // id duplicate check
   if (user.data.length) {
+    if (user.data[0].ui_email_status === 1) {
+      makeResponse.init(409, 409, '인증안된 계정');
+      throw makeResponse.makeErrorResponse({}, 'Email duplicate1');
+    }
+
     makeResponse.init(409, 409, 'email duplicate');
-    throw makeResponse.makeErrorResponse({}, 'Email duplicate');
+    throw makeResponse.makeErrorResponse({}, 'Email duplicate2');
   }
 }
 
@@ -37,6 +42,7 @@ async function nicknameDataCheck(makeResponse, ui_nickname) {
   }
 }
 
+// 회원 가입시 이메일 체크
 async function emailCheck(req, res, next) {
   try {
     const { ui_email } = req.body;
@@ -54,6 +60,7 @@ async function emailCheck(req, res, next) {
   }
 }
 
+// 회원가입시 닉네임 체크
 async function nicknameCheck(req, res, next) {
   try {
     const { ui_nickname } = req.body;
@@ -67,7 +74,45 @@ async function nicknameCheck(req, res, next) {
     return res.send(makeResponse.makeSuccessResponse([]));
   } catch (err) {
     console.error(err);
-    next(err);
+    return next(err);
+  }
+}
+
+// 사용자 인증 코드 체크 및 이메일 상태 값 변경
+async function emailCodeCheck(req, res, next) {
+  try {
+    const { ui_confirm_code } = req.body;
+    const makeResponse = new MakeResponse();
+
+    const userCode = await userModel.emailCodeCompare([ui_confirm_code]);
+
+    if (!userCode.data.length) {
+      makeResponse.init(400, 400, 'Code does not match');
+      throw makeResponse.makeErrorResponse(
+        {},
+        'emailCodeCheck code doest not math',
+      );
+    }
+
+    const emailStatusChange = await userModel.emailStatusChangeUser([
+      2,
+      userCode.data[0].ui_email,
+    ]);
+
+    if (!emailStatusChange.data.affectedRows) {
+      makeResponse.init(500, 500, 'email status change Error');
+      throw makeResponse.makeErrorResponse(
+        {},
+        'emailCodeCheck email status change Error',
+      );
+    }
+
+    makeResponse.init(200, 200, 'success');
+
+    return res.send(makeResponse.makeSuccessResponse([]));
+  } catch (err) {
+    console.error(err);
+    return next(err);
   }
 }
 
@@ -96,7 +141,7 @@ async function singUp(req, res, next) {
     await nicknameDataCheck(makeResponse, ui_nickname);
 
     // email send
-    await email.send();
+    await email.joinSend();
 
     // email status change 0: default 1: send 2: join success
     const newUser = await userModel.createUser([
@@ -184,6 +229,7 @@ function signIn(req, res, next) {
   })(req, res);
 }
 
+// 사용자 profile 정보
 async function profile(req, res, next) {
   try {
     const { currentPage, pageSize = 10 } = req.query;
@@ -216,6 +262,7 @@ async function profile(req, res, next) {
   }
 }
 
+// 사용자 프로필 사진 업로드
 async function profileUpload(req, res, next) {
   try {
     const { originalname, filename } = req.file;
@@ -251,6 +298,7 @@ module.exports = {
   signOut,
   emailCheck,
   nicknameCheck,
+  emailCodeCheck,
   profile,
   profileUpload,
 };
