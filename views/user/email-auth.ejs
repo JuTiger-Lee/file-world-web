@@ -1,0 +1,50 @@
+<%- include('../common/header.ejs') %>
+    <link rel="stylesheet" href="../static/css/user/common.css">
+    <link rel="stylesheet" href="../static/css/user/emailAuth.css">
+    <script>
+
+    </script>
+
+    <div id="user-box">
+        <div class="container">
+            <div class="row align-items-center justify-content-cente">
+                <div class="col-xl-7 col-lg-8 col-sm-10 col-12 user-form-box user-email-box">
+                    <div class="user-content">
+                        <div class="user-header">
+                            <!-- <a href="/" class="user-logo">
+                                <h1>File World</h1>
+                            </a> -->
+                            <div class="mail-seccess">
+                                <div class="container">
+                                    <div class="row">
+                                        <!-- Error Inner -->
+                                        <div class="success-inner" style="width: 100%;">
+                                            <h1>
+                                                <i class="fa fa-envelope"></i>
+                                            </h1>
+                                            <p>
+                                                A verification code has been sent.
+                                                <br>
+                                                Enter the verification code you received.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-body">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control user-confirm-code" placeholder="Email Code">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary email-confirm-btn" type="button">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src='./emailAuth.js'></script>
+    <%- include('../common/footer.ejs') %>
