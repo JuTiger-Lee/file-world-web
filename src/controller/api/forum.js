@@ -4,7 +4,7 @@ const forumModel = require('../../models/forum');
 
 async function list(req, res, next) {
   try {
-    const { currentPage, pageSize = 10, category, titleSearch } = req.query;
+    const { currentPage, pageSize = 10, category, title } = req.query;
     const makeResponse = new MakeResponse();
 
     // offset Pagination
@@ -27,9 +27,9 @@ async function list(req, res, next) {
       sql.params.push(category);
     }
 
-    if (titleSearch) {
+    if (title) {
       sql.where += ' AND fo.fi_title LIKE ?';
-      sql.params.push(`%${titleSearch}%`);
+      sql.params.push(`%${title}%`);
     }
 
     const pagination = new Pagination(pageSize, currentPage, sql);
