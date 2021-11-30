@@ -33,7 +33,7 @@ const jwtOption = {
  */
 async function passportVerify(email, password, done) {
   try {
-    const user = await userModel.findUserEmail([email]);
+    const user = await userModel.findCertUserEmail([email]);
 
     // user find
     if (!user.data.length) {
@@ -72,7 +72,7 @@ async function jwtVerify(payload, done) {
           "exp": 1636213933 => 토큰 만료시간
         }
      */
-    const user = await userModel.findUserEmail([payload.email]);
+    const user = await userModel.findCertUserEmail([payload.email]);
 
     if (!user.data.length) {
       return done(null, false, { reason: 'Unauthorized Error' });
