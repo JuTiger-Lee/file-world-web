@@ -1,18 +1,24 @@
 const db = require('./db');
 
-// TODO: email_status 0(비인증)인 사용자만 찾기
+// 회원가입시 중복 이메일 찾기
 async function findUserEmail(params) {
   const sql = 'SELECT * FROM user WHERE ui_email = ?';
 
   return db.query(sql, params);
 }
 
-// 이메일 인증된 유저 찾기
-// async function findCertUserEmail(params) {
-//   const sql = 'SELECT * FROM user WHERE ui_email = ? AND ui_email_status = 2';
+// 인증된 이메일 유저 찾기
+async function findCertUserEmail(params) {
+  const sql = 'SELECT * FROM user WHERE ui_email = ? AND ui_email_status = 2';
 
-//   return db.query(sql, params);
-// }
+  return db.query(sql, params);
+}
+
+async function findUserNickname(params) {
+  const sql = 'SELECT * FROM user WHERE ui_nickname = ?';
+
+  return db.query(sql, params);
+}
 
 async function findUserIdx(params) {
   const sql =
@@ -21,8 +27,15 @@ async function findUserIdx(params) {
   return db.query(sql, params);
 }
 
-async function findUserNickname(params) {
-  const sql = 'SELECT * FROM user WHERE ui_nickname = ?';
+async function emailCodeCompare(params) {
+  const sql =
+    'SELECT ui_email FROM user WHERE ui_confirm_code = ? AND ui_email_status = 1';
+
+  return db.query(sql, params);
+}
+
+async function emailStatusChangeUser(params) {
+  const sql = 'UPDATE user SET ui_email_status = ? WHERE ui_email = ?';
 
   return db.query(sql, params);
 }
@@ -45,8 +58,11 @@ async function changeProfile(params) {
 
 module.exports = {
   findUserEmail,
+  findCertUserEmail,
   findUserNickname,
-  createUser,
   findUserIdx,
+  emailCodeCompare,
+  emailStatusChangeUser,
+  createUser,
   changeProfile,
 };
