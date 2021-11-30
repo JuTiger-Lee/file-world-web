@@ -1,13 +1,13 @@
 const idCheck = {
-  '/api/user/id-check': {
+  '/api/user/email-check': {
     post: {
       tags: ['User'],
-      summary: '사용자 ID 중복 체크',
+      summary: '사용자 email 중복 체크',
       description: '',
       parameters: [
         {
           in: 'formData',
-          name: 'ui_id',
+          name: 'ui_email',
           required: true,
           description: 'user id',
           type: 'string',
@@ -77,13 +77,6 @@ const signUp = {
         },
         {
           in: 'formData',
-          name: 'ui_id',
-          required: true,
-          description: 'user id',
-          type: 'string',
-        },
-        {
-          in: 'formData',
           name: 'ui_password',
           required: true,
           description: 'user password',
@@ -99,7 +92,7 @@ const signUp = {
             'body data ui_email, ui_id, ui_name, ui_passowrd does not exist',
         },
         409: {
-          description: 'user id duplicate',
+          description: 'user email and nickname duplicate',
         },
         500: {
           description: 'emaill send error and password encrypt error',
@@ -126,7 +119,7 @@ const signIn = {
       parameters: [
         {
           in: 'formData',
-          name: 'ui_id',
+          name: 'ui_email',
           required: true,
           description: 'user email',
           type: 'string',
@@ -135,7 +128,7 @@ const signIn = {
           in: 'formData',
           name: 'ui_password',
           required: true,
-          description: 'user nickname',
+          description: 'user password',
           type: 'string',
         },
       ],
