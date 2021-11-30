@@ -80,43 +80,54 @@ function makeForumListTemplate(idx, nickanme, title, category, date) {
  * @param {Array} reqResult
  * @returns
  */
-function reqDataCheck(reqResult, reqListCallback) {
+function reqDataCheck(reqResult) {
+  const initPaginationData = {
+    totalPage: 0,
+    currentPage: 1,
+    startIndex: 1,
+    endIndex: 0,
+  };
+
   const forumListCardBox = document.querySelector('.forum-list-card-box');
   forumListCardBox.innerHTML = '';
 
-  const loadProfile = profilePath => {
+  const loadProfile = (profilePath, i) => {
     const forumProfile = document.querySelectorAll('.forum-user-profile > img');
 
-    for (let j = 0; j < forumProfile.length; j++) {
-      // forumProfile[j].onload = () => {};
+    // forumProfile[j].onload = () => {};
 
-      forumProfile[j].onerror = () => {
-        forumProfile[j].src = '/static/images/profile/blank_profile.png';
-      };
+    forumProfile[i].onerror = () => {
+      forumProfile[i].src = '/static/images/profile/blank_profile.png';
+    };
 
-      forumProfile[j].src = profilePath;
-    }
+    forumProfile[i].src = profilePath;
   };
 
-  if (reqResult.code === 200 && reqResult.data[0].pagination.list.length) {
+  if (reqResult.code === 200) {
     const { pagination } = reqResult.data[0];
 
-    for (let i = 0; i < pagination.list.length; i++) {
-      forumListCardBox.innerHTML += makeForumListTemplate(
-        pagination.list[i].fi_idx,
-        pagination.list[i].ui_nickname,
-        pagination.list[i].fi_title,
-        pagination.list[i].fi_category,
-        pagination.list[i].update_datetime,
-      );
+    if (reqResult.data[0].pagination.list.length) {
+      for (let i = 0; i < pagination.list.length; i++) {
+        forumListCardBox.innerHTML += makeForumListTemplate(
+          pagination.list[i].fi_idx,
+          pagination.list[i].ui_nickname,
+          pagination.list[i].fi_title,
+          pagination.list[i].fi_category,
+          pagination.list[i].update_datetime,
+        );
 
-      loadProfile(pagination.list[i].ui_profile_hash);
+        loadProfile(pagination.list[i].ui_profile_hash, i);
+      }
+
+      makePagination(pagination, reqForumList);
+    } else {
+      makePagination(pagination);
     }
   } else {
-    forumListCardBox.innerHTML = '';
-  }
+    forumListCardBox.innerHTML = ``;
 
-  makePagination(reqResult.data[0].pagination, reqListCallback);
+    makePagination(initPaginationData);
+  }
 
   return window.scrollTo(0, 0);
 }
@@ -127,15 +138,15 @@ function reqDataCheck(reqResult, reqListCallback) {
  * @returns
  */
 async function reqForumList(queryString) {
-  let reqResult = [];
+  // const reqListCallback = queryString => {
+  //   const reqResult = await reqAjax(`/api/forum/list?${queryString}`, 'get');
 
-  const reqListCallback = async () => {
-    reqResult = await reqAjax(`/api/forum/list?${queryString}`, 'get');
-  };
+  //   return reqDataCheck(reqResult);
+  // };
 
-  reqListCallback();
+  const reqResult = await reqAjax(`/api/forum/list?${queryString}`, 'get');
 
-  return reqDataCheck(reqResult, reqListCallback);
+  return reqDataCheck(reqResult);
 }
 
 function reqSearch() {
@@ -153,12 +164,12 @@ function reqSearch() {
 
   let queryString = `currentPage=1&pageSize=${pageSize}`;
 
-  if (category.toUpperCase() !== 'ALL' || category.trim()) {
+  if (category.toUpperCase() !== 'ALL' && category.trim()) {
     queryString += `&category=${category}`;
   }
 
-  if (titleSearch || titleSearch.trim()) {
-    queryString += `&titleSearch=${titleSearch}`;
+  if (titleSearch && titleSearch.trim()) {
+    queryString += `&title=${titleSearch}`;
   }
 
   history.pushState(null, null, `?${queryString}`);
@@ -168,7 +179,7 @@ function reqSearch() {
 
 function init() {
   const queryString = window.location.search.substr(1).split('&');
-  let reqQueryString = '';
+  let reqQueryString = 'currentPage=1';
 
   for (let i = 0; i < queryString.length; i++) {
     const parsingQueryStrings = queryString[i].split('=');
@@ -184,8 +195,6 @@ function init() {
 
   if (queryString[0] !== '') {
     reqQueryString = queryString.join('&');
-  } else {
-    reqQueryString = 'currentPage=1';
   }
 
   return reqForumList(reqQueryString);
