@@ -139,7 +139,11 @@ function makePagination(
       '</li>';
   }
 
-  if (totalPage > 0) pagination.innerHTML = pagingTemplate;
+  if (totalPage > 0) {
+    pagination.innerHTML = pagingTemplate;
 
-  return pagingEvent(reqListCallback);
+    pagingEvent(reqListCallback);
+  } else {
+    pagination.innerHTML = '';
+  }
 }
