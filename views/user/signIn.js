@@ -23,7 +23,6 @@ function loginValueCheck(userEmail, userPassword) {
 }
 
 function reqDataCheck(reqResult) {
-  console.log('reqResult----', reqResult);
   if (reqResult.code === 200) {
     // 토큰 저장
     localStorage.setItem('token', reqResult.data[0].token);

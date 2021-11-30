@@ -23,7 +23,8 @@ function signupValueCheck() {
 
 function reqDataCheck(reqResult) {
   if (reqResult.code === 200) {
-    window.location.href = '/user/sign-in';
+    window.location.href = '/user/email-auth';
+
     return alert('signup success');
   } else {
     return notification('signup fail');

@@ -46,50 +46,56 @@ function makeForumListTemplate(idx, profile, nickanme, title, category, date) {
             </div>`;
 }
 
-function reqProfileDataCheck(reqResult, reqListCallback) {
+function reqProfileDataCheck(reqResult) {
+  const initPaginationData = {
+    totalPage: 0,
+    currentPage: 1,
+    startIndex: 1,
+    endIndex: 0,
+  };
+
   const profile = document.querySelector('.avatar > img');
   const profileUserName = document.querySelector('.profile-user-name');
   const forumListCardBox = document.querySelector('.forum-list-card-box');
-
   forumListCardBox.innerHTML = '';
+
   let template = '';
 
-  if (reqResult.code === 200 && reqResult.data[0].pagination.list.length) {
+  if (reqResult.code === 200) {
     const { pagination, ui_nickname, ui_profile_hash } = reqResult.data[0];
 
-    for (let i = 0; i < pagination.list.length; i++) {
-      template += makeForumListTemplate(
-        pagination.list[i].fi_idx,
-        ui_profile_hash,
-        ui_nickname,
-        pagination.list[i].fi_title,
-        pagination.list[i].fi_category,
-        pagination.list[i].update_datetime,
-      );
+    if (reqResult.data[0].pagination.list.length) {
+      for (let i = 0; i < pagination.list.length; i++) {
+        forumListCardBox.innerHTML += makeForumListTemplate(
+          pagination.list[i].fi_idx,
+          ui_profile_hash,
+          ui_nickname,
+          pagination.list[i].fi_title,
+          pagination.list[i].fi_category,
+          pagination.list[i].update_datetime,
+        );
+      }
+
+      profile.src = ui_profile_hash;
+      profileUserName.textContent = ui_nickname;
+
+      makePagination(pagination, reqProfile);
+    } else {
+      makePagination(pagination);
     }
-
-    profile.src = ui_profile_hash;
-    profileUserName.textContent = ui_nickname;
-    forumListCardBox.innerHTML = template;
   } else {
-    return alert('profile sorry');
-  }
+    forumListCardBox.innerHTML = template = '';
 
-  makePagination(pagination, reqListCallback);
+    makePagination(initPaginationData);
+  }
 
   return window.scrollTo(0, 0);
 }
 
 async function reqProfile(queryString) {
-  let reqResult = [];
+  const reqResult = await reqAjax(`/api/user/profile?${queryString}`, 'get');
 
-  const reqListCallback = () => {
-    reqResult = await reqAjax(`/api/user/profile?${queryString}`, 'get');
-  };
-
-  reqListCallback();
-
-  return reqProfileDataCheck(reqResult, reqListCallback);
+  return reqProfileDataCheck(reqResult);
 }
 
 function reqProfileUploadDataCheck(reqResult) {
