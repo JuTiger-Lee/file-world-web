@@ -6,6 +6,7 @@ const userController = require('../../controller/api/user');
 
 router.post('/id-check', userController.emailCheck);
 router.post('/nickname-check', userController.nicknameCheck);
+router.put('/email-code-check', userController.emailCodeCheck);
 
 router.post('/sign-in', userController.signIn);
 router.post('/sign-up', userController.singUp);
