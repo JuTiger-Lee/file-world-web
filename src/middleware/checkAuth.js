@@ -41,7 +41,8 @@ module.exports = (req, res, next) => {
       }
 
       req.user = decodeToken(req.headers.authorization);
-      next();
+
+      return next();
     } catch (err) {
       console.error(err);
       return next(err);
