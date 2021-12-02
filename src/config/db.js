@@ -11,7 +11,7 @@ module.exports = {
     port: process.env.LOCAL_DB_PORT,
     dateStrings: ['DATE', 'DATETIME'],
     timezone: '+09:00',
-    // mult query on
+    // multi query on
     multipleStatements: true,
   },
   dev: {
