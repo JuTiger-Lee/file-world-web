@@ -2,20 +2,22 @@ const db = require('./db');
 
 // 회원가입시 중복 이메일 찾기
 async function findUserEmail(params) {
-  const sql = 'SELECT * FROM user WHERE ui_email = ?';
+  const sql = 'SELECT ui_email_status FROM user WHERE ui_email = ?';
 
   return db.query(sql, params);
 }
 
 // 인증된 이메일 유저 찾기
 async function findCertUserEmail(params) {
-  const sql = 'SELECT * FROM user WHERE ui_email = ? AND ui_email_status = 2';
+  const sql =
+    'SELECT ui_idx, ui_email, ui_password FROM user ' +
+    'WHERE ui_email = ? AND ui_email_status = 2';
 
   return db.query(sql, params);
 }
 
 async function findUserNickname(params) {
-  const sql = 'SELECT * FROM user WHERE ui_nickname = ?';
+  const sql = 'SELECT ui_nickname FROM user WHERE ui_nickname = ?';
 
   return db.query(sql, params);
 }
