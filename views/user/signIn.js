@@ -4,24 +4,6 @@ const loginGoogleBtn = document.querySelector('.user-google-btn');
 const loginFacebookBtn = document.querySelector('.user-facebook-btn');
 const signInSubmit = document.getElementById('signin-submit');
 
-function loginValueCheck(userEmail, userPassword) {
-  if (!userEmail.trim() || !userEmail) {
-    return notification(
-      'warning',
-      'Enter required values',
-      'Please enter your ID.',
-    );
-  }
-
-  if (!userPassword.trim() || !userPassword) {
-    return notification(
-      'warning',
-      'Enter required values',
-      'Please enter your Password.',
-    );
-  }
-}
-
 function reqDataCheck(reqResult) {
   if (reqResult.code === 200) {
     // 토큰 저장
