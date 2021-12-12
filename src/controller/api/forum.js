@@ -4,7 +4,12 @@ const forumModel = require('../../models/forum');
 
 async function list(req, res, next) {
   try {
-    const { currentPage, pageSize = 10, category, title } = req.query;
+    const {
+      currentPage = 1,
+      pageSize = 10,
+      category = 'ALL',
+      title,
+    } = req.query;
     const makeResponse = new MakeResponse();
 
     // offset Pagination
@@ -14,8 +19,8 @@ async function list(req, res, next) {
         'fo.fi_idx, fo.fi_title, fo.fi_category, fo.status, fo.update_datetime ' +
         'FROM forum as fo INNER JOIN user as us ON us.ui_idx = fo.ui_idx',
       total:
-        'SELECT COUNT(fo.fi_idx) as total FROM forum as fo' +
-        ' INNER JOIN user as us ON us.ui_idx = fo.ui_idx',
+        'SELECT COUNT(fo.fi_idx) as total FROM forum as fo ' +
+        'INNER JOIN user as us ON us.ui_idx = fo.ui_idx',
       where: 'WHERE us.status = ? AND fo.status = ?',
       order: 'ORDER BY fo.fi_idx DESC',
       limit: '',
