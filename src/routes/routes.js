@@ -66,7 +66,6 @@ module.exports = app => {
   /* ----- SWAGGER MIDDLEWARE ----- */
 
   // api document read
-
   app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs, setUpOption));
 
   /* ----- ADMIN ----- */
