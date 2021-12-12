@@ -239,8 +239,8 @@ async function profile(req, res, next) {
     // offset Pagination
     const sql = {
       list:
-        'SELECT fi.fi_idx, fi.fi_title, fi.fi_category,' +
-        'fi.status, fi.update_datetime FROM forum',
+        'SELECT fi_idx, fi_title, fi_category,' +
+        'status, update_datetime FROM forum',
       total: 'SELECT COUNT(fi_idx) as total FROM forum',
       where: 'WHERE ui_idx = ? AND status = ?',
       order: 'ORDER BY fi_idx DESC',
