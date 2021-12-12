@@ -15,13 +15,12 @@ function pagingEvent(reqListCallback) {
    * @returns
    */
   const reqListController = currentPage => {
-    const queryCurrent = `currentPage=${currentPage}`;
     const parsingQuery = location.search.split('&');
-    let reqQuery = queryCurrent;
+    let reqQuery = `currentPage=${currentPage}`;
 
     for (let i = 0; i < parsingQuery.length; i++) {
       if (parsingQuery[i].split('=').includes('?currentPage')) {
-        parsingQuery[i] = `currentPage=${currentPage}`;
+        parsingQuery[i] = reqQuery;
       }
     }
 
@@ -139,7 +138,7 @@ function makePagination(
       '</li>';
   }
 
-  if (totalPage > 0) {
+  if (!totalPage) {
     pagination.innerHTML = pagingTemplate;
 
     pagingEvent(reqListCallback);
