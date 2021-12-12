@@ -37,7 +37,6 @@ async function reqForumWrite() {
     const bodyData = {
       fi_title: forumWriteTitle,
       fi_category: forumWriteCategory,
-      fi_tag: [],
       fi_content: forumWriteContetns,
     };
 
