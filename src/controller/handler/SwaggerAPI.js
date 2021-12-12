@@ -1,3 +1,17 @@
+function getServerHost() {
+  let swaggerHost = '';
+
+  if (process.env.NODE_ENV === 'prod') {
+    swaggerHost = '';
+  } else if (process.env.NODE_ENV === 'dev') {
+    swaggerHost = 'https://file-world.herokuapp.com';
+  } else {
+    swaggerHost = 'localhost:8081';
+  }
+
+  return swaggerHost;
+}
+
 const swaggerInfo = {
   title: 'file-world-API',
   version: '0.0.1',
@@ -74,15 +88,7 @@ const swaggerComponents = {
   },
 };
 
-let swaggerHost = '';
-
-if (process.env.NODE_ENV === 'prod') {
-  swaggerHost = '';
-} else if (process.env.NODE_ENV === 'dev') {
-  swaggerHost = 'https://file-world.herokuapp.com';
-} else {
-  swaggerHost = 'localhost:8081';
-}
+const swaggerHost = getServerHost();
 
 class SwaggerAPI {
   constructor() {
