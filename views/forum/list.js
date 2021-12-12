@@ -58,11 +58,11 @@ function makeForumListTemplate(idx, nickanme, title, category, date) {
 
                         <div class="dropdown-menu dropdown-menu-right">
                           <a class="dropdown-item" href="#">
-                            <i class="fas fa-exclamation-triangle" style="text-align:left"></i>
+                            <!-- <i class="fas fa-exclamation-triangle" style="text-align:left"></i> --!>
                             <span>Report</span>
                           </a>
                           <a class="dropdown-item" href="#">
-                            <i class="far fa-bookmark"></i>
+                            <!-- <i class="far fa-bookmark"></i> --!>
                             <span>Book Mark</span>
                           </a>
                         </div>
@@ -138,12 +138,6 @@ function reqDataCheck(reqResult) {
  * @returns
  */
 async function reqForumList(queryString) {
-  // const reqListCallback = queryString => {
-  //   const reqResult = await reqAjax(`/api/forum/list?${queryString}`, 'get');
-
-  //   return reqDataCheck(reqResult);
-  // };
-
   const reqResult = await reqAjax(`/api/forum/list?${queryString}`, 'get');
 
   return reqDataCheck(reqResult);
