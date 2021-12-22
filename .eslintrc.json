@@ -49,6 +49,8 @@
         // 최대 class 조정
         "max-classes-per-file": ["warn", 5],
         // TODO: 검색 필요!
-        "no-restricted-syntax": "off"
+        "no-restricted-syntax": "off",
+        // 빈 코드
+        "no-empty": "warn"
     }
 }
