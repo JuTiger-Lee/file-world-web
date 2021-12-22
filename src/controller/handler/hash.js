@@ -1,8 +1,15 @@
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 // https://www.npmjs.com/package/bcrypt
 const bcrypt = require('bcrypt');
 const MakeResponse = require('./MakeResponse');
+
+function decodeToken(beareToken) {
+  const token = beareToken.split(' ')[1];
+
+  return jwt.decode(token);
+}
 
 function randomSuffix() {
   return crypto.randomBytes(5).toString('hex');
@@ -65,4 +72,5 @@ module.exports = {
   encrypt,
   compare,
   randomSuffix,
+  decodeToken,
 };
