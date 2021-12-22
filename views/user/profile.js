@@ -1,5 +1,6 @@
 const chagneProfile = document.querySelector('.change-profile');
 
+// TODO: forum list template과 똑같기 때문에 관련 핸들러를 추가해 코드 가독성을 높일 필요가 있음
 function makeForumListTemplate(idx, profile, nickanme, title, category, date) {
   return `<div class="card">
                 <div class="card-body">
@@ -58,8 +59,6 @@ function reqProfileDataCheck(reqResult) {
   const profileUserName = document.querySelector('.profile-user-name');
   const forumListCardBox = document.querySelector('.forum-list-card-box');
   forumListCardBox.innerHTML = '';
-
-  let template = '';
 
   if (reqResult.code === 200) {
     const { pagination, ui_nickname, ui_profile_hash } = reqResult.data[0];
