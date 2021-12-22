@@ -44,10 +44,10 @@ async function nicknameDataCheck(makeResponse, ui_nickname) {
 
 // 회원 가입시 이메일 체크
 async function emailCheck(req, res, next) {
-  try {
-    const { ui_email } = req.body;
-    const makeResponse = new MakeResponse();
+  const { ui_email } = req.body;
+  const makeResponse = new MakeResponse();
 
+  try {
     // id duplicate check
     await emailDataCheck(makeResponse, ui_email);
 
@@ -62,10 +62,10 @@ async function emailCheck(req, res, next) {
 
 // 회원가입시 닉네임 체크
 async function nicknameCheck(req, res, next) {
-  try {
-    const { ui_nickname } = req.body;
-    const makeResponse = new MakeResponse();
+  const { ui_nickname } = req.body;
+  const makeResponse = new MakeResponse();
 
+  try {
     // id duplicate check
     await nicknameDataCheck(makeResponse, ui_nickname);
 
@@ -80,10 +80,10 @@ async function nicknameCheck(req, res, next) {
 
 // 사용자 인증 코드 체크 및 이메일 상태 값 변경
 async function emailCodeCheck(req, res, next) {
-  try {
-    const { ui_confirm_code } = req.body;
-    const makeResponse = new MakeResponse();
+  const { ui_confirm_code } = req.body;
+  const makeResponse = new MakeResponse();
 
+  try {
     const userCode = await userModel.emailCodeCompare([ui_confirm_code]);
 
     if (!userCode.data.length) {
@@ -117,11 +117,11 @@ async function emailCodeCheck(req, res, next) {
 }
 
 async function singUp(req, res, next) {
-  try {
-    const { ui_email, ui_nickname, ui_password } = req.body;
-    const makeResponse = new MakeResponse();
-    const beforeProfileImage = '/static/images/profile/blank_profile.png';
+  const { ui_email, ui_nickname, ui_password } = req.body;
+  const makeResponse = new MakeResponse();
+  const beforeProfileImage = '/static/images/profile/blank_profile.png';
 
+  try {
     // password encrypted
     const hashPassword = encrypt(ui_password);
 
@@ -170,10 +170,10 @@ async function singUp(req, res, next) {
 }
 
 function signIn(req, res, next) {
+  const makeResponse = new MakeResponse();
+
   passport.authenticate('local', (passportError, user, info) => {
     try {
-      const makeResponse = new MakeResponse();
-
       if (passportError) {
         makeResponse.init(500, 500, 'login error');
         throw makeResponse.makeErrorResponse(
@@ -231,11 +231,11 @@ function signIn(req, res, next) {
 
 // 사용자 profile 정보
 async function profile(req, res, next) {
-  try {
-    const { currentPage, pageSize = 10 } = req.query;
-    const { idx } = req.user;
-    const makeResponse = new MakeResponse();
+  const { currentPage = 1, pageSize = 10 } = req.query;
+  const { idx } = req.user;
+  const makeResponse = new MakeResponse();
 
+  try {
     // offset Pagination
     const sql = {
       list:
@@ -266,11 +266,11 @@ async function profile(req, res, next) {
 
 // 사용자 프로필 사진 업로드
 async function profileUpload(req, res, next) {
-  try {
-    const { originalname, filename } = req.file;
-    const { idx } = req.user;
-    const makeResponse = new MakeResponse();
+  const { originalname, filename } = req.file;
+  const { idx } = req.user;
+  const makeResponse = new MakeResponse();
 
+  try {
     const userProfile = await userModel.changeProfile([
       `/upload/profile/${originalname}`,
       `/upload/profile/${filename}`,
