@@ -48,11 +48,15 @@
 
 .main-image-background > .main-image-text-contents-box > h1 {
   font-size: 75px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .main-image-background > .main-image-text-contents-box > p {
   margin-top: 20px;
   font-size: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 .main-contents-box {
   width: 80%;
