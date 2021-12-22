@@ -38,13 +38,10 @@ class Server {
       '/upload',
       this.express.static(path.join(__dirname, '../../public/upload')),
     );
-    this.app.use(this.express.static(path.join(__dirname, '../../views')));
+    this.app.use('/', this.express.static(path.join(__dirname, '../../views')));
 
     // Template engine registration
     this.app.set('view engine', 'ejs');
-
-    // x-powered-by remove
-    this.app.disable('x-powered-by');
 
     // passport setting
     this.app.use(passport.initialize());
