@@ -12,6 +12,7 @@ async function list(req, res, next) {
     let ui_idx = decodeToken(auth);
 
     if (!ui_idx) ui_idx = 0;
+    else ui_idx = ui_idx.idx;
 
     const sql = {
       list:
