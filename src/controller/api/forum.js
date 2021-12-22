@@ -9,7 +9,9 @@ async function list(req, res, next) {
   const auth = req.headers.authorization;
 
   try {
-    const ui_idx = decodeToken(auth).idx;
+    let ui_idx = decodeToken(auth);
+
+    if (!ui_idx) ui_idx = 0;
 
     const sql = {
       list:
