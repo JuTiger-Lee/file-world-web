@@ -1,15 +1,9 @@
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
 const MakeResponse = require('../controller/handler/MakeResponse');
+const { decodeToken } = require('../controller/handler/hash');
 
 module.exports = (req, res, next) => {
   const makeResponse = new MakeResponse();
-
-  const decodeToken = beareToken => {
-    const token = beareToken.split(' ')[1];
-
-    return jwt.decode(token);
-  };
 
   passport.authenticate('jwt', { session: false }, (error, user, info) => {
     try {
