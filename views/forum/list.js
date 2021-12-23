@@ -10,6 +10,7 @@ const forumListSearchBtn = document.querySelector('.forum-list-search-btn');
  * @param {String} nickanme
  * @param {String} title
  * @param {String} category
+ * @param {String} post_status
  * @param {Number} like_count
  * @param {Date} date
  * @returns
@@ -19,6 +20,7 @@ function makeForumListTemplate(
   nickanme,
   title,
   category,
+  post_status,
   like_count,
   like_status,
   date,
@@ -58,15 +60,15 @@ function makeForumListTemplate(
                             <div class="fourm-like-box">
                                 <span style="color: #ed635e;">
                                   ${(function () {
-                                    let likeStatus =
+                                    let likeType =
                                       '<i class="far fa-heart like" style="cursor: pointer"></i>';
 
-                                    if (like_status === 1) {
-                                      likeStatus =
+                                    if (like_status === 'true') {
+                                      likeType =
                                         '<i class="fas fa-heart un-like" style="cursor: pointer"></i>';
                                     }
 
-                                    return likeStatus;
+                                    return likeType;
                                   })()}
                                     ${like_count} Like
                                 </span>
@@ -76,14 +78,25 @@ function makeForumListTemplate(
                     <div class="forum-menu-box">
                       <div class="dropdown show">
                         <i class="fas fa-ellipsis-h" data-toggle="dropdown"></i>
+                          <div class="dropdown-menu dropdown-menu-right">
+                        ${(function () {
+                          let dropdownType =
+                            '<a class="dropdown-item" href="#">' +
+                            '<span>Report</span>' +
+                            '</a>' +
+                            '<a class="dropdown-item" href="#">' +
+                            '<span>Book Mark</span>' +
+                            '</a>';
 
-                        <div class="dropdown-menu dropdown-menu-right">
-                          <a class="dropdown-item" href="#">
-                            <span>Report</span>
-                          </a>
-                          <a class="dropdown-item" href="#">
-                            <span>Book Mark</span>
-                          </a>
+                          if (post_status === 'true') {
+                            dropdownType =
+                              '<a class="dropdown-item" href="#">' +
+                              '<span>Delete</span>' +
+                              '</a>';
+                          }
+
+                          return dropdownType;
+                        })()}
                         </div>
                       </div>
                     </div>
@@ -120,7 +133,7 @@ function likeEvent() {
     const reqResult = await reqAjax(likeURI, method, bodyData);
 
     if (reqResult.code === 200) {
-      reqForumList(location.search.split('?')[1]);
+      reqForumList(location.search.split('?')[1], window.scrollY);
     }
   };
 
@@ -136,7 +149,7 @@ function likeEvent() {
  * @param {Object} reqResult
  * @returns
  */
-function reqDataCheck(reqResult) {
+function reqDataCheck(reqResult, scrollHeight) {
   const initPaginationData = {
     totalPage: 0,
     currentPage: 1,
@@ -168,6 +181,7 @@ function reqDataCheck(reqResult) {
         pagination.list[i].ui_nickname,
         pagination.list[i].fi_title,
         pagination.list[i].fi_category,
+        pagination.list[i].post_status,
         pagination.list[i].like_count,
         pagination.list[i].like_status,
         pagination.list[i].update_datetime,
@@ -184,7 +198,7 @@ function reqDataCheck(reqResult) {
     makePagination(initPaginationData);
   }
 
-  return window.scrollTo(0, 0);
+  return window.scrollTo(0, scrollHeight);
 }
 
 /**
@@ -192,10 +206,10 @@ function reqDataCheck(reqResult) {
  * @param {String} queryString
  * @returns
  */
-async function reqForumList(queryString) {
+async function reqForumList(queryString, scrollHeight = 0) {
   const reqResult = await reqAjax(`/api/forum/list?${queryString}`, 'get');
 
-  return reqDataCheck(reqResult);
+  return reqDataCheck(reqResult, scrollHeight);
 }
 
 function reqSearch() {
