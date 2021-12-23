@@ -36,7 +36,7 @@ async function list(req, res, next) {
     where: 'WHERE us.status = 1 AND fo.status = 1',
     order: 'ORDER BY fo.fi_idx DESC',
     limit: '',
-    params: [ui_idx, ui_idx, ui_idx],
+    params: [ui_idx, ui_idx],
   };
 
   if (category !== 'ALL' && category) {
