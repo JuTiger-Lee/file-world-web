@@ -8,44 +8,48 @@ async function list(req, res, next) {
   const makeResponse = new MakeResponse();
   const auth = req.headers.authorization;
 
+  let ui_idx = decodeToken(auth);
+
+  if (!ui_idx) ui_idx = 0;
+  else ui_idx = ui_idx.idx;
+
+  const sql = {
+    list:
+      'SELECT us.ui_nickname, us.ui_profile, us.ui_profile_hash,' +
+      'fo.fi_idx, fo.fi_title, fo.fi_category, fo.update_datetime, ' +
+      '(' +
+      'SELECT COUNT(*) FROM post_like AS pl ' +
+      'WHERE pl.fi_idx = fo.fi_idx' +
+      ') AS like_count,' +
+      '(' +
+      'SELECT IF(COUNT(*) = 1, "true", "false") FROM post_like AS pl ' +
+      'WHERE pl.fi_idx = fo.fi_idx AND pl.ui_idx = ?' +
+      ') AS like_status,' +
+      '(' +
+      'SELECT IF(COUNT(*) >= 1, "true", "false") FROM forum AS fo ' +
+      'WHERE us.ui_idx = fo.ui_idx AND fo.ui_idx = ?' +
+      ') AS post_status ' +
+      'FROM forum AS fo INNER JOIN user AS us ON us.ui_idx = fo.ui_idx ',
+    total:
+      'SELECT COUNT(fo.fi_idx) AS total FROM forum AS fo ' +
+      'INNER JOIN user AS us ON us.ui_idx = fo.ui_idx ',
+    where: 'WHERE us.status = 1 AND fo.status = 1',
+    order: 'ORDER BY fo.fi_idx DESC',
+    limit: '',
+    params: [ui_idx, ui_idx, ui_idx],
+  };
+
+  if (category !== 'ALL' && category) {
+    sql.where += ' AND fo.fi_category = ?';
+    sql.params.push(category);
+  }
+
+  if (title) {
+    sql.where += ' AND fo.fi_title LIKE ?';
+    sql.params.push(`%${title}%`);
+  }
+
   try {
-    let ui_idx = decodeToken(auth);
-
-    if (!ui_idx) ui_idx = 0;
-    else ui_idx = ui_idx.idx;
-
-    const sql = {
-      list:
-        'SELECT us.ui_nickname, us.ui_profile, us.ui_profile_hash,' +
-        'fo.fi_idx, fo.fi_title, fo.fi_category, fo.update_datetime, ' +
-        '(' +
-        'SELECT COUNT(*) FROM post_like AS pl ' +
-        'WHERE pl.fi_idx = fo.fi_idx' +
-        ') AS like_count,' +
-        '(' +
-        'SELECT COUNT(*) FROM post_like AS pl ' +
-        'WHERE pl.ui_idx = ? AND pl.fi_idx = fo.fi_idx' +
-        ') AS like_status ' +
-        'FROM forum AS fo INNER JOIN user AS us ON us.ui_idx = fo.ui_idx ',
-      total:
-        'SELECT COUNT(fo.fi_idx) AS total FROM forum AS fo ' +
-        'INNER JOIN user AS us ON us.ui_idx = fo.ui_idx ',
-      where: 'WHERE us.status = 1 AND fo.status = 1',
-      order: 'ORDER BY fo.fi_idx DESC',
-      limit: '',
-      params: [ui_idx],
-    };
-
-    if (category !== 'ALL' && category) {
-      sql.where += ' AND fo.fi_category = ?';
-      sql.params.push(category);
-    }
-
-    if (title) {
-      sql.where += ' AND fo.fi_title LIKE ?';
-      sql.params.push(`%${title}%`);
-    }
-
     const pagination = new Pagination(pageSize, currentPage, sql);
     pagination.init();
 
