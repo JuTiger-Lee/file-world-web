@@ -55,6 +55,7 @@ module.exports = app => {
     '/api/user/profile-upload',
     '/api/forum/like',
     '/api/forum/un-like',
+    '/api/forum/comment/write',
   ];
 
   /* ----- SOP ALLOW URL ----- */
