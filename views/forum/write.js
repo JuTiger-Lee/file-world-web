@@ -7,7 +7,7 @@ function forumValueCheck(forumWriteTitle) {
     return alert('제목을 작성해주세요.');
   }
 
-  if ($('#summernote').summernote('isEmpty')) {
+  if ($('#forum-write-input').summernote('isEmpty')) {
     return alert('내용을 작성해주세요.');
   }
 
@@ -29,7 +29,7 @@ async function reqForumWrite() {
   const forumWriteCategory = document.querySelector(
     '.forum-write-category',
   ).value;
-  const forumWriteContetns = $('#summernote').summernote('code');
+  const forumWriteContetns = $('#forum-write-input').summernote('code');
 
   const forumWriteValueResult = forumValueCheck(forumWriteTitle);
 
@@ -47,7 +47,7 @@ async function reqForumWrite() {
 }
 
 function init() {
-  $('#summernote').summernote({
+  $('#forum-write-input').summernote({
     height: 500,
     focus: true,
     disableResizeEditor: true,
