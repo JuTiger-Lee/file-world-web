@@ -10,7 +10,7 @@ const forumListSearchBtn = document.querySelector('.forum-list-search-btn');
  * @param {String} nickanme
  * @param {String} title
  * @param {String} category
- * @param {String} post_status
+ * @param {String} forum_status
  * @param {Number} like_count
  * @param {Date} date
  * @returns
@@ -20,7 +20,9 @@ function makeForumListTemplate(
   nickanme,
   title,
   category,
-  post_status,
+  view,
+  forum_status,
+  comment_count,
   like_count,
   like_status,
   date,
@@ -45,19 +47,7 @@ function makeForumListTemplate(
                             </div>
                         </div>
                         <div class="forum-info-box">
-                            <div class="forum-comment-box">
-                                <span style="color: #12a7e4;">
-                                    <i class="fas fa-comment"></i>
-                                    0 Answers
-                                </span>
-                            </div>
-                            <div class="fourm-view-box">
-                                <span style="color: #2b8d6e;">
-                                    <i class="fas fa-eye"></i> 
-                                    0 Views
-                                </span>
-                            </div>
-                            <div class="fourm-like-box">
+                            <div class="forum-like-box">
                                 <span style="color: #ed635e;">
                                   ${(function () {
                                     let likeType =
@@ -73,30 +63,42 @@ function makeForumListTemplate(
                                     ${like_count} Like
                                 </span>
                             </div>
+                            <div class="forum-view-box">
+                              <span style="color: #2b8d6e;">
+                                <i class="fas fa-eye"></i> 
+                                ${view} Views
+                              </span>
+                            </div>
+                            <div class="forum-comment-box">
+                              <span style="color: #12a7e4;">
+                                  <i class="fas fa-comment"></i>
+                                  ${comment_count} Answers
+                              </span>
+                            </div>
                         </div>
                     </div>
                     <div class="forum-menu-box">
                       <div class="dropdown show">
                         <i class="fas fa-ellipsis-h" data-toggle="dropdown"></i>
                           <div class="dropdown-menu dropdown-menu-right">
-                        ${(function () {
-                          let dropdownType =
-                            '<a class="dropdown-item" href="#">' +
-                            '<span>Report</span>' +
-                            '</a>' +
-                            '<a class="dropdown-item" href="#">' +
-                            '<span>Book Mark</span>' +
-                            '</a>';
+                            ${(function () {
+                              let dropdownType =
+                                '<a class="dropdown-item" href="#">' +
+                                '<span>Report</span>' +
+                                '</a>' +
+                                '<a class="dropdown-item" href="#">' +
+                                '<span>Book Mark</span>' +
+                                '</a>';
 
-                          if (post_status === 'true') {
-                            dropdownType =
-                              '<a class="dropdown-item" href="#">' +
-                              '<span>Delete</span>' +
-                              '</a>';
-                          }
+                              if (forum_status === 'true') {
+                                dropdownType =
+                                  '<a class="dropdown-item" href="#">' +
+                                  '<span>Delete</span>' +
+                                  '</a>';
+                              }
 
-                          return dropdownType;
-                        })()}
+                              return dropdownType;
+                            })()}
                         </div>
                       </div>
                     </div>
@@ -108,7 +110,7 @@ function makeForumListTemplate(
 }
 
 function likeEvent() {
-  const like = document.querySelectorAll('.fourm-like-box > span > i');
+  const like = document.querySelectorAll('.forum-like-box > span > i');
 
   /**
    *
@@ -122,7 +124,7 @@ function likeEvent() {
 
     const forunmIdx = document.querySelectorAll('.forum-title-box > a');
     const fi_idx = forunmIdx[index].getAttribute('data-number');
-    const linkData = likeType === 'like' ? '' : `?unLikeIdx=${fi_idx}`;
+    const linkData = likeType === 'like' ? '' : `/${fi_idx}`;
     const linkEndPoint = `${likeType}${linkData}`;
     const likeURI = `/api/forum/${linkEndPoint}`;
     const method = likeType === 'like' ? 'post' : 'delete';
@@ -176,15 +178,30 @@ function reqDataCheck(reqResult, scrollHeight) {
     const { pagination } = reqResult.data[0];
 
     for (let i = 0; i < pagination.list.length; i++) {
+      const {
+        ui_nickname,
+        fi_idx,
+        fi_title,
+        fi_category,
+        fi_view,
+        forum_status,
+        comment_count,
+        like_count,
+        like_status,
+        update_datetime,
+      } = pagination.list[i];
+
       forumListCardBox.innerHTML += makeForumListTemplate(
-        pagination.list[i].fi_idx,
-        pagination.list[i].ui_nickname,
-        pagination.list[i].fi_title,
-        pagination.list[i].fi_category,
-        pagination.list[i].post_status,
-        pagination.list[i].like_count,
-        pagination.list[i].like_status,
-        pagination.list[i].update_datetime,
+        fi_idx,
+        ui_nickname,
+        fi_title,
+        fi_category,
+        fi_view,
+        forum_status,
+        comment_count,
+        like_count,
+        like_status,
+        update_datetime,
       );
 
       likeEvent();
