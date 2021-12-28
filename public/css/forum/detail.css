@@ -113,3 +113,11 @@ hr {
   margin-top: 10px;
   word-break: break-all;
 }
+
+.comment-input-on {
+  display: block !important;
+}
+
+.comment-input-off {
+  display: none !important;
+}
