@@ -234,11 +234,12 @@ async function unLike(req, res, next) {
 
 module.exports = {
   list,
+  detail,
   write,
+  deleteForum,
   update,
   writeComment,
   updateComment,
-  detail,
   like,
   unLike,
 };
