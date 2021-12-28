@@ -130,6 +130,7 @@ function getCommentTemplate(comments) {
 
       for (let i = 0; i < comments.length; i++) {
         const {
+          ui_idx,
           fc_idx,
           ui_profile_hash,
           ui_nickname,
@@ -138,7 +139,12 @@ function getCommentTemplate(comments) {
         } = comments[i];
 
         commentTemplate += `
-          <div class="d-flex flex-row mb-2 comment" id="commment-${fc_idx}">
+          <div 
+            class="d-flex flex-row mb-2 comment-contents-box" 
+            id="comment-${fc_idx}" 
+            data-comment-id="${fc_idx}" 
+            data-user-id="${ui_idx}"
+          >
             <div class="forum-user-profile-box">
               <div class="forum-profile forum-user-profile">
                 <img src="${ui_profile_hash}" width="40" class="rounded-image" />
@@ -155,7 +161,18 @@ function getCommentTemplate(comments) {
                     <small class="comment-like" style="cursor: pointer">Like</small>
                     <small class="comment-replay" style="cursor: pointer">Reply</small>
                   </div>
-                  <div class="child-comment-input"></div>
+                  <div class="child-comment-input-box comment-input-off" style="display:none">
+                    <div class="child-comment-input"></div>
+                    <button 
+                      class="
+                        btn btn-primary 
+                        mt-2 
+                        forum-comment-save-btn 
+                        float-right"
+                    >
+                    Save
+                  </button>
+                </div>
               </div>
           </div>`;
       }
@@ -195,19 +212,44 @@ function getCommentTemplate(comments) {
 }
 
 function showCommentReplayInput() {
-  const commentReplay = document.querySelectorAll('.comment-replay');
+  const commentReplay = document.querySelectorAll(
+    '.comment-contents-box .comment-replay',
+  );
+
+  const showChildComment = index => {
+    const commentContentsBox =
+      commentReplay[index].parentElement.parentElement.parentElement;
+    const childCommentInputBox = document.querySelectorAll(
+      '.child-comment-input-box',
+    );
+
+    const showChildInputController = showStatus => {
+      childCommentInputBox[index].classList.remove(
+        `comment-input-${showStatus === true ? 'on' : 'off'}`,
+      );
+      childCommentInputBox[index].classList.add(
+        `comment-input-${showStatus === false ? 'on' : 'off'}`,
+      );
+    };
+
+    if (childCommentInputBox[index].classList[1] === 'comment-input-off') {
+      showChildInputController(false);
+    } else {
+      showChildInputController(true);
+    }
+
+    $(`#${commentContentsBox.id} .child-comment-input`).summernote({
+      height: 150,
+      focus: true,
+      disableResizeEditor: true,
+      focus: true,
+      lang: 'ko-KR',
+      placeholder: 'Enter a Reply comment',
+    });
+  };
 
   for (let i = 0; i < commentReplay.length; i++) {
-    commentReplay[i].addEventListener('click', () => {
-      // $('.child-comment-input').summernote({
-      //   height: 150,
-      //   focus: true,
-      //   disableResizeEditor: true,
-      //   focus: true,
-      //   lang: 'ko-KR',
-      //   placeholder: 'Enter a comment',
-      // });
-    });
+    commentReplay[i].addEventListener('click', () => showChildComment(i));
   }
 }
 
@@ -240,11 +282,8 @@ function reqCommentSave() {
       bodtData,
     );
 
-    if (reqResult.code === 200) {
-      reqDetail();
-    } else {
-      alert('작성 실패');
-    }
+    if (reqResult.code === 200) reqDetail(window.scrollY);
+    else alert('작성 실패');
   };
 
   commentSaveBtn.addEventListener('click', () => commentSave());
