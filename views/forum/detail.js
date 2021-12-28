@@ -123,6 +123,11 @@ function getDetailTemplate(
       </div>`;
 }
 
+/**
+ *
+ * @param {Object} comments
+ * @returns
+ */
 function getCommentTemplate(comments) {
   return `
     ${(function () {
@@ -134,6 +139,7 @@ function getCommentTemplate(comments) {
           fc_idx,
           ui_profile_hash,
           ui_nickname,
+          childComments,
           update_datetime,
           fc_contents,
         } = comments[i];
@@ -174,48 +180,74 @@ function getCommentTemplate(comments) {
                   </button>
                 </div>
               </div>
+            </div>
+            <div class="child-comment-box ml-5">
+              ${(function () {
+                let childCommentTemplate = '';
+
+                for (let j = 0; j < childComments.length; j++) {
+                  const {
+                    ui_idx,
+                    fc_idx,
+                    ui_profile_hash,
+                    ui_nickname,
+                    update_datetime,
+                    fc_contents,
+                  } = childComments[j];
+
+                  childCommentTemplate += `
+                      <div class="child-comment-contents-box">
+                        <div 
+                          class="d-flex flex-row mb-2"
+                          id="child-comment-${fc_idx}" 
+                          data-child-comment-id="${fc_idx}" 
+                          data-user-id="${ui_idx}"
+                        >
+                          <div class="forum-user-profile-box">
+                            <div class="forum-profile forum-user-profile">
+                              <img src="${ui_profile_hash}" width="40" class="rounded-image" />
+                          </div>
+                        </div>
+                        <div class="d-flex flex-column ml-2 mb-3">
+                          <span class="name">${ui_nickname}</span>
+                          <small class="ellipsis">${update_datetime}</small>
+                    
+                          <div class="comment-contents-box mt-2">
+                            <a href="#">
+                              <span class="comment-tag" style="color: #7b7f87; font-size: 1.2rm; font-weight: 700;">
+                                @Daniel Frozer
+                              </span>
+                            </a>
+                            <div class="comment-text mt-2">${fc_contents}</div>
+                          </div>
+                          <div class="d-flex flex-row mt-1 mb-3 align-items-center status">
+                            <small class="comment-like" style="cursor: pointer">Like</small>
+                            <small class="comment-replay" style="cursor: pointer">Reply</small>
+                          </div>
+                          <div class="child-comment-input"></div>
+                        </div>
+                      </div>`;
+                }
+
+                return childCommentTemplate;
+              })()}
+            </div>
           </div>`;
       }
 
       return commentTemplate;
-    })()}
-    <!-- child comment --!>
-  </div>`;
-
-  //   <div class="child-comment ml-5">
-  //   <div class="d-flex flex-row mb-2">
-  //     <div class="forum-user-profile-box">
-  //       <div class="forum-profile forum-user-profile">
-  //         <img src="https://i.imgur.com/9AZ2QX1.jpg" width="40" class="rounded-image" />
-  //       </div>
-  //     </div>
-  //     <div class="d-flex flex-column ml-2 mb-3">
-  //         <span class="name">Daniel Frozer2</span>
-  //         <small class="ellipsis">2021-12-23 00:49:16</small>
-
-  //         <div class="comment-contents-box mt-2">
-  //           <a href="#">
-  //             <span class="comment-tag" style="color: #7b7f87; font-size: 1.2rm; font-weight: 700;">
-  //               @Daniel Frozer
-  //             </span>
-  //           </a>
-  //           <div class="comment-text mt-2">
-  //           </div>
-  //         </div>
-  //         <div class="d-flex flex-row mt-1 mb-3 align-items-center status">
-  //             <small class="comment-like" style="cursor: pointer">Like</small>
-  //             <small class="comment-replay" style="cursor: pointer">Reply</small>
-  //         </div>
-  //         <div class="child-comment-input"></div>
-  //     </div>
-  // </div>
+    })()}`;
 }
 
-function showCommentReplayInput() {
+function showChildCommentInput() {
   const commentReplay = document.querySelectorAll(
     '.comment-contents-box .comment-replay',
   );
 
+  /**
+   *
+   * @param {Number} index
+   */
   const showChildComment = index => {
     const commentContentsBox =
       commentReplay[index].parentElement.parentElement.parentElement;
@@ -223,6 +255,10 @@ function showCommentReplayInput() {
       '.child-comment-input-box',
     );
 
+    /**
+     *
+     * @param {Boolean} showStatus
+     */
     const showChildInputController = showStatus => {
       childCommentInputBox[index].classList.remove(
         `comment-input-${showStatus === true ? 'on' : 'off'}`,
@@ -298,7 +334,7 @@ function reqComment(comments) {
 
   commentBox.innerHTML = getCommentTemplate(comments);
 
-  showCommentReplayInput();
+  showChildCommentInput();
   commentSummerNoteInit();
   reqCommentSave();
 }
