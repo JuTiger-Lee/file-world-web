@@ -100,6 +100,20 @@ async function detail(req, res, next) {
     const [detailPost] = forum;
     detailPost.comments = comment;
 
+    const { comments } = detailPost;
+
+    for (let i = 0; i < comments.length; i += 1) {
+      for (let j = 0; j < comments.length; j += 1) {
+        if (!comments[j].childComments) {
+          comments[j].childComments = [];
+        }
+
+        if (comments[i].fc_comment_idx === comments[j].fc_idx) {
+          comments[j].childComments.push(comments[i]);
+        }
+      }
+    }
+
     makeResponse.init(200, 200, 'success');
 
     return res.json(makeResponse.makeSuccessResponse([detailPost]));
