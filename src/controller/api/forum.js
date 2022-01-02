@@ -5,8 +5,8 @@ const { decodeToken } = require('../handler/hash');
 
 async function list(req, res, next) {
   const { currentPage = 1, pageSize = 10, category = 'ALL', title } = req.query;
-  const makeResponse = new MakeResponse();
   const auth = req.headers.authorization;
+  const makeResponse = new MakeResponse();
 
   let ui_idx = decodeToken(auth);
 
@@ -70,6 +70,48 @@ async function list(req, res, next) {
   }
 }
 
+async function countCategory(req, res, next) {
+  const makeResponse = new MakeResponse();
+  const categoryKeyList = [
+    'data-export',
+    'file-controller',
+    'image-resize',
+    'etc',
+  ];
+  const resCountCategory = [];
+
+  try {
+    const countCategoryInfo = await forumModel.getCategoryCountInfo([]);
+
+    for (let i = 0; i < categoryKeyList.length; i += 1) {
+      if (countCategoryInfo.data[i]) {
+        const { fi_category, count } = countCategoryInfo.data[i];
+
+        const categoryStatus = categoryKeyList.includes(fi_category);
+
+        if (categoryStatus) {
+          resCountCategory.push({
+            fi_category,
+            count,
+          });
+        }
+      } else {
+        resCountCategory.push({
+          fi_category: categoryKeyList[i],
+          count: 0,
+        });
+      }
+    }
+
+    makeResponse.init(200, 200, 'success');
+
+    return res.json(makeResponse.makeSuccessResponse(resCountCategory));
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+}
+
 async function detail(req, res, next) {
   const { idx } = req.params;
   const makeResponse = new MakeResponse();
@@ -103,7 +145,7 @@ async function detail(req, res, next) {
     const { comments } = detailPost;
 
     for (let i = 0; i < comments.length; i += 1) {
-      for (let j = 0; j < comments.length; j += 1) {
+      for (let j = i; j < comments.length; j += 1) {
         if (!comments[j].childComments) {
           comments[j].childComments = [];
         }
@@ -248,6 +290,7 @@ async function unLike(req, res, next) {
 
 module.exports = {
   list,
+  countCategory,
   detail,
   write,
   deleteForum,
