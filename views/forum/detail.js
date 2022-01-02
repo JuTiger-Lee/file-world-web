@@ -1,6 +1,21 @@
 const pasingURI = location.pathname.split('/');
 const fi_idx = pasingURI[pasingURI.length - 1];
 
+/**
+ *
+ * @param {String} nickname
+ * @param {String} profile
+ * @param {Number} fi_view
+ * @param {String} title
+ * @param {String} category
+ * @param {String} contents
+ * @param {String} like_status
+ * @param {Number} like_count
+ * @param {String} forum_status
+ * @param {Number} commentLength
+ * @param {Date} dateTime
+ * @returns
+ */
 function getDetailTemplate(
   nickname,
   profile,
@@ -125,7 +140,7 @@ function getDetailTemplate(
 
 /**
  *
- * @param {Object} comments
+ * @param {Array} comments
  * @returns
  */
 function getCommentTemplate(comments) {
@@ -334,9 +349,9 @@ function reqComment(comments) {
 
   commentBox.innerHTML = getCommentTemplate(comments);
 
-  showChildCommentInput();
   commentSummerNoteInit();
   reqCommentSave();
+  showChildCommentInput();
 }
 
 function likeEvent() {
