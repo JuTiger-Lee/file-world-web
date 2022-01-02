@@ -16,7 +16,11 @@ async function deleteForum(params) {
 }
 
 async function detailForum(params) {
-  const sql =
+  let sql = '';
+
+  // multi SQL
+
+  const detailForumSQL =
     'SELECT us.ui_nickname, us.ui_profile_hash, fo.fi_title,' +
     'fo.fi_category, fo.fi_view, fo.fi_content, fo.update_datetime,' +
     '(' +
@@ -32,11 +36,16 @@ async function detailForum(params) {
     'WHERE fo.fi_idx = ? AND fo.ui_idx = ?' +
     ') AS forum_status ' +
     'FROM forum as fo INNER JOIN user as us ON fo.ui_idx = us.ui_idx ' +
-    'WHERE fo.fi_idx = ? AND fo.status = 1 AND us.status = 1;' +
+    'WHERE fo.fi_idx = ? AND fo.status = 1 AND us.status = 1;';
+
+  const commentForumSQL =
     'SELECT us.ui_nickname, us.ui_idx, us.ui_profile_hash, fc.fc_comment_idx,' +
     'fc.fc_idx, fc.fc_contents, fc.create_datetime, fc.update_datetime ' +
     'FROM forum_comment AS fc INNER JOIN user AS us ' +
     'ON fc.ui_idx = us.ui_idx WHERE fc.fi_idx = ? ORDER BY fc.fc_idx DESC';
+
+  sql += detailForumSQL;
+  sql += commentForumSQL;
 
   return db.query(sql, params);
 }
@@ -77,7 +86,7 @@ async function createComment(params) {
 
 async function getCategoryCountInfo(params) {
   const sql =
-    'SELECT fi_category, COUNT(fi_category) FROM forum GROUP BY fi_category;';
+    'SELECT fi_category, COUNT(fi_category) AS count FROM forum GROUP BY fi_category;';
 
   return db.query(sql, params);
 }
