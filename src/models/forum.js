@@ -4,13 +4,13 @@ async function createForum(params) {
   const sql =
     'INSERT INTO forum(fi_title, fi_category, fi_content, ui_idx,' +
     'create_datetime, update_datetime)' +
-    'VALUES(?, ?, ?, ?, now(), now())';
+    'VALUES(?, ?, ?, ?, now(), now());';
 
   return db.query(sql, params);
 }
 
 async function deleteForum(params) {
-  const sql = 'DELETE FROM forum WHERE fi_idx = ?';
+  const sql = 'DELETE FROM forum WHERE fi_idx = ?;';
 
   return db.query(sql, params);
 }
@@ -42,26 +42,26 @@ async function detailForum(params) {
 }
 
 async function updateView(params) {
-  const sql = 'UPDATE forum SET fi_view = fi_view + 1 WHERE fi_idx = 297';
+  const sql = 'UPDATE forum SET fi_view = fi_view + 1 WHERE fi_idx = 297;';
 
   return db.query(sql, params);
 }
 
 async function checkLike(params) {
   const sql =
-    'SELECT COUNT(*) as like_count FROM forum_like WHERE ui_idx = ? AND fi_idx = ?';
+    'SELECT COUNT(*) as like_count FROM forum_like WHERE ui_idx = ? AND fi_idx = ?;';
 
   return db.query(sql, params);
 }
 
 async function createLike(params) {
-  const sql = 'INSERT INTO forum_like(ui_idx, fi_idx) VALUES(?, ?)';
+  const sql = 'INSERT INTO forum_like(ui_idx, fi_idx) VALUES(?, ?);';
 
   return db.query(sql, params);
 }
 
 async function deleteLike(params) {
-  const sql = 'DELETE FROM forum_like WHERE ui_idx = ? AND fi_idx = ?';
+  const sql = 'DELETE FROM forum_like WHERE ui_idx = ? AND fi_idx = ?;';
 
   return db.query(sql, params);
 }
@@ -70,7 +70,14 @@ async function createComment(params) {
   const sql =
     'INSERT INTO forum_comment(ui_idx, fi_idx, fc_comment_idx,' +
     'fc_contents, create_datetime, update_datetime) ' +
-    'VALUES(?, ?, ?, ?, now(), now())';
+    'VALUES(?, ?, ?, ?, now(), now());';
+
+  return db.query(sql, params);
+}
+
+async function getCategoryCountInfo(params) {
+  const sql =
+    'SELECT fi_category, COUNT(fi_category) FROM forum GROUP BY fi_category;';
 
   return db.query(sql, params);
 }
@@ -84,4 +91,5 @@ module.exports = {
   createLike,
   deleteLike,
   createComment,
+  getCategoryCountInfo,
 };
