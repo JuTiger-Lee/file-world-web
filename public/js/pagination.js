@@ -11,51 +11,53 @@ function pagingEvent(reqListCallback) {
 
   /**
    *
-   * @param {Number} currentPage
-   * @returns
-   */
-  const reqListController = currentPage => {
-    const parsingQuery = location.search.split('&');
-    let reqQuery = `currentPage=${currentPage}`;
-
-    for (let i = 0; i < parsingQuery.length; i++) {
-      if (parsingQuery[i].split('=').includes('?currentPage')) {
-        parsingQuery[i] = reqQuery;
-      }
-    }
-
-    if (location.search) {
-      const joinQuery = parsingQuery.join('&');
-      const pathCombineQuery = `${location.pathname}?${joinQuery}`;
-      reqQuery = joinQuery;
-
-      history.replaceState({}, null, pathCombineQuery);
-    } else {
-      history.pushState(null, null, `?${reqQuery}`);
-    }
-
-    return reqListCallback(reqQuery);
-  };
-
-  /**
-   *
    * @param {Array} clickPagings
    * @param {Boolean} childeYn
    */
   const pagingClickHanlder = (clickPagings, childeYn = false) => {
-    for (let i = 0; i < clickPagings.length; i++) {
-      clickPagings[i].addEventListener('click', e => {
-        e.preventDefault();
+    /**
+     *
+     * @param {Number} currentPage
+     * @returns
+     */
+    const reqListController = currentPage => {
+      const parsingQuery = location.search.split('&');
+      let reqQuery = `currentPage=${currentPage}`;
 
-        let clickPaging = clickPagings[i].getAttribute('data-number');
-
-        if (childeYn) {
-          clickPaging =
-            clickPagings[i].childNodes[0].getAttribute('data-number');
+      for (let i = 0; i < parsingQuery.length; i++) {
+        if (parsingQuery[i].split('=').includes('?currentPage')) {
+          parsingQuery[i] = reqQuery;
         }
+      }
 
-        return reqListController(clickPaging);
-      });
+      if (location.search) {
+        const joinQuery = parsingQuery.join('&');
+        const pathCombineQuery = `${location.pathname}?${joinQuery}`;
+        reqQuery = joinQuery;
+
+        history.replaceState({}, null, pathCombineQuery);
+      } else {
+        history.pushState(null, null, `?${reqQuery}`);
+      }
+
+      return reqListCallback(reqQuery);
+    };
+
+    const pageingClick = (e, index) => {
+      e.preventDefault();
+
+      let clickPaging = clickPagings[index].getAttribute('data-number');
+
+      if (childeYn) {
+        clickPaging =
+          clickPagings[index].childNodes[0].getAttribute('data-number');
+      }
+
+      return reqListController(clickPaging);
+    };
+
+    for (let i = 0; i < clickPagings.length; i++) {
+      clickPagings[i].addEventListener('click', e => pageingClick(e, index));
     }
   };
 
