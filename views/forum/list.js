@@ -15,18 +15,18 @@ const forumListSearchBtn = document.querySelector('.forum-list-search-btn');
  * @param {Date} date
  * @returns
  */
-function makeForumListTemplate(
-  idx,
-  nickanme,
-  title,
-  category,
-  view,
+function getForumListTemplate({
+  fi_idx,
+  ui_nickname,
+  fi_title,
+  fi_category,
+  fi_view,
   forum_status,
   comment_count,
   like_count,
   like_status,
-  date,
-) {
+  update_datetime,
+}) {
   return `<div class="card">
                 <div class="card-body">
                     <div class="forum-user-profile-box">
@@ -35,15 +35,15 @@ function makeForumListTemplate(
                         </div>
                         <!--
                         <div class="forum-profile-name">
-                            <p>${nickanme}</p>
+                            <p>${ui_nickname}</p>
                         </div>
                         --!>
                     </div>
                     <div class="forum-post-info-box">
                         <div class="forum-list-card-header-box">
-                            <div class="forum-category">${category}</div>
+                            <div class="forum-category">${fi_category}</div>
                             <div class="forum-title-box">
-                                <a href="/forum/detail/${idx}" data-number=${idx} class="card-title forum-list-title">${title}</a>
+                                <a href="/forum/detail/${fi_idx}" data-number=${fi_idx} class="card-title forum-list-title">${fi_title}</a>
                             </div>
                         </div>
                         <div class="forum-info-box">
@@ -66,7 +66,7 @@ function makeForumListTemplate(
                             <div class="forum-view-box">
                               <span style="color: #2b8d6e;">
                                 <i class="fas fa-eye"></i> 
-                                ${view} Views
+                                ${fi_view} Views
                               </span>
                             </div>
                             <div class="forum-comment-box">
@@ -104,9 +104,32 @@ function makeForumListTemplate(
                     </div>
                 </div>
                 <div class="card-footer">
-                     <p class="card-text forum-date">${date}</p>
+                     <p class="card-text forum-date">${update_datetime}</p>
                 </div>
             </div>`;
+}
+
+/**
+ *
+ * @param {String} fi_category
+ * @param {Number} count
+ * @returns
+ */
+function getCategoryCountTemplate(fi_category, count) {
+  return `
+      <span class="inline-block">
+        <span>
+            <span class="tag-item tag-plugin">${fi_category}
+              <!-- 200개가 100% -->
+              <div 
+                class="popular-tags-bar" 
+                style="width: ${count * 0.5}%;"
+              >
+              </div>
+            </span>
+            <span class="tag-topic-count">${count}</span>
+        </span>
+      </span>`;
 }
 
 function likeEvent() {
@@ -149,6 +172,7 @@ function likeEvent() {
 /**
  *
  * @param {Object} reqResult
+ * @param {Number} scrollHeight
  * @returns
  */
 function reqDataCheck(reqResult, scrollHeight) {
@@ -191,7 +215,7 @@ function reqDataCheck(reqResult, scrollHeight) {
         update_datetime,
       } = pagination.list[i];
 
-      forumListCardBox.innerHTML += makeForumListTemplate(
+      forumListCardBox.innerHTML += getForumListTemplate({
         fi_idx,
         ui_nickname,
         fi_title,
@@ -202,7 +226,7 @@ function reqDataCheck(reqResult, scrollHeight) {
         like_count,
         like_status,
         update_datetime,
-      );
+      });
 
       likeEvent();
       loadProfile(pagination.list[i].ui_profile_hash, i);
@@ -221,6 +245,7 @@ function reqDataCheck(reqResult, scrollHeight) {
 /**
  *
  * @param {String} queryString
+ * @param {Number} scrollHeight
  * @returns
  */
 async function reqForumList(queryString, scrollHeight = 0) {
@@ -280,6 +305,31 @@ function init() {
   return reqForumList(reqQueryString);
 }
 
+/**
+ *
+ * @param {Object} reqResult
+ */
+function reqCategoryCountInfoDataCheck(reqResult) {
+  const popularTags = document.querySelector('.popular-tags');
+
+  if (reqResult.code === 200 && reqResult.data.length) {
+    for (let i = 0; i < reqResult.data.length; i++) {
+      const { fi_category, count } = reqResult.data[i];
+
+      popularTags.innerHTML += getCategoryCountTemplate(fi_category, count);
+    }
+  } else {
+    popularTags.innerHTML = '';
+  }
+}
+
+async function reqCategoryCountInfo() {
+  const reqResult = await reqAjax(`/api/forum/count-category`, 'get');
+
+  return reqCategoryCountInfoDataCheck(reqResult);
+}
+
 forumListSearchBtn.addEventListener('click', () => reqSearch());
 
 init();
+reqCategoryCountInfo();
