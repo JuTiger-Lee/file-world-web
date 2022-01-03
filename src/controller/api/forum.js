@@ -70,6 +70,7 @@ async function list(req, res, next) {
   }
 }
 
+// 카테고리별 개수
 async function countCategory(req, res, next) {
   const makeResponse = new MakeResponse();
   const categoryKeyList = [
@@ -191,9 +192,21 @@ async function write(req, res, next) {
   }
 }
 
-async function deleteForum(req, res, next) {}
-
 async function update(req, res, next) {
+  const { fi_title, fi_category, fi_content } = req.body;
+  const makeResponse = new MakeResponse();
+
+  try {
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+}
+
+async function deleteForum(req, res, next) {
+  const { fi_idx } = req.params;
+  const makeResponse = new MakeResponse();
+
   try {
   } catch (err) {
     console.log(err);
