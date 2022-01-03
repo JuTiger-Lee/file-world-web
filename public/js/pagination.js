@@ -140,9 +140,7 @@ function makePagination(
       '</li>';
   }
 
-  if (!totalPage) {
-    return (pagination.innerHTML = '');
-  }
+  if (!totalPage) return (pagination.innerHTML = '');
 
   pagination.innerHTML = pagingTemplate;
 
