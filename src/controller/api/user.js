@@ -214,7 +214,7 @@ function signIn(req, res, next) {
           AUTH_KEY,
           {
             // 유효시간
-            expiresIn: '60m',
+            expiresIn: '120m',
           },
         );
 
@@ -242,10 +242,10 @@ async function profile(req, res, next) {
         'SELECT fi_idx, fi_title, fi_category,' +
         'status, update_datetime FROM forum',
       total: 'SELECT COUNT(fi_idx) as total FROM forum',
-      where: 'WHERE ui_idx = ? AND status = ?',
+      where: 'WHERE ui_idx = ? AND status = 1',
       order: 'ORDER BY fi_idx DESC',
       limit: '',
-      params: [idx, 1],
+      params: [idx],
     };
 
     const findUserIdx = await userModel.findUserIdx([idx]);
