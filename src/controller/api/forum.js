@@ -173,40 +173,45 @@ async function remove(req, res, next) {
 
 async function countCategory(req, res, next) {
   const makeResponse = new MakeResponse();
-  const categoryKeyList = [
-    'data-export',
-    'file-controller',
-    'image-resize',
-    'etc',
+
+  const initCategoryList = [
+    {
+      fi_category: 'data-export',
+      count: 0,
+    },
+    {
+      fi_category: 'image-resize',
+      count: 0,
+    },
+    {
+      fi_category: 'file-controller',
+      count: 0,
+    },
+    {
+      fi_category: 'etc',
+      count: 0,
+    },
   ];
-  const resCountCategory = [];
 
   try {
     const countCategoryInfo = await forumModel.getCategoryCountInfo([]);
 
-    for (let i = 0; i < categoryKeyList.length; i += 1) {
-      if (countCategoryInfo.data[i]) {
-        const { fi_category, count } = countCategoryInfo.data[i];
+    for (let i = 0; i < countCategoryInfo.data.length; i += 1) {
+      const categoryInfoList = Object.values(countCategoryInfo.data[i]);
 
-        const categoryStatus = categoryKeyList.includes(fi_category);
+      for (let j = 0; j < initCategoryList.length; j += 1) {
+        if (initCategoryList[j].fi_category === categoryInfoList[0]) {
+          const [fi_category, count] = categoryInfoList;
 
-        if (categoryStatus) {
-          resCountCategory.push({
-            fi_category,
-            count,
-          });
+          initCategoryList[j].fi_category = fi_category;
+          initCategoryList[j].count = count;
         }
-      } else {
-        resCountCategory.push({
-          fi_category: categoryKeyList[i],
-          count: 0,
-        });
       }
     }
 
     makeResponse.init(200, 200, 'success');
 
-    return res.json(makeResponse.makeSuccessResponse(resCountCategory));
+    return res.json(makeResponse.makeSuccessResponse(initCategoryList));
   } catch (err) {
     console.log(err);
     return next(err);
