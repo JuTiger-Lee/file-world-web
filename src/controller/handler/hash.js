@@ -5,8 +5,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const MakeResponse = require('./MakeResponse');
 
+/**
+ *
+ * @param {String} beareToken
+ * @returns
+ */
 function decodeToken(beareToken) {
-  const token = beareToken.split(' ')[1];
+  const token = beareToken && beareToken.split(' ')[1];
 
   return jwt.decode(token);
 }
