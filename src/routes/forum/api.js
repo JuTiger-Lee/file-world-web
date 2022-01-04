@@ -4,11 +4,13 @@ const router = express.Router();
 const forumController = require('../../controller/api/forum');
 
 router.get('/list', forumController.list);
-router.get('/count-category', forumController.countCategory);
 router.get('/detail/:idx', forumController.detail);
 router.post('/write', forumController.write);
+router.get('/count-category', forumController.countCategory);
+router.post('/like', forumController.postLike);
+router.delete('/un-like/:idx', forumController.postUnLike);
+
+// comment
 router.post('/comment/write', forumController.writeComment);
-router.post('/like', forumController.like);
-router.delete('/un-like/:idx', forumController.unLike);
 
 module.exports = router;
