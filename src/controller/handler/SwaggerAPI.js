@@ -67,6 +67,14 @@ const swaggerTags = [
 
 const swaggerSchemes = ['http', 'https'];
 
+const swaggerSecurityDefinitions = {
+  ApiKeyAuth: {
+    type: 'apiKey',
+    name: 'Authorization',
+    in: 'header',
+  },
+};
+
 const swaggerComponents = {
   JWT_ERROR: {
     description: 'jwt token Error',
@@ -96,6 +104,7 @@ class SwaggerAPI {
       definition: {
         host: swaggerHost,
         schemes: swaggerSchemes,
+        securityDefinitions: swaggerSecurityDefinitions,
         // openapi: '3.0.0',
         info: swaggerInfo,
 
