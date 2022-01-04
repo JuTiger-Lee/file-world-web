@@ -37,28 +37,28 @@ const listForum = {
             }`,
       parameters: [
         {
-          in: 'path',
+          in: 'query',
           name: 'currentPage',
           required: false,
           description: 'current page',
           type: 'string',
         },
         {
-          in: 'path',
+          in: 'query',
           name: 'pageSize',
           required: false,
           description: 'page size',
           type: 'string',
         },
         {
-          in: 'path',
+          in: 'query',
           name: 'category',
           required: false,
           description: 'category',
           type: 'string',
         },
         {
-          in: 'path',
+          in: 'query',
           name: 'title',
           required: false,
           description: 'title',

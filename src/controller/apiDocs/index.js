@@ -5,6 +5,9 @@ const SwaggerAPI = require('../handler/SwaggerAPI');
 // user api docs
 const { signUp, signIn, idCheck, nicknameCheck } = require('./user');
 
+// forum api docs
+const { listForum } = require('./forum');
+
 module.exports = () => {
   const userApiDocs = {
     ...idCheck,
@@ -13,7 +16,9 @@ module.exports = () => {
     ...signIn,
   };
 
-  const forumApiDcos = {};
+  const forumApiDcos = {
+    ...listForum,
+  };
 
   const apiDcos = {
     ...userApiDocs,
