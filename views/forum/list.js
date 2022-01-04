@@ -93,6 +93,12 @@ function getForumListTemplate({
                               if (forum_status === 'true') {
                                 dropdownType =
                                   '<a class="dropdown-item" href="#">' +
+                                  '<span>Report</span>' +
+                                  '</a>' +
+                                  '<a class="dropdown-item" href="#">' +
+                                  '<span>Book Mark</span>' +
+                                  '</a>' +
+                                  '<a class="dropdown-item" href="#">' +
                                   '<span>Delete</span>' +
                                   '</a>';
                               }
