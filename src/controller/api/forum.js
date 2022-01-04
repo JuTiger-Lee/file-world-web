@@ -70,49 +70,6 @@ async function list(req, res, next) {
   }
 }
 
-// 카테고리별 개수
-async function countCategory(req, res, next) {
-  const makeResponse = new MakeResponse();
-  const categoryKeyList = [
-    'data-export',
-    'file-controller',
-    'image-resize',
-    'etc',
-  ];
-  const resCountCategory = [];
-
-  try {
-    const countCategoryInfo = await forumModel.getCategoryCountInfo([]);
-
-    for (let i = 0; i < categoryKeyList.length; i += 1) {
-      if (countCategoryInfo.data[i]) {
-        const { fi_category, count } = countCategoryInfo.data[i];
-
-        const categoryStatus = categoryKeyList.includes(fi_category);
-
-        if (categoryStatus) {
-          resCountCategory.push({
-            fi_category,
-            count,
-          });
-        }
-      } else {
-        resCountCategory.push({
-          fi_category: categoryKeyList[i],
-          count: 0,
-        });
-      }
-    }
-
-    makeResponse.init(200, 200, 'success');
-
-    return res.json(makeResponse.makeSuccessResponse(resCountCategory));
-  } catch (err) {
-    console.log(err);
-    return next(err);
-  }
-}
-
 async function detail(req, res, next) {
   const { idx } = req.params;
   const makeResponse = new MakeResponse();
@@ -203,7 +160,7 @@ async function update(req, res, next) {
   }
 }
 
-async function deleteForum(req, res, next) {
+async function remove(req, res, next) {
   const { fi_idx } = req.params;
   const makeResponse = new MakeResponse();
 
@@ -214,45 +171,49 @@ async function deleteForum(req, res, next) {
   }
 }
 
-async function writeComment(req, res, next) {
-  const { fi_idx, fc_comment_idx, fc_contents } = req.body;
+async function countCategory(req, res, next) {
   const makeResponse = new MakeResponse();
+  const categoryKeyList = [
+    'data-export',
+    'file-controller',
+    'image-resize',
+    'etc',
+  ];
+  const resCountCategory = [];
 
   try {
-    const saveComment = await forumModel.createComment([
-      req.user.idx,
-      fi_idx,
-      fc_comment_idx,
-      fc_contents,
-    ]);
+    const countCategoryInfo = await forumModel.getCategoryCountInfo([]);
 
-    if (!saveComment.data.affectedRows) {
-      makeResponse.init(500, 500, 'comment write Error');
-      throw makeResponse.makeErrorResponse({}, 'comment insert Error');
+    for (let i = 0; i < categoryKeyList.length; i += 1) {
+      if (countCategoryInfo.data[i]) {
+        const { fi_category, count } = countCategoryInfo.data[i];
+
+        const categoryStatus = categoryKeyList.includes(fi_category);
+
+        if (categoryStatus) {
+          resCountCategory.push({
+            fi_category,
+            count,
+          });
+        }
+      } else {
+        resCountCategory.push({
+          fi_category: categoryKeyList[i],
+          count: 0,
+        });
+      }
     }
 
-    makeResponse.init(201, 200, 'success');
+    makeResponse.init(200, 200, 'success');
 
-    return res.json(makeResponse.makeSuccessResponse([]));
+    return res.json(makeResponse.makeSuccessResponse(resCountCategory));
   } catch (err) {
     console.log(err);
     return next(err);
   }
 }
 
-async function deleteComment() {}
-
-async function updateComment(req, res, next) {
-  const makeResponse = new MakeResponse();
-
-  try {
-  } catch (err) {
-    console.log(err);
-    return next(err);
-  }
-}
-
-async function like(req, res, next) {
+async function postLike(req, res, next) {
   const { fi_idx } = req.body;
   const makeResponse = new MakeResponse();
 
@@ -280,7 +241,7 @@ async function like(req, res, next) {
   }
 }
 
-async function unLike(req, res, next) {
+async function postUnLike(req, res, next) {
   const { idx } = req.params;
   const makeResponse = new MakeResponse();
 
@@ -301,15 +262,42 @@ async function unLike(req, res, next) {
   }
 }
 
+/* ======== COMMENT ======== */
+
+async function writeComment(req, res, next) {
+  const { fi_idx, fc_comment_idx, fc_contents } = req.body;
+  const makeResponse = new MakeResponse();
+
+  try {
+    const saveComment = await forumModel.createComment([
+      req.user.idx,
+      fi_idx,
+      fc_comment_idx,
+      fc_contents,
+    ]);
+
+    if (!saveComment.data.affectedRows) {
+      makeResponse.init(500, 500, 'comment write Error');
+      throw makeResponse.makeErrorResponse({}, 'comment insert Error');
+    }
+
+    makeResponse.init(201, 200, 'success');
+
+    return res.json(makeResponse.makeSuccessResponse([]));
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+}
+
 module.exports = {
   list,
-  countCategory,
   detail,
   write,
-  deleteForum,
+  remove,
   update,
+  countCategory,
+  postLike,
+  postUnLike,
   writeComment,
-  updateComment,
-  like,
-  unLike,
 };
