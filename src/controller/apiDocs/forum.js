@@ -12,7 +12,6 @@ const listForum = {
               "message": "success",
               "data": [
                         0: {
-                            pagination: {startIndex: 1, endIndex: 1, pageSize: 10, totalPage: 1,…}
                             currentPage: "1"
                             endIndex: 1
                             list: [{
