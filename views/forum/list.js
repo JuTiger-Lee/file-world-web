@@ -28,86 +28,86 @@ function getForumListTemplate({
   update_datetime,
 }) {
   return `<div class="card">
-                <div class="card-body">
-                    <div class="forum-user-profile-box">
-                        <div class="forum-profile forum-user-profile">
-                            <img src="/static/images/profile/blank_profile.png" alt="user profile">
-                        </div>
-                        <!--
-                        <div class="forum-profile-name">
-                            <p>${ui_nickname}</p>
-                        </div>
-                        --!>
-                    </div>
-                    <div class="forum-post-info-box">
-                        <div class="forum-list-card-header-box">
-                            <div class="forum-category">${fi_category}</div>
-                            <div class="forum-title-box">
-                                <a href="/forum/detail/${fi_idx}" data-number=${fi_idx} class="card-title forum-list-title">${fi_title}</a>
-                            </div>
-                        </div>
-                        <div class="forum-info-box">
-                            <div class="forum-like-box">
-                                <span style="color: #ed635e;">
-                                  ${(function () {
-                                    let likeType =
-                                      '<i class="far fa-heart like" style="cursor: pointer"></i>';
-
-                                    if (like_status === 'true') {
-                                      likeType =
-                                        '<i class="fas fa-heart un-like" style="cursor: pointer"></i>';
-                                    }
-
-                                    return likeType;
-                                  })()}
-                                    ${like_count} Like
-                                </span>
-                            </div>
-                            <div class="forum-view-box">
-                              <span style="color: #2b8d6e;">
-                                <i class="fas fa-eye"></i> 
-                                ${fi_view} Views
-                              </span>
-                            </div>
-                            <div class="forum-comment-box">
-                              <span style="color: #12a7e4;">
-                                  <i class="fas fa-comment"></i>
-                                  ${comment_count} Answers
-                              </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="forum-menu-box">
-                      <div class="dropdown show">
-                        <i class="fas fa-ellipsis-h" data-toggle="dropdown"></i>
-                          <div class="dropdown-menu dropdown-menu-right">
-                            ${(function () {
-                              let dropdownType =
-                                '<a class="dropdown-item" href="#">' +
-                                '<span>Report</span>' +
-                                '</a>' +
-                                '<a class="dropdown-item" href="#">' +
-                                '<span>Book Mark</span>' +
-                                '</a>';
-
-                              if (forum_status === 'true') {
-                                dropdownType =
-                                  '<a class="dropdown-item" href="#">' +
-                                  '<span>Report</span>' +
-                                  '</a>' +
-                                  '<a class="dropdown-item" href="#">' +
-                                  '<span>Book Mark</span>' +
-                                  '</a>' +
-                                  '<a class="dropdown-item" href="#">' +
-                                  '<span>Delete</span>' +
-                                  '</a>';
-                              }
-
-                              return dropdownType;
-                            })()}
-                        </div>
+            <div class="card-body">
+              <div class="forum-user-profile-box">
+                <div class="forum-profile forum-user-profile">
+                  <img src="/static/images/profile/blank_profile.png" alt="user profile">
+                 </div>
+                <!--
+                  <div class="forum-profile-name">
+                    <p>${ui_nickname}</p>
+                  </div>
+                --!>
+                </div>
+                <div class="forum-post-info-box">
+                  <div class="forum-list-card-header-box">
+                    <div class="forum-category">${fi_category}</div>
+                      <div class="forum-title-box">
+                         <a href="/forum/detail/${fi_idx}" data-number=${fi_idx} class="card-title forum-list-title link-title">${fi_title}</a>
                       </div>
                     </div>
+                    <div class="forum-info-box">
+                      <div class="forum-like-box">
+                        <span style="color: #ed635e;">
+                          ${(function () {
+                            let likeType =
+                              '<i class="far fa-heart like" style="cursor: pointer"></i>';
+
+                            if (like_status === 'true') {
+                              likeType =
+                                '<i class="fas fa-heart un-like" style="cursor: pointer"></i>';
+                            }
+
+                            return likeType;
+                          })()}
+                            ${like_count} Like
+                        </span>
+                      </div>
+                      <div class="forum-view-box">
+                        <span style="color: #2b8d6e;">
+                          <i class="fas fa-eye"></i> 
+                          ${fi_view} Views
+                        </span>
+                      </div>
+                      <div class="forum-comment-box">
+                        <span style="color: #12a7e4;">
+                          <i class="fas fa-comment"></i>
+                          ${comment_count} Answers
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="forum-menu-box">
+                    <div class="dropdown show">
+                      <i class="fas fa-ellipsis-h" data-toggle="dropdown"></i>
+                      <div class="dropdown-menu dropdown-menu-right">
+                        ${(function () {
+                          let dropdownType =
+                            '<a class="dropdown-item" href="#">' +
+                            '<span>Report</span>' +
+                            '</a>' +
+                            '<a class="dropdown-item" href="#">' +
+                            '<span>Book Mark</span>' +
+                            '</a>';
+
+                          if (forum_status === 'true') {
+                            dropdownType =
+                              '<a class="dropdown-item" href="#">' +
+                              '<span>Report</span>' +
+                              '</a>' +
+                              '<a class="dropdown-item" href="#">' +
+                              '<span>Book Mark</span>' +
+                              '</a>' +
+                              '<a class="dropdown-item" href="#">' +
+                              '<span>Delete</span>' +
+                              '</a>';
+                          }
+
+                          return dropdownType;
+                        })()}
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="card-footer">
                      <p class="card-text forum-date">${update_datetime}</p>
@@ -138,6 +138,31 @@ function getCategoryCountTemplate(fi_category, count) {
       </span>`;
 }
 
+function getRankForumTemplate({
+  ui_idx,
+  ui_profile_hash,
+  fi_idx,
+  fi_title,
+  fi_category,
+}) {
+  return `
+      <div class="forum-list-top-box">
+        <div class="forum-user-profile-box">
+            <div class="forum-profile forum-top-profile">
+                <a href="#"><img src="${ui_profile_hash}" alt="user profile"></a>
+            </div>
+        </div>
+        <div class="forum-post-info-box">
+            <div class="forum-top-card-header-box">
+                <div class="forum-category">${fi_category}</div>
+            </div>
+            <div class="forum-title-box">
+                <a href="/forum/detail/${fi_idx}" class="card-title forum-list-title">${fi_title}</a>
+            </div>
+        </div>
+      </div>`;
+}
+
 function likeEvent() {
   const like = document.querySelectorAll('.forum-like-box > span > i');
 
@@ -151,7 +176,9 @@ function likeEvent() {
       throw new Error('A non-existent Like type.');
     }
 
-    const forunmIdx = document.querySelectorAll('.forum-title-box > a');
+    const forunmIdx = document.querySelectorAll(
+      '.forum-title-box > .link-title',
+    );
     const fi_idx = forunmIdx[index].getAttribute('data-number');
     const linkData = likeType === 'like' ? '' : `/${fi_idx}`;
     const linkEndPoint = `${likeType}${linkData}`;
@@ -315,6 +342,37 @@ function init() {
  *
  * @param {Object} reqResult
  */
+function reqRnakForumListDataCheck(reqResult) {
+  const forumTopBodyBox = document.querySelector('.forum-top-body-box');
+
+  if (reqResult.code === 200 && reqResult.data.length) {
+    for (let i = 0; i < reqResult.data.length; i++) {
+      const { ui_idx, ui_profile_hash, fi_idx, fi_title, fi_category } =
+        reqResult.data[i];
+
+      forumTopBodyBox.innerHTML += getRankForumTemplate({
+        ui_idx,
+        ui_profile_hash,
+        fi_idx,
+        fi_title,
+        fi_category,
+      });
+    }
+  } else {
+    forumTopBodyBox.innerHTML = '';
+  }
+}
+
+async function reqRankForumList() {
+  const reqResult = await reqAjax(`/api/forum/rank-forum`, 'get');
+
+  return reqRnakForumListDataCheck(reqResult);
+}
+
+/**
+ *
+ * @param {Object} reqResult
+ */
 function reqCategoryCountInfoDataCheck(reqResult) {
   const popularTags = document.querySelector('.popular-tags');
 
@@ -338,4 +396,5 @@ async function reqCategoryCountInfo() {
 forumListSearchBtn.addEventListener('click', () => reqSearch());
 
 init();
+reqRankForumList();
 reqCategoryCountInfo();
