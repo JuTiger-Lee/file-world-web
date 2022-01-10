@@ -27,7 +27,9 @@ async function list(req, res, next) {
       ') AS like_status,' +
       '(' +
       'SELECT COUNT(*) FROM forum_comment AS fc ' +
-      'WHERE fc.fi_idx = fo.fi_idx' +
+      'WHERE fc.fi_idx = fo.fi_idx ' +
+      'AND fc.fc_target_ui_idx IS NULL ' +
+      'AND fc.fc_group_idx IS NULL' +
       ') AS comment_count,' +
       '(' +
       'SELECT IF(COUNT(*) >= 1, "true", "false") FROM forum AS fo ' +
@@ -81,15 +83,18 @@ async function detail(req, res, next) {
   else ui_idx = ui_idx.idx;
 
   try {
-    const detailForum = await forumModel.detailForum([
-      idx,
-      idx,
-      ui_idx,
-      idx,
-      ui_idx,
-      idx,
-      idx,
-    ]);
+    // view update
+    await forumModel.updateView([idx]);
+
+    const params = [];
+
+    const detailParams = [idx, idx, ui_idx, idx, ui_idx, idx];
+
+    const commentParams = [idx];
+
+    params.push(...detailParams, ...commentParams);
+
+    const detailForum = await forumModel.detailForum(params);
 
     if (!detailForum.data[0].length || detailForum.data[0].length > 1) {
       makeResponse.init(500, 500, 'detail Error');
@@ -103,13 +108,16 @@ async function detail(req, res, next) {
     const { comments } = detailPost;
 
     for (let i = 0; i < comments.length; i += 1) {
-      for (let j = i; j < comments.length; j += 1) {
-        if (!comments[j].childComments) {
-          comments[j].childComments = [];
-        }
+      // childComment Array init
+      comments[i].childComments = [];
+    }
 
-        if (comments[i].fc_comment_idx === comments[j].fc_idx) {
+    for (let i = 0; i < comments.length; i += 1) {
+      for (let j = 0; j < comments.length; j += 1) {
+        if (comments[i].fc_group_idx === comments[j].fc_idx) {
           comments[j].childComments.push(comments[i]);
+          comments.splice(i, 1);
+          i -= 1;
         }
       }
     }
@@ -171,6 +179,21 @@ async function remove(req, res, next) {
   }
 }
 
+async function rankForum(req, res, next) {
+  const makeResponse = new MakeResponse();
+
+  try {
+    const rankForumList = await forumModel.getRankForum([]);
+
+    makeResponse.init(200, 200, 'success');
+
+    return res.json(makeResponse.makeSuccessResponse(rankForumList.data));
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
+}
+
 async function countCategory(req, res, next) {
   const makeResponse = new MakeResponse();
 
@@ -200,10 +223,9 @@ async function countCategory(req, res, next) {
       const categoryInfoList = Object.values(countCategoryInfo.data[i]);
 
       for (let j = 0; j < initCategoryList.length; j += 1) {
-        if (initCategoryList[j].fi_category === categoryInfoList[0]) {
-          const [fi_category, count] = categoryInfoList;
+        const [fi_category, count] = categoryInfoList;
 
-          initCategoryList[j].fi_category = fi_category;
+        if (initCategoryList[j].fi_category === fi_category) {
           initCategoryList[j].count = count;
         }
       }
@@ -218,7 +240,7 @@ async function countCategory(req, res, next) {
   }
 }
 
-async function postLike(req, res, next) {
+async function forumLike(req, res, next) {
   const { fi_idx } = req.body;
   const makeResponse = new MakeResponse();
 
@@ -246,7 +268,7 @@ async function postLike(req, res, next) {
   }
 }
 
-async function postUnLike(req, res, next) {
+async function forumUnLike(req, res, next) {
   const { idx } = req.params;
   const makeResponse = new MakeResponse();
 
@@ -267,17 +289,20 @@ async function postUnLike(req, res, next) {
   }
 }
 
-/* ======== COMMENT ======== */
+/* ================ COMMENT ================ */
 
 async function writeComment(req, res, next) {
-  const { fi_idx, fc_comment_idx, fc_contents } = req.body;
+  const { fi_idx, fc_replay_idx, fc_target_ui_idx, fc_group_idx, fc_contents } =
+    req.body;
   const makeResponse = new MakeResponse();
 
   try {
     const saveComment = await forumModel.createComment([
       req.user.idx,
       fi_idx,
-      fc_comment_idx,
+      fc_replay_idx,
+      fc_target_ui_idx,
+      fc_group_idx,
       fc_contents,
     ]);
 
@@ -302,7 +327,8 @@ module.exports = {
   remove,
   update,
   countCategory,
-  postLike,
-  postUnLike,
+  rankForum,
+  forumLike,
+  forumUnLike,
   writeComment,
 };
