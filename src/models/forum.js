@@ -39,10 +39,23 @@ async function detailForum(params) {
     'WHERE fo.fi_idx = ? AND fo.status = 1 AND us.status = 1;';
 
   const commentForumSQL =
-    'SELECT us.ui_nickname, us.ui_idx, us.ui_profile_hash, fc.fc_comment_idx,' +
-    'fc.fc_idx, fc.fc_contents, fc.create_datetime, fc.update_datetime ' +
-    'FROM forum_comment AS fc INNER JOIN user AS us ' +
-    'ON fc.ui_idx = us.ui_idx WHERE fc.fi_idx = ? ORDER BY fc.fc_idx DESC';
+    'SELECT  us.ui_nickname, us.ui_idx, us.ui_profile_hash,' +
+    '(' +
+    'SELECT us.ui_nickname FROM ' +
+    'USER as us WHERE us.ui_idx = fc.fc_target_ui_idx' +
+    ') AS ui_target_nickname,' +
+    'fc.fc_idx, fc.fc_target_ui_idx, fc.fc_group_idx, fc.fc_contents,' +
+    'fc.create_datetime, fc.update_datetime ' +
+    'FROM forum_comment AS fc ' +
+    'INNER JOIN USER AS us ' +
+    'ON fc.ui_idx = us.ui_idx ' +
+    'WHERE fc.status = 1 ' +
+    'AND us.status = 1 ' +
+    'AND fc.fi_idx = ? ' +
+    'ORDER BY ' +
+    // fc_replay_idx가 null인 컬럼(댓글)은 내림차순 null이 아닌 컬럼(대댓글)은 오름차순
+    'CASE WHEN fc.fc_replay_idx IS NULL THEN fc.fc_idx END DESC,' +
+    'fc.fc_idx ASC';
 
   sql += detailForumSQL;
   sql += commentForumSQL;
@@ -51,7 +64,41 @@ async function detailForum(params) {
 }
 
 async function updateView(params) {
-  const sql = 'UPDATE forum SET fi_view = fi_view + 1 WHERE fi_idx = 297;';
+  const sql = 'UPDATE forum SET fi_view = fi_view + 1 WHERE fi_idx = ?;';
+
+  return db.query(sql, params);
+}
+
+async function getCategoryCountInfo(params) {
+  const sql =
+    'SELECT fi_category, COUNT(fi_category) AS count FROM forum GROUP BY fi_category;';
+
+  return db.query(sql, params);
+}
+
+async function getRankForum(params) {
+  const sql =
+    'SELECT us.ui_idx, us.ui_nickname, us.ui_profile_hash,' +
+    'fo.fi_idx, fo.fi_title, fo.fi_category,' +
+    '(' +
+    'SELECT COUNT(*) FROM forum_like AS fl ' +
+    'WHERE fl.fi_idx = fo.fi_idx' +
+    ') AS like_count,' +
+    '(' +
+    'SELECT COUNT(*) FROM forum_comment AS fc ' +
+    'WHERE fc.fi_idx = fo.fi_idx ' +
+    'AND fc.fc_target_ui_idx IS NULL ' +
+    'AND fc.fc_group_idx IS NULL' +
+    ') AS comment_count,' +
+    'fo.fi_view ' +
+    'FROM forum AS fo INNER JOIN USER AS us ' +
+    'ON us.ui_idx = fo.ui_idx ' +
+    'WHERE us.status = 1 AND ' +
+    'fo.status = 1 ' +
+    'ORDER BY like_count DESC,' +
+    'comment_count DESC,' +
+    'fo.fi_view DESC ' +
+    'LIMIT 3';
 
   return db.query(sql, params);
 }
@@ -75,18 +122,13 @@ async function deleteLike(params) {
   return db.query(sql, params);
 }
 
+/* ================ COMMENT ================ */
+
 async function createComment(params) {
   const sql =
-    'INSERT INTO forum_comment(ui_idx, fi_idx, fc_comment_idx,' +
-    'fc_contents, create_datetime, update_datetime) ' +
-    'VALUES(?, ?, ?, ?, now(), now());';
-
-  return db.query(sql, params);
-}
-
-async function getCategoryCountInfo(params) {
-  const sql =
-    'SELECT fi_category, COUNT(fi_category) AS count FROM forum GROUP BY fi_category;';
+    'INSERT INTO forum_comment(ui_idx, fi_idx, fc_replay_idx, fc_target_ui_idx,' +
+    'fc_group_idx, fc_contents, create_datetime, update_datetime) ' +
+    'VALUES(?, ?, ?, ?, ?, ?, now(), now());';
 
   return db.query(sql, params);
 }
@@ -99,6 +141,7 @@ module.exports = {
   checkLike,
   createLike,
   deleteLike,
-  createComment,
   getCategoryCountInfo,
+  getRankForum,
+  createComment,
 };
