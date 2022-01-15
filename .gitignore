@@ -5,6 +5,6 @@ public/upload/*/*.png
 public/upload/*/*.jpeg
 
 # file
-package-lock.json
+package-lock.
 .env
 .vscode
