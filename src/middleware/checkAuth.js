@@ -15,6 +15,8 @@ module.exports = (req, res, next) => {
         );
       }
 
+      // TODO: x-admin-authorization 추가 후 검사 로직 만들기
+
       if (!user) {
         /**
          * jwt expired => info message 유효기간 지날 경우
