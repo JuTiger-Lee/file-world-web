@@ -36,6 +36,10 @@ module.exports = app => {
     // 개발 서버
     'https://dev-file-world.loca.lt',
     'https://file-world.herokuapp.com',
+
+    // 배포 서버
+    'http://file-world.com',
+    'https://file-world.com',
   ];
 
   const corsOption = {
