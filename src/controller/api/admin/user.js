@@ -1,5 +1,5 @@
 const userModel = require('../../../models/admin/user');
-const MakeResponse = require('../../handler/MakeResponse');
+const MakeResponse = require('../../MakeResponse');
 
 async function list(req, res, next) {
   try {

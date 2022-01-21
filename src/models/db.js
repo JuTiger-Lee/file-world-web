@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 const { local, dev, prod } = require('../config/db');
-const MakeResponse = require('../controller/handler/MakeResponse');
+const MakeResponse = require('../controller/MakeResponse');
 
 function getConnType() {
   let connDBType = {};

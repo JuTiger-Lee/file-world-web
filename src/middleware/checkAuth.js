@@ -1,6 +1,6 @@
 const passport = require('passport');
-const MakeResponse = require('../controller/handler/MakeResponse');
-const { decodeToken } = require('../controller/handler/hash');
+const MakeResponse = require('../controller/MakeResponse');
+const { decodeToken } = require('../controller/hash');
 
 module.exports = (req, res, next) => {
   const makeResponse = new MakeResponse();

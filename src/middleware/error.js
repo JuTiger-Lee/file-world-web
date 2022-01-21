@@ -1,18 +1,8 @@
-module.exports = app => {
-  // 404 error
-  app.use((req, res) => {
-    // const result = {
-    //   status: 404,
-    //   message: '404 Not Found',
-    //   error: {},
-    //   data: {},
-    // };
-    // return res.status(404).json(result);
-
+module.exports = {
+  notFound: (req, res) => {
     res.status(404).render('../views/common/notFound');
-  });
-
-  app.use((err, req, res, next) => {
+  },
+  serverError: (err, req, res, next) => {
     const result = {
       code: err.code || 500,
       message: err.message || '500 server Error',
@@ -20,10 +10,11 @@ module.exports = app => {
     };
 
     if (err.err || err) result.error = err.err || err;
-    else result.error = {};
+
+    if (process.env.NODE_ENV === 'prod') delete result.error;
 
     res.status(err.httpStatus || 500);
 
     return res.json(result);
-  });
+  },
 };

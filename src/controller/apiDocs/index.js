@@ -1,6 +1,6 @@
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
-const SwaggerAPI = require('../handler/SwaggerAPI');
+const SwaggerAPI = require('../SwaggerAPI');
 
 // user api docs
 const { signUp, signIn, idCheck, nicknameCheck } = require('./user');

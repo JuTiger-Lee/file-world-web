@@ -2,7 +2,7 @@ const cors = require('cors');
 
 const apiDocs = require('../controller/apiDocs/index');
 const checkAuth = require('../middleware/checkAuth');
-const error = require('../middleware/error');
+const { notFound, serverError } = require('../middleware/error');
 
 // admin router
 const adminMainAPI = require('./admin/main/api');
@@ -24,12 +24,7 @@ const userRender = require('./user/render');
 const forumAPI = require('./forum/api');
 const forumRender = require('./forum/render');
 
-module.exports = app => {
-  const { swaggerUI, specs, setUpOption } = apiDocs();
-
-  // Access-Control-Allow-Origin
-  // res.header("Access-Control-Allow-Origin", "http://localhost:8081");
-
+function getCorsOption() {
   const allowOriginList = [
     'http://localhost:8081',
 
@@ -53,6 +48,15 @@ module.exports = app => {
     },
   };
 
+  return corsOption;
+}
+
+module.exports = app => {
+  const { swaggerUI, specs, setUpOption } = apiDocs();
+
+  // Access-Control-Allow-Origin
+  // res.header("Access-Control-Allow-Origin", "http://localhost:8081");
+
   const authURIList = [
     '/api/forum/write',
     '/api/user/profile',
@@ -61,6 +65,8 @@ module.exports = app => {
     '/api/forum/un-like',
     '/api/forum/comment/write',
   ];
+
+  const corsOption = getCorsOption();
 
   /* ----- SOP ALLOW URL ----- */
 
@@ -105,5 +111,6 @@ module.exports = app => {
 
   /* ----- ERROR HANDLE MIDDLEWARE ----- */
 
-  error(app);
+  app.use(notFound);
+  app.use(serverError);
 };

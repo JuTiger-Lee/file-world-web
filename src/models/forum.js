@@ -124,15 +124,6 @@ async function deleteLike(params) {
 
 /* ================ COMMENT ================ */
 
-async function createComment(params) {
-  const sql =
-    'INSERT INTO forum_comment(ui_idx, fi_idx, fc_replay_idx, fc_target_ui_idx,' +
-    'fc_group_idx, fc_contents, create_datetime, update_datetime) ' +
-    'VALUES(?, ?, ?, ?, ?, ?, now(), now());';
-
-  return db.query(sql, params);
-}
-
 module.exports = {
   createForum,
   deleteForum,
@@ -143,5 +134,4 @@ module.exports = {
   deleteLike,
   getCategoryCountInfo,
   getRankForum,
-  createComment,
 };

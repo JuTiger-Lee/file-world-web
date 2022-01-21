@@ -4,7 +4,7 @@ const { Strategy: LocalStrategy } = require('passport-local');
 
 const { AUTH_KEY } = require('../utils/setting');
 const userModel = require('../models/user');
-const { compare } = require('../controller/handler/hash');
+const { compare } = require('../controller/hash');
 
 const passportOption = {
   usernameField: 'ui_email',

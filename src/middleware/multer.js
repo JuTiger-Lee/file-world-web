@@ -1,6 +1,6 @@
 const multer = require('multer');
 const path = require('path');
-const { randomSuffix } = require('../controller/handler/hash');
+const { randomSuffix } = require('../controller/hash');
 
 const upload = multer({
   storage: multer.diskStorage({
